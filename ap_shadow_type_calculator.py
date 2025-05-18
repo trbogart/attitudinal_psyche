@@ -103,14 +103,34 @@ def validate_subtype(subtype_str):
         return None
 
 
+def run_interactive():
+    global ap_type, subtype
+    ap_type = input_ap_type()
+    subtype = input_subtype()
+    print_shadow_types(ap_type, subtype)
+    print()
+
+
+def run_with_args(ap_type_str, subtype_str):
+    # at least 1 argument given, get missing argument, if any
+    ap_type = validate_ap_type(ap_type_str)
+    if not ap_type:
+        sys.stderr.write(f'Invalid AP type: {ap_type_str}\n')
+        exit(1)
+
+    subtype = validate_subtype(subtype_str)
+    if not subtype:
+        sys.stderr.write(f'Invalid subtype: {subtype_str}\n')
+        exit(1)
+
+    print_shadow_types(ap_type, subtype)
+
+
 if __name__ == '__main__':
     if len(sys.argv) == 1:
         # interactive mode, ask user for AP type and subtype, repeating until q is entered
         while True:
-            ap_type = input_ap_type()
-            subtype = input_subtype()
-            print_shadow_types(ap_type, subtype)
-            print()
+            run_interactive()
     else:
         parser = argparse.ArgumentParser(
             'ap_shadow_type_calculator',
@@ -119,16 +139,6 @@ if __name__ == '__main__':
         parser.add_argument('ap_type')
         parser.add_argument('subtype')
         args = parser.parse_args()
+        run_with_args(args.ap_type, args.subtype)
 
-        # at least 1 argument given, get missing argument, if any
-        ap_type = validate_ap_type(args.ap_type)
-        if not ap_type:
-            sys.stderr.write(f'Invalid AP type: {args.ap_type}\n')
-            exit(1)
 
-        subtype = validate_subtype(args.subtype)
-        if not subtype:
-            sys.stderr.write(f'Invalid subtype: {args.subtype}\n')
-            exit(1)
-
-        print_shadow_types(ap_type, subtype)
