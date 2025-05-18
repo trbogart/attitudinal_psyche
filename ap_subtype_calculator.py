@@ -4,7 +4,7 @@ def validate_type(s):
     return len(s) == 4 and sorted(s) == ['E', 'F', 'L', 'V']
 
 def validate_subtype(s):
-    return len(s) == 4 and all(map(lambda c: c in ['0', '1', '2', '3', '4'], s))
+    return len(s) == 4 and all(map(lambda c: '0' <= c <= '4', s))
 
 def input_type():
     while True:
