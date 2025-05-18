@@ -1,0 +1,81 @@
+import sys
+
+def validate_type(s):
+    return len(s) == 4 and sorted(s) == ['E', 'F', 'L', 'V']
+
+def validate_subtype(s):
+    return len(s) == 4 and all(map(lambda c: c in ['0', '1', '2', '3', '4'], s))
+
+def input_type():
+    while True:
+        type_str = input('Enter AP type (q to quit): ').upper()
+        if type_str == 'Q':
+            sys.exit(0)
+        if validate_type(type_str):
+            return list(type_str)
+        else:
+            print('Invalid type')
+
+def input_subtype():
+    while True:
+        subtype_str = input('Enter AP subtype (q to quit): ')
+        if subtype_str.upper() == 'Q':
+            exit(0)
+        if validate_subtype(subtype_str):
+            return { i+1: int(c) for i, c in enumerate(subtype_str)}
+        else:
+            print('Invalid subtype')
+
+def swap_positions(shadow_types, ap_type, pos1, pos2):
+    ap_type[pos1 - 1], ap_type[pos2 - 1] = ap_type[pos2 - 1], ap_type[pos1 - 1]
+    shadow_type = ''.join(ap_type)
+    if shadow_type not in shadow_types:
+        shadow_types.append(''.join(ap_type))
+
+def swap_obscured_shadow_type(shadow_types, ap_type, subtype, pos):
+    swap_pos = 0
+    for other_pos, pos_subtype in subtype.items():
+        if pos_subtype == pos:
+            if swap_pos > 0:
+                # multiple matches, do not swap
+                return
+            swap_pos = other_pos
+    if swap_pos > 0:
+        swap_positions(shadow_types, ap_type, pos, swap_pos)
+
+def swap_shadow_type(shadow_types, ap_type, subtype, pos1, pos2):
+    if subtype[pos1] == pos2 or subtype[pos2] == pos1:
+        swap_positions(shadow_types, ap_type, pos1, pos2)
+
+def get_shadow_types(ap_type, subtype):
+    shadow_types = [''.join(ap_type)]
+    # step 1- Accentuated - Ignore
+    # step 2: Obscured - Any aspect pointing at an obscured position (x-0) switches with it,
+    # unless it has another aspect pointing at it
+    for pos, pos_subtype in subtype.items():
+        if pos_subtype == 0: # obscured
+            swap_obscured_shadow_type(shadow_types, ap_type, subtype, pos)
+
+    # Step 3 - Method - Switch aspects in this order: 2-3 or 3-2 > 1-4 or 4-1
+    swap_shadow_type(shadow_types, ap_type, subtype, 2, 3)
+    swap_shadow_type(shadow_types, ap_type, subtype, 1, 4)
+
+    # Step 4 - Self - Switch aspects in this order: 1-2 or 2-1 > 3-4 or 4-3
+    swap_shadow_type(shadow_types, ap_type, subtype, 1, 2)
+    swap_shadow_type(shadow_types, ap_type, subtype, 3, 4)
+
+    # Step 5 - Others - Switch aspects in this order: 1-3 or 3-1 > 2-4 or 4-2
+    swap_shadow_type(shadow_types, ap_type, subtype, 1, 3)
+    swap_shadow_type(shadow_types, ap_type, subtype, 2, 4)
+
+    return shadow_types
+
+if __name__ == '__main__':
+    while True:
+        ap_type = input_type()
+        subtype = input_subtype()
+        shadow_types = get_shadow_types(ap_type, subtype)
+        print('Shadow types:')
+        for shadow_type in shadow_types:
+            print(shadow_type)
+        print()
