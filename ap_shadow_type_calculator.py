@@ -64,9 +64,11 @@ def swap_shadow_type(shadow_types, ap_type, subtype, pos1, pos2):
 
 def get_shadow_types(ap_type, subtype):
     shadow_types = [''.join(ap_type)]
-    # step 1 - Accentuated - Ignore
-    # step 2 - Obscured - Any aspect pointing at an obscured position (x-0) switches with it,
-    # unless it has another aspect pointing at it
+
+    # Step 1 - Accentuated - Ignore
+
+    # Step 2 - Obscured - Any aspect pointing at an obscured position (x-0) switches
+    # with it, unless it has another aspect pointing at it
     for pos, pos_subtype in subtype.items():
         if pos_subtype == 0: # obscured
             swap_obscured_shadow_type(shadow_types, ap_type, subtype, pos)
