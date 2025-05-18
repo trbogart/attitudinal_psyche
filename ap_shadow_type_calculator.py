@@ -104,7 +104,6 @@ def validate_subtype(subtype_str):
 
 
 def run_interactive():
-    global ap_type, subtype
     ap_type = input_ap_type()
     subtype = input_subtype()
     print_shadow_types(ap_type, subtype)
