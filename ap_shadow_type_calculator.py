@@ -1,6 +1,11 @@
 # Licensed under the Creative Commons BY license:
 # https://creativecommons.org/licenses/by/4.0/
 
+# To run the script with arguments:
+#   python ap_shadow_type_calculator [ap_type] [subtype]
+# To run the script with arguments:
+#   python ap_shadow_type_calculator [ap_type] [subtype]
+
 import argparse
 import sys
 
