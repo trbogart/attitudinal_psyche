@@ -4,7 +4,7 @@
 # To run the script in interactive mode:
 #   python ap_shadow_type_calculator.py
 # To run the script with arguments:
-#   python ap_shadow_type_calculator.py
+#   python ap_shadow_type_calculator.py [AP type] [subtype]
 
 import argparse
 import sys
