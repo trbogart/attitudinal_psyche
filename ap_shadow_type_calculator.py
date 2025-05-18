@@ -1,3 +1,6 @@
+# Licensed under the Creative Commons BY license:
+# https://creativecommons.org/licenses/by/4.0/
+
 import argparse
 import sys
 
