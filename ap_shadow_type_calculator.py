@@ -10,11 +10,10 @@ def input_ap_type():
         ap_type_str = input('Enter AP type (q to quit): ')
         if ap_type_str in {'q', 'Q'}:
             sys.exit(0)
-        ap_type = validate_ap_type(ap_type_str)
-        if ap_type:
-            return ap_type
-        else:
-            print('Invalid AP type')
+        try:
+            return parse_ap_type(ap_type_str)
+        except ValueError as e:
+            print(f'{e.args[0]}')
 
 
 def input_subtype():
@@ -22,11 +21,10 @@ def input_subtype():
         subtype_str = input('Enter AP subtype (q to quit): ')
         if subtype_str in {'q', 'Q'}:
             exit(0)
-        subtype = validate_subtype(subtype_str)
-        if subtype:
-            return subtype
-        else:
-            print('Invalid subtype')
+        try:
+            return parse_subtype(subtype_str)
+        except ValueError as e:
+            print(f'{e.args[0]}')
 
 
 def print_shadow_types(ap_type, subtype):
@@ -88,19 +86,19 @@ def get_shadow_types(ap_type, subtype):
     return shadow_types
 
 
-def validate_ap_type(type_str):
-    type_str = type_str.upper()
-    if len(type_str) == 4 and sorted(type_str) == ['E', 'F', 'L', 'V']:
-        return list(type_str)
+def parse_ap_type(ap_type_str):
+    ap_type_str = ap_type_str.upper()
+    if len(ap_type_str) == 4 and sorted(ap_type_str) == ['E', 'F', 'L', 'V']:
+        return list(ap_type_str)
     else:
-        return None
+        raise ValueError(f'Invalid AP type {ap_type_str}')
 
 
-def validate_subtype(subtype_str):
+def parse_subtype(subtype_str):
     if len(subtype_str) == 4 and all(map(lambda c: '0' <= c <= '4', subtype_str)):
         return {i + 1: int(c) for i, c in enumerate(subtype_str)}
     else:
-        return None
+        raise ValueError(f'Invalid subtype {subtype_str}')
 
 
 def run_interactive():
@@ -112,17 +110,14 @@ def run_interactive():
 
 def run_with_args(ap_type_str, subtype_str):
     # at least 1 argument given, get missing argument, if any
-    ap_type = validate_ap_type(ap_type_str)
-    if not ap_type:
-        sys.stderr.write(f'Invalid AP type: {ap_type_str}\n')
+    try:
+        ap_type = parse_ap_type(ap_type_str)
+        subtype = parse_subtype(subtype_str)
+        print_shadow_types(ap_type, subtype)
+    except ValueError as e:
+        sys.stderr.write(f'{e.args[0]}\n')
         exit(1)
 
-    subtype = validate_subtype(subtype_str)
-    if not subtype:
-        sys.stderr.write(f'Invalid subtype: {subtype_str}\n')
-        exit(1)
-
-    print_shadow_types(ap_type, subtype)
 
 
 if __name__ == '__main__':
