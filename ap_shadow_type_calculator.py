@@ -114,7 +114,6 @@ def run_interactive():
 
 
 def run_with_args(ap_type_str, subtype_str):
-    # at least 1 argument given, get missing argument, if any
     try:
         ap_type = parse_ap_type(ap_type_str)
         subtype = parse_subtype(subtype_str)
