@@ -5,7 +5,7 @@ import sys
 def input_ap_type():
     while True:
         ap_type_str = input('Enter AP type (q to quit): ')
-        if ap_type_str in ['q', 'Q']:
+        if ap_type_str in {'q', 'Q'}:
             sys.exit(0)
         ap_type = validate_and_parse_ap_type(ap_type_str)
         if ap_type:
@@ -23,7 +23,7 @@ def validate_and_parse_ap_type(type_str):
 def input_subtype():
     while True:
         subtype_str = input('Enter AP subtype (q to quit): ')
-        if subtype_str in ['q', 'Q']:
+        if subtype_str in {'q', 'Q'}:
             exit(0)
         subtype = validate_and_parse_subtype(subtype_str)
         if subtype:
