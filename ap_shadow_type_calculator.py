@@ -119,7 +119,6 @@ def run_with_args(ap_type_str, subtype_str):
         exit(1)
 
 
-
 if __name__ == '__main__':
     if len(sys.argv) == 1:
         # interactive mode, ask user for AP type and subtype, repeating until q is entered
