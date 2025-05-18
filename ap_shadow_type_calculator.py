@@ -89,7 +89,6 @@ def print_shadow_types(ap_type, subtype):
     for shadow_type in shadow_types:
         print(shadow_type)
 
-
 if __name__ == '__main__':
     if len(sys.argv) == 1:
         # interactive mode
