@@ -1,1 +1,4 @@
 .idea/
+build/
+dist/ap_shadow_type_calculator/_internal/
+*.spec
