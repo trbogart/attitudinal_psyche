@@ -100,9 +100,10 @@ def validate_subtype(subtype_str):
     else:
         return None
 
+
 if __name__ == '__main__':
     if len(sys.argv) == 1:
-        # interactive mode
+        # interactive mode, ask user for AP type and subtype, repeating until q is entered
         while True:
             ap_type = input_ap_type()
             subtype = input_subtype()
