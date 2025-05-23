@@ -32,41 +32,50 @@ def input_subtype():
             print(f'{e.args[0]}')
 
 
-def print_shadow_types(ap_type, subtype):
-    original_ap_type = ''.join(ap_type)
-    subtype_str = ''.join(map(str, subtype.values()))
-    shadow_types = get_shadow_types(ap_type, subtype)
-    print(f'Shadow types for {original_ap_type} {subtype_str}:')
-    for shadow_type in shadow_types:
-        print(shadow_type)
+def swap_positions(description, shadow_types, swapped, ap_type, pos1, pos2):
+    if pos1 > pos2:
+        pair = f'{pos2}-{pos1}'
+    else:
+        pair = f'{pos1}-{pos2}'
+    if pair in swapped:
+        print(f'Skip {description} - already swapped')
+        return
 
+    swapped.add(pair)
 
-def swap_positions(shadow_types, ap_type, pos1, pos2):
     ap_type[pos1 - 1], ap_type[pos2 - 1] = ap_type[pos2 - 1], ap_type[pos1 - 1]
     shadow_type = ''.join(ap_type)
-    if shadow_type not in shadow_types:
-        shadow_types.append(''.join(ap_type))
+    print(f'Swap {description}: {shadow_type}')
+    shadow_types.append(shadow_type)
 
 
-def swap_obscured_shadow_type(shadow_types, ap_type, subtype, pos):
+def swap_obscured_shadow_type(ap_type, shadow_types, swapped, subtype, pos):
     swap_pos = 0
     for other_pos, pos_subtype in subtype.items():
         if pos_subtype == pos:
             if swap_pos > 0:
                 # multiple matches, do not swap
+                print(f'Skip Obscured {pos} - multiple matches')
                 return
             swap_pos = other_pos
     if swap_pos > 0:
-        swap_positions(shadow_types, ap_type, pos, swap_pos)
+        swap_positions(f'Obscured {pos}-{swap_pos}', shadow_types, swapped, ap_type, pos, swap_pos)
+    else:
+        print(f'Skip Obscured {pos} - no matches')
 
 
-def swap_shadow_type(shadow_types, ap_type, subtype, pos1, pos2):
+def swap_shadow_type(description, shadow_types, swapped, ap_type, subtype, pos1, pos2):
     if subtype[pos1] == pos2 or subtype[pos2] == pos1:
-        swap_positions(shadow_types, ap_type, pos1, pos2)
+        swap_positions(description, shadow_types, swapped, ap_type, pos1, pos2)
+    else:
+        print(f'Skip {description}')
 
-
-def get_shadow_types(ap_type, subtype):
-    shadow_types = [''.join(ap_type)]
+def print_shadow_types(ap_type, subtype):
+    subtype_str = ''.join(map(str, subtype.values()))
+    original_ap_type = ''.join(ap_type)
+    shadow_types = [original_ap_type]
+    swapped = set()
+    print(f'Shadow types for {original_ap_type} {subtype_str}:')
 
     # Step 1 - Accentuated - Ignore
 
@@ -74,21 +83,21 @@ def get_shadow_types(ap_type, subtype):
     # with it, unless it has another aspect pointing at it
     for pos, pos_subtype in subtype.items():
         if pos_subtype == 0: # obscured
-            swap_obscured_shadow_type(shadow_types, ap_type, subtype, pos)
+            swap_obscured_shadow_type(ap_type, shadow_types, swapped, subtype, pos)
 
     # Step 3 - Method - Switch aspects in this order: 2-3 or 3-2 > 1-4 or 4-1
-    swap_shadow_type(shadow_types, ap_type, subtype, 2, 3)
-    swap_shadow_type(shadow_types, ap_type, subtype, 1, 4)
+    swap_shadow_type('Method 2-3', shadow_types, swapped, ap_type, subtype, 2, 3)
+    swap_shadow_type('Method 1-4', shadow_types, swapped, ap_type, subtype, 1, 4)
 
     # Step 4 - Self - Switch aspects in this order: 1-2 or 2-1 > 3-4 or 4-3
-    swap_shadow_type(shadow_types, ap_type, subtype, 1, 2)
-    swap_shadow_type(shadow_types, ap_type, subtype, 3, 4)
+    swap_shadow_type('Self 1-2', shadow_types, swapped, ap_type, subtype, 1, 2)
+    swap_shadow_type('Self 3-4', shadow_types, swapped, ap_type, subtype, 3, 4)
 
     # Step 5 - Others - Switch aspects in this order: 1-3 or 3-1 > 2-4 or 4-2
-    swap_shadow_type(shadow_types, ap_type, subtype, 1, 3)
-    swap_shadow_type(shadow_types, ap_type, subtype, 2, 4)
+    swap_shadow_type('Others 1-3', shadow_types, swapped, ap_type, subtype, 1, 3)
+    swap_shadow_type('Others 2-4', shadow_types, swapped, ap_type, subtype, 2, 4)
 
-    return shadow_types
+    print(f'Shadow types: {", ".join(shadow_types)}')
 
 
 def parse_ap_type(ap_type_str):
