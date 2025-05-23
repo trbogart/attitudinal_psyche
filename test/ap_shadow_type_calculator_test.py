@@ -105,6 +105,19 @@ class ApShadowTypeCalculatorTest(unittest.TestCase):
         self.verify_shadow_types('LFVE', '2111', 'LFVE', 'EFVL', 'ELVF', 'FLVE', 'VLFE')
         self.verify_shadow_types('LVEF', '2121', 'LVEF', 'LEVF', 'FEVL', 'FLVE', 'VLFE')
 
+    def test_all_ones(self):
+        self.verify_shadow_types('FVLE', '1111', 'FVLE', 'EVLF', 'VELF', 'LEVF')
+
+    def test_all_twos(self):
+        self.verify_shadow_types('FVEL', '2222', 'FVEL', 'FEVL', 'EFVL', 'ELVF')
+
+    def test_all_threes(self):
+        self.verify_shadow_types('FLVE', '3333', 'FLVE', 'FVLE', 'FVEL', 'EVFL')
+
+    def test_all_fours(self):
+        self.verify_shadow_types('ELVF', '4444', 'ELVF', 'FLVE', 'FLEV', 'FVEL')
+
+# EVFL, EFVL, VLFE, VFLE, ELFV, VEFL, VELF, FLEV, FELV
 
 if __name__ == '__main__':
     unittest.main()
