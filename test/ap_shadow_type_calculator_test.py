@@ -6,8 +6,8 @@ from ap_shadow_type_calculator import validate_subtype, validate_ap_type, Shadow
 class ApShadowTypeCalculatorTest(unittest.TestCase):
 
     def verify_shadow_types(self, ap_type, subtype, *expected_shadow_types):
-        shadow_types = ShadowTypes(ap_type, subtype).shadow_types
-        self.assertListEqual(list(expected_shadow_types), shadow_types)
+        shadow_types = ShadowTypes(ap_type, subtype).shadow_types.keys()
+        self.assertListEqual(list(expected_shadow_types), list(shadow_types))
 
     def test_validate_ap_type_invalid(self):
         with self.assertRaises(ValueError):

@@ -21,8 +21,8 @@ class ShadowTypes:
         self.subtype = {i + 1: int(c) for i, c in enumerate(subtype_str)}
 
         self.steps = []
-        self.shadow_types = [self.ap_type_str]
-        self.swapped_pairs = set()
+        self.shadow_types = {self.ap_type_str: "AP type"}
+        self.swapped_to_obfuscated = {}
 
         # Step 1 - Accentuated - Ignore
 
@@ -33,36 +33,31 @@ class ShadowTypes:
                 self.swap_obscured_shadow_type(pos)
 
         # Step 3 - Method - Switch aspects in this order: 2-3 or 3-2 > 1-4 or 4-1
-        self.swap_shadow_type('Method 2-3', 2, 3)
-        self.swap_shadow_type('Method 1-4', 1, 4)
+        self.swap_shadow_type('Method (2/3)', 2, 3)
+        self.swap_shadow_type('Method (1/4)', 1, 4)
 
         # Step 4 - Self - Switch aspects in this order: 1-2 or 2-1 > 3-4 or 4-3
-        self.swap_shadow_type('Self 1-2', 1, 2)
-        self.swap_shadow_type('Self 3-4', 3, 4)
+        self.swap_shadow_type('Self (1/2)', 1, 2)
+        self.swap_shadow_type('Self (3/4)', 3, 4)
 
         # Step 5 - Others - Switch aspects in this order: 1-3 or 3-1 > 2-4 or 4-2
-        self.swap_shadow_type('Others 1-3', 1, 3)
-        self.swap_shadow_type('Others 2-4', 2, 4)
+        self.swap_shadow_type('Others (1/3)', 1, 3)
+        self.swap_shadow_type('Others (2/4)', 2, 4)
 
 
     def description(self):
         return f'{self.ap_type_str} {self.subtype_str}'
 
     def swap_positions(self, description: str, pos1: int, pos2: int):
-        if pos1 > pos2:
-            pair = f'{pos2}-{pos1}'
-        else:
-            pair = f'{pos1}-{pos2}'
-        if pair in self.swapped_pairs:
-            self.steps.append(f'Skip {description} - already swapped')
+        if self.swapped_to_obfuscated.get(pos1, 0) == pos2 or self.swapped_to_obfuscated.get(pos2, 0) == pos1:
+            self.steps.append(f'Skipped {description} - already swapped')
             return
-
-        self.swapped_pairs.add(pair)
 
         self.shadow_type[pos1 - 1], self.shadow_type[pos2 - 1] = self.shadow_type[pos2 - 1], self.shadow_type[pos1 - 1]
         shadow_type_str = ''.join(self.shadow_type)
-        self.steps.append(f'Swap {description} -> {shadow_type_str}')
-        self.shadow_types.append(shadow_type_str)
+        reason = f'Swapped {description}'
+        self.steps.append(f'{reason} -> {shadow_type_str}')
+        self.shadow_types[shadow_type_str] = reason
 
     def swap_obscured_shadow_type(self, pos: int):
         swap_pos = 0
@@ -70,13 +65,14 @@ class ShadowTypes:
             if pos_subtype == pos:
                 if swap_pos > 0:
                     # multiple matches, do not swap
-                    self.steps.append(f'Skip Obscured {pos} - multiple matches')
+                    self.steps.append(f'Skipped Obscured {pos} - multiple matches')
                     return
                 swap_pos = other_pos
         if swap_pos > 0:
             self.swap_positions(f'Obscured {pos}-{swap_pos}', pos, swap_pos)
+            self.swapped_to_obfuscated[swap_pos] = pos
         else:
-            self.steps.append(f'Skip Obscured {pos} - no matches')
+            self.steps.append(f'Skipped Obscured {pos} - no matches')
 
     def swap_shadow_type(self, description: str, pos1: int, pos2: int):
         if self.subtype[pos1] == pos2 or self.subtype[pos2] == pos1:
@@ -86,7 +82,7 @@ class ShadowTypes:
 
 def input_ap_type() -> str:
     while True:
-        ap_type_str = input('Enter AP type (q to quit): ')
+        ap_type_str = input('Enter AP type (q to quit): ').strip()
         if ap_type_str in {'q', 'Q'}:
             sys.exit(0)
         try:
@@ -97,7 +93,7 @@ def input_ap_type() -> str:
 
 def input_subtype() -> str:
     while True:
-        subtype_str = input('Enter AP subtype (q to quit): ')
+        subtype_str = input('Enter AP subtype (q to quit): ').strip()
         if subtype_str in {'q', 'Q'}:
             exit(0)
         try:
@@ -116,13 +112,14 @@ def validate_subtype(subtype_str: str) -> None:
 
 def print_shadow_types(ap_type_str: str, subtype_str: str):
     shadow_types = ShadowTypes(ap_type_str, subtype_str)
-    print(f'Steps:')
-    for step in shadow_types.steps:
-        print(f'- {step}')
-    print()
     print(f'Shadow types for {shadow_types.description()}')
-    for shadow_type in shadow_types.shadow_types:
-        print(f'- {shadow_type}')
+    for shadow_type, reason in shadow_types.shadow_types.items():
+        print(f'- {shadow_type}: {reason}')
+
+    # print()
+    # print(f'Steps:')
+    # for step in shadow_types.steps:
+    #     print(f'- {step}')
 
 def run_interactive():
     ap_type_str = input_ap_type()
