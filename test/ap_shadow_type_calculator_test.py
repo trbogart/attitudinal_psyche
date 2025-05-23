@@ -86,6 +86,9 @@ class ApShadowTypeCalculatorTest(unittest.TestCase):
     def test_conflictor_shadow(self):
         self.verify_shadow_types('evlf', '4124', 'EVLF', 'ELVF', 'FLVE', 'LFVE')
 
+    def test_swap_everything(self):
+        self.verify_shadow_types('FelV', '2312', 'FELV', 'FLEV', 'LFEV', 'EFLV', 'EVLF')
+
 
 if __name__ == '__main__':
     unittest.main()
