@@ -59,6 +59,9 @@ class ApShadowTypeCalculatorTest(unittest.TestCase):
     def test_skip_swap_obscured_multiple_matches(self):
         self.verify_shadow_types('FEVL', '1440', 'FEVL', 'FELV', 'FVLE')
 
+    def test_skip_obscured_first(self):
+        self.verify_shadow_types('VFEL', '1340', 'VFEL', 'VFLE', 'VLFE')
+
     def test_swap_method1(self):
         self.verify_shadow_types('LEVF', '1224', 'LEVF', 'LVEF')
         self.verify_shadow_types('LEVF', '1334', 'LEVF', 'LVEF')
@@ -100,6 +103,7 @@ class ApShadowTypeCalculatorTest(unittest.TestCase):
 
     def test_swap_everything(self):
         self.verify_shadow_types('LFVE', '2111', 'LFVE', 'EFVL', 'ELVF', 'FLVE', 'VLFE')
+        self.verify_shadow_types('LVEF', '2121', 'LVEF', 'LEVF', 'FEVL', 'FLVE', 'VLFE')
 
 
 if __name__ == '__main__':
