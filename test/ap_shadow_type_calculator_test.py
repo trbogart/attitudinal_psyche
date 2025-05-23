@@ -53,7 +53,7 @@ class ApShadowTypeCalculatorTest(unittest.TestCase):
     def test_swap_obscured(self):
         self.verify_shadow_types('VFEL', '1340', 'VFEL', 'VFLE', 'VLFE')
 
-    def test_swap_nultiple_obscured(self):
+    def test_swap_multiple_obscured(self):
         self.verify_shadow_types('vlef', '4300', 'VLEF', 'VELF', 'FELV')
 
     def test_skip_swap_obscured_multiple_matches(self):
