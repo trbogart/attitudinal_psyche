@@ -21,25 +21,25 @@ class SubType:
             self.type_description = 'Accentuated'
         elif target_pos == 0:
             self.subtype_type = 'O' # obscured
-            self.type_description = 'Obscured'
+            self.type_description = 'obscured'
         elif self._is_subtype_type(2, 3):
             self.subtype_type = 'M1' # method priority 1 (2-3 or 3-2)
-            self.type_description = 'Method'
+            self.type_description = 'method'
         elif self._is_subtype_type(1, 4):
             self.subtype_type = 'M2' # method priority 2 (1-4 or 4-1)
-            self.type_description = 'Method'
+            self.type_description = 'method'
         elif self._is_subtype_type(1, 2):
             self.subtype_type = 'S1'  # self priority 1 (1-2 or 2-1)
-            self.type_description = 'Self'
+            self.type_description = 'self'
         elif self._is_subtype_type(3, 4):
             self.subtype_type = 'S2'  # self priority 2 (3-4 or 4-3)
-            self.type_description = 'Self'
+            self.type_description = 'self'
         elif self._is_subtype_type(1, 3):
             self.subtype_type = 'O1'  # self priority 1 (1-3 or 3-1)
-            self.type_description = 'Others'
+            self.type_description = 'others'
         elif self._is_subtype_type(2, 4):
             self.subtype_type = 'O2'  # self priority 2 (2-4 or 4-2)
-            self.type_description = 'Others'
+            self.type_description = 'others'
         else:
             raise ValueError(f'Invalid subtype: {self}')
 
@@ -71,8 +71,7 @@ class ShadowTypes:
         self.shadow_types = {self.ap_type_str: "AP type"}
         self.swapped_to_obscured = set() # set of SubTypes that have already been swapped
 
-        # Obscured - Any aspect pointing at an obscured position (x-0) switches
-        # with it, unless it has another aspect pointing at it
+        # Do subtypes pointing to an obscured aspect first, unless it has another aspect pointing at it
         for subtype in self.subtypes:
             if subtype.subtype_type == 'O':
                 self.swap_obscured_shadow_type(subtype)
@@ -105,11 +104,11 @@ class ShadowTypes:
         else:
             self.last_shadow_type_str[pos1 - 1], self.last_shadow_type_str[pos2 - 1] = self.last_shadow_type_str[pos2 - 1], self.last_shadow_type_str[pos1 - 1]
             shadow_type_str = ''.join(self.last_shadow_type_str)
-            debug(f'Swapped {subtype} -> {shadow_type_str}')
+            debug(f'swapped {subtype} -> {shadow_type_str}')
             if obscured_subtype:
-                self.shadow_types[shadow_type_str] = f'Swapped {subtype} for {obscured_subtype}'
+                self.shadow_types[shadow_type_str] = f'swapped {subtype} for {obscured_subtype}'
             else:
-                self.shadow_types[shadow_type_str] = f'Swapped {subtype}'
+                self.shadow_types[shadow_type_str] = f'swapped {subtype}'
 
         # else subtypes in the same pair, e.g. 2-3 or 3-2, will usually produce the same result, ignore
 

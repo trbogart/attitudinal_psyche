@@ -2,3 +2,4 @@
 build/
 dist/*/_internal/
 *.spec
+__pycache__
