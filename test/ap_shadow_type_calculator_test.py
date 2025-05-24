@@ -9,6 +9,14 @@ class ApShadowTypeCalculatorTest(unittest.TestCase):
         shadow_types = ShadowTypes(ap_type, subtype).shadow_types.keys()
         self.assertListEqual(list(expected_shadow_types), list(shadow_types))
 
+    def test_validate_all_valid_ap_types(self):
+        for ap_type in self.all_valid_ap_types():
+            validate_ap_type(ap_type)
+
+    def test_validate_all_valid_subtypes(self):
+        for subtype in self.all_valid_subtypes():
+            validate_subtype(subtype)
+
     def test_validate_ap_type_invalid(self):
         with self.assertRaises(ValueError):
             validate_ap_type('')
@@ -23,10 +31,6 @@ class ApShadowTypeCalculatorTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             validate_ap_type('VLE F')
 
-    def test_validate_all_valid_ap_types(self):
-        for ap_type in self.all_valid_ap_types():
-            validate_ap_type(ap_type)
-
     def test_validate_subtype_invalid(self):
         with self.assertRaises(ValueError):
             validate_ap_type('')
@@ -38,10 +42,6 @@ class ApShadowTypeCalculatorTest(unittest.TestCase):
             validate_ap_type('100')
         with self.assertRaises(ValueError):
             validate_ap_type('10041')
-
-    def test_validate_all_valid_subtypes(self):
-        for subtype in self.all_valid_subtypes():
-            validate_subtype(subtype)
 
     def test_all_obscured(self):
         self.verify_shadow_types('VELF', '0000', 'VELF')
