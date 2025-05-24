@@ -23,9 +23,9 @@ class ApShadowTypeCalculatorTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             validate_ap_type('VLE F')
 
-    def test_validate_ap_type_valid(self):
-        for ap_type in permutations(['V', 'L', 'E', 'F']):
-            validate_ap_type(''.join(ap_type))
+    def test_validate_all_valid_ap_types(self):
+        for ap_type in self.all_valid_ap_types():
+            validate_ap_type(ap_type)
 
     def test_validate_subtype_invalid(self):
         with self.assertRaises(ValueError):
@@ -39,13 +39,9 @@ class ApShadowTypeCalculatorTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             validate_ap_type('10041')
 
-    def test_validate_subtype_valid(self):
-        for pos1 in range(5):
-            for pos2 in range(5):
-                for pos3 in range(5):
-                    for pos4 in range(5):
-                        subtype = str(pos1) + str(pos2) + str(pos3) + str(pos4)
-                        validate_subtype(subtype)
+    def test_validate_all_valid_subtypes(self):
+        for subtype in self.all_valid_subtypes():
+            validate_subtype(subtype)
 
     def test_all_obscured(self):
         self.verify_shadow_types('VELF', '0000', 'VELF')
@@ -139,6 +135,14 @@ class ApShadowTypeCalculatorTest(unittest.TestCase):
     def test_extra_space(self):
         self.verify_shadow_types(' VLFE ', ' 1204 ', 'VLFE')
 
+    def test_all_valid_ap_types(self):
+        for ap_type in self.all_valid_ap_types():
+            ShadowTypes(ap_type, '0000')
+
+    def test_all_valid_subtypes(self):
+        for subtype in self.all_valid_subtypes():
+            ShadowTypes('EFVL', subtype)
+
     def test_invalid_ap_type(self):
         subtype = '0000'
         with self.assertRaises(ValueError):
@@ -166,6 +170,20 @@ class ApShadowTypeCalculatorTest(unittest.TestCase):
             ShadowTypes(ap_type, '100')
         with self.assertRaises(ValueError):
             ShadowTypes(ap_type, '10041')
+
+    @staticmethod
+    def all_valid_subtypes():
+        for pos1 in range(5):
+            for pos2 in range(5):
+                for pos3 in range(5):
+                    for pos4 in range(5):
+                        yield str(pos1) + str(pos2) + str(pos3) + str(pos4)
+
+    @staticmethod
+    def all_valid_ap_types():
+        for ap_type in permutations(['V', 'L', 'E', 'F']):
+            yield ''.join(ap_type)
+
 
 if __name__ == '__main__':
     unittest.main()
