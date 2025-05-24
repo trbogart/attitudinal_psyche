@@ -58,15 +58,16 @@ class SubType:
 
 class ShadowTypes:
     def __init__(self, ap_type_str: str, subtype_str: str):
-        validate_ap_type(ap_type_str)
-        validate_subtype(subtype_str)
+        self.ap_type_str = ap_type_str.strip().upper()
+        self.subtype_str = subtype_str.strip()
 
-        self.ap_type_str = ap_type_str.upper()
+        validate_ap_type(self.ap_type_str)
+        validate_subtype(self.subtype_str)
+
         self.last_shadow_type_str = list(self.ap_type_str) # will be mutated to latest shadow type
         self.original_ap_type = self.last_shadow_type_str[:]
 
-        self.subtype_str = subtype_str
-        self.subtypes = [SubType(self.last_shadow_type_str, i + 1, int(c)) for i, c in enumerate(subtype_str)]
+        self.subtypes = [SubType(self.last_shadow_type_str, i + 1, int(c)) for i, c in enumerate(self.subtype_str)]
 
         self.shadow_types = {self.ap_type_str: "AP type"}
         self.swapped_to_obscured = set() # set of SubTypes that have already been swapped
