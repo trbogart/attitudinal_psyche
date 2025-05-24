@@ -20,6 +20,8 @@ class ApShadowTypeCalculatorTest(unittest.TestCase):
             validate_ap_type('VLEFA')
         with self.assertRaises(ValueError):
             validate_ap_type('VLE')
+        with self.assertRaises(ValueError):
+            validate_ap_type('VLE F')
 
     def test_validate_ap_type_valid(self):
         for ap_type in permutations(['V', 'L', 'E', 'F']):
@@ -53,59 +55,68 @@ class ApShadowTypeCalculatorTest(unittest.TestCase):
 
     def test_accentuated_and_obscured(self):
         self.verify_shadow_types('FLEV', '1200', 'FLEV')
+        self.verify_shadow_types('FLEV', '1030', 'FLEV')
 
-    def test_swap_obscured(self):
-        self.verify_shadow_types('VFEL', '1240', 'VFEL', 'VFLE')
+    def test_common_types(self):
+        self.verify_shadow_types('EVFL', '1200', 'EVFL')
+        self.verify_shadow_types('EVFL', '1220', 'EVFL', 'EFVL')
+        self.verify_shadow_types('EVFL', '1204', 'EVFL')
 
     def test_swap_multiple_obscured(self):
         self.verify_shadow_types('VLEF', '4300', 'VLEF', 'VELF', 'FELV')
 
-    def test_skip_swap_obscured_multiple_matches(self):
+    def test_skip_obscured_multiple_matches(self):
         self.verify_shadow_types('FEVL', '1440', 'FEVL', 'FELV', 'FVLE')
 
-    def test_skip_obscured_first(self):
+    def test_swap_obscured_first(self):
         self.verify_shadow_types('VFEL', '1340', 'VFEL', 'VFLE', 'VLFE')
 
-    def test_swap_method1(self):
+    def test_method_2_3(self):
         self.verify_shadow_types('LEVF', '1224', 'LEVF', 'LVEF')
         self.verify_shadow_types('LEVF', '1334', 'LEVF', 'LVEF')
         self.verify_shadow_types('LEVF', '1324', 'LEVF', 'LVEF')
 
-    def test_swap_method2(self):
+    def test_method_1_4(self):
         self.verify_shadow_types('FLVE', '4234', 'FLVE', 'ELVF')
         self.verify_shadow_types('FLVE', '1231', 'FLVE', 'ELVF')
         self.verify_shadow_types('FLVE', '4231', 'FLVE', 'ELVF')
 
-    def test_swap_self1(self):
+    def test_self_1_2(self):
         self.verify_shadow_types('LEFV', '2200', 'LEFV', 'ELFV')
         self.verify_shadow_types('LEFV', '1100', 'LEFV', 'ELFV')
         self.verify_shadow_types('LEFV', '2100', 'LEFV', 'ELFV')
 
-    def test_swap_self2(self):
+    def test_self_3_4(self):
         self.verify_shadow_types('VLFE', '1240', 'VLFE', 'VLEF')
         self.verify_shadow_types('VLFE', '1203', 'VLFE', 'VLEF')
         self.verify_shadow_types('VLFE', '1243', 'VLFE', 'VLEF')
 
-    def test_swap_other1(self):
+    def test_other_1_3(self):
         self.verify_shadow_types('LVFE', '3200', 'LVFE', 'FVLE')
         self.verify_shadow_types('LVFE', '1210', 'LVFE', 'FVLE')
         self.verify_shadow_types('LVFE', '3210', 'LVFE', 'FVLE')
 
-    def test_swap_other2(self):
+    def test_other_2_4(self):
         self.verify_shadow_types('ELFV', '1400', 'ELFV', 'EVFL')
         self.verify_shadow_types('ELFV', '1002', 'ELFV', 'EVFL')
         self.verify_shadow_types('ELFV', '1402', 'ELFV', 'EVFL')
 
-    def test_dual_shadow_1(self):
+    def test_dual_shadow(self):
         self.verify_shadow_types('LFEV', '1221', 'LFEV', 'LEFV', 'VEFL')
-
-    def test_dual_shadow_2(self):
         self.verify_shadow_types('FELV', '4334', 'FELV', 'FLEV', 'VLEF')
+        self.verify_shadow_types('FELV', '4300', 'FELV', 'FLEV', 'VLEF')
+        self.verify_shadow_types('LFEV', '0021', 'LFEV', 'VFEL', 'VEFL')
+
+    def test_conflictor_shadow(self):
+        self.verify_shadow_types('LEVF', '0212', 'LEVF', 'VELF', 'VFLE')
+        self.verify_shadow_types('LEVF', '3404', 'LEVF', 'VELF', 'VFLE')
+        self.verify_shadow_types('LEVF', '4412', 'LEVF', 'FEVL', 'VEFL', 'VLFE', 'VFLE')
+        self.verify_shadow_types('LEVF', '4442', 'LEVF', 'FEVL', 'FELV', 'FVLE', 'VFLE')
 
     def test_swap_with_original_aspect(self):
         self.verify_shadow_types('EVLF', '4124', 'EVLF', 'ELVF', 'FLVE', 'VLFE')
 
-    def test_swap_everything(self):
+    def test_max_shadow_types(self):
         self.verify_shadow_types('LFVE', '2111', 'LFVE', 'EFVL', 'ELVF', 'FLVE', 'VLFE')
         self.verify_shadow_types('LVEF', '2121', 'LVEF', 'LEVF', 'FEVL', 'FLVE', 'VLFE')
 
@@ -121,18 +132,12 @@ class ApShadowTypeCalculatorTest(unittest.TestCase):
     def test_all_fours(self):
         self.verify_shadow_types('ELVF', '4444', 'ELVF', 'FLVE', 'FLEV', 'FVEL')
 
-    def test_conflictor(self):
-        self.verify_shadow_types('LEVF', '0212', 'LEVF', 'VELF', 'VFLE')
-        self.verify_shadow_types('LEVF', '3404', 'LEVF', 'VELF', 'VFLE')
-        self.verify_shadow_types('LEVF', '4412', 'LEVF', 'FEVL', 'VEFL', 'VLFE', 'VFLE')
-        self.verify_shadow_types('LEVF', '4442', 'LEVF', 'FEVL', 'FELV', 'FVLE', 'VFLE')
-
     def test_case(self):
         self.verify_shadow_types('evfl', '1234', 'EVFL')
         self.verify_shadow_types('eFVl', '1234', 'EFVL')
 
     def test_extra_space(self):
-        self.verify_shadow_types(' VLFE ', ' 1234 ', 'VLFE')
+        self.verify_shadow_types(' VLFE ', ' 1204 ', 'VLFE')
 
     def test_invalid_ap_type(self):
         with self.assertRaises(ValueError):
@@ -145,6 +150,8 @@ class ApShadowTypeCalculatorTest(unittest.TestCase):
             ShadowTypes('VLEFA', '0000')
         with self.assertRaises(ValueError):
             ShadowTypes('VLE', '0000')
+        with self.assertRaises(ValueError):
+            ShadowTypes('VLE F', '0000')
 
     def test_invalid_subtype(self):
         with self.assertRaises(ValueError):
