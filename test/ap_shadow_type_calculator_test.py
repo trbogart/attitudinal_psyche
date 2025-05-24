@@ -140,30 +140,32 @@ class ApShadowTypeCalculatorTest(unittest.TestCase):
         self.verify_shadow_types(' VLFE ', ' 1204 ', 'VLFE')
 
     def test_invalid_ap_type(self):
+        subtype = '0000'
         with self.assertRaises(ValueError):
-            ShadowTypes('', '0000')
+            ShadowTypes('', subtype)
         with self.assertRaises(ValueError):
-            ShadowTypes('ABCD', '0000')
+            ShadowTypes('ABCD', subtype)
         with self.assertRaises(ValueError):
-            ShadowTypes('VLLE', '0000')
+            ShadowTypes('VLLE', subtype)
         with self.assertRaises(ValueError):
-            ShadowTypes('VLEFA', '0000')
+            ShadowTypes('VLEFA', subtype)
         with self.assertRaises(ValueError):
-            ShadowTypes('VLE', '0000')
+            ShadowTypes('VLE', subtype)
         with self.assertRaises(ValueError):
-            ShadowTypes('VLE F', '0000')
+            ShadowTypes('VLE F', subtype)
 
     def test_invalid_subtype(self):
+        ap_type = 'VLEF'
         with self.assertRaises(ValueError):
-            ShadowTypes('VLEF', '')
+            ShadowTypes(ap_type, '')
         with self.assertRaises(ValueError):
-            ShadowTypes('VLEF', 'ABCD')
+            ShadowTypes(ap_type, 'ABCD')
         with self.assertRaises(ValueError):
-            ShadowTypes('VLEF', '1005')
+            ShadowTypes(ap_type, '1005')
         with self.assertRaises(ValueError):
-            ShadowTypes('VLEF', '100')
+            ShadowTypes(ap_type, '100')
         with self.assertRaises(ValueError):
-            ShadowTypes('VLEF', '10041')
+            ShadowTypes(ap_type, '10041')
 
 if __name__ == '__main__':
     unittest.main()
