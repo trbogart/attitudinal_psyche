@@ -99,9 +99,11 @@ class ApShadowTypeCalculatorTest(unittest.TestCase):
 
     def test_dual_shadow(self):
         self.verify_shadow_types('LFEV', '1221', 'LFEV', 'LEFV', 'VEFL')
+        self.verify_shadow_types('LFEV', '0021', 'LFEV', 'VFEL', 'VEFL')
+        self.verify_shadow_types('LFEV', '0301', 'LFEV', 'VFEL', 'VEFL')
         self.verify_shadow_types('FELV', '4334', 'FELV', 'FLEV', 'VLEF')
         self.verify_shadow_types('FELV', '4300', 'FELV', 'FLEV', 'VLEF')
-        self.verify_shadow_types('LFEV', '0021', 'LFEV', 'VFEL', 'VEFL')
+        self.verify_shadow_types('FELV', '4020', 'FELV', 'FLEV', 'VLEF')
 
     def test_conflictor_shadow(self):
         self.verify_shadow_types('LEVF', '0212', 'LEVF', 'VELF', 'VFLE')
