@@ -121,6 +121,12 @@ class ApShadowTypeCalculatorTest(unittest.TestCase):
     def test_all_fours(self):
         self.verify_shadow_types('ELVF', '4444', 'ELVF', 'FLVE', 'FLEV', 'FVEL')
 
+    def test_conflictor(self):
+        self.verify_shadow_types('LEVF', '0212', 'LEVF', 'VELF', 'VFLE')
+        self.verify_shadow_types('LEVF', '3404', 'LEVF', 'VELF', 'VFLE')
+        self.verify_shadow_types('LEVF', '4412', 'LEVF', 'FEVL', 'VEFL', 'VLFE', 'VFLE')
+        self.verify_shadow_types('LEVF', '4442', 'LEVF', 'FEVL', 'FELV', 'FVLE', 'VFLE')
+
     def test_case(self):
         self.verify_shadow_types('evfl', '1234', 'EVFL')
         self.verify_shadow_types('eFVl', '1234', 'EFVL')

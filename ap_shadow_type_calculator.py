@@ -16,35 +16,24 @@ class SubType:
         self.source_pos = source_pos
         self.target_pos = target_pos
         self.aspect = ap_type[source_pos - 1]
-        if source_pos == target_pos:
-            self.subtype_type = 'A'
-            self.type_description = 'Accentuated'
-        elif target_pos == 0:
-            self.subtype_type = 'O' # obscured
-            self.type_description = 'obscured'
-        elif self._is_subtype_type(2, 3):
-            self.subtype_type = 'M1' # method priority 1 (2-3 or 3-2)
-            self.type_description = 'method'
-        elif self._is_subtype_type(1, 4):
-            self.subtype_type = 'M2' # method priority 2 (1-4 or 4-1)
-            self.type_description = 'method'
-        elif self._is_subtype_type(1, 2):
-            self.subtype_type = 'S1'  # self priority 1 (1-2 or 2-1)
-            self.type_description = 'self'
-        elif self._is_subtype_type(3, 4):
-            self.subtype_type = 'S2'  # self priority 2 (3-4 or 4-3)
-            self.type_description = 'self'
-        elif self._is_subtype_type(1, 3):
-            self.subtype_type = 'O1'  # self priority 1 (1-3 or 3-1)
-            self.type_description = 'others'
-        elif self._is_subtype_type(2, 4):
-            self.subtype_type = 'O2'  # self priority 2 (2-4 or 4-2)
-            self.type_description = 'others'
-        else:
-            raise ValueError(f'Invalid subtype: {self}')
 
+    def get_type(self):
+        if self.source_pos == self.target_pos:
+            return 'Accentuated'
+        elif self.target_pos == 0:
+            return 'obscured'
+        elif self.is_subtype_type(2, 3) or self.is_subtype_type(1, 4):
+            return 'method'
+        elif self.is_subtype_type(1, 2) or self.is_subtype_type(3, 4):
+            return 'self'
+        elif self.is_subtype_type(1, 3) or self.is_subtype_type(2, 4):
+            return 'others'
+        else:
+            raise ValueError(f'Invalid subtype: {self}') # shouldn't happen
+
+    # string form, including aspect, e.g. 1E-1
     def __repr__(self):
-        return f'{self.source_pos}{self.aspect}-{self.target_pos} ({self.type_description})'
+        return f'{self.source_pos}{self.aspect}-{self.target_pos} ({self.get_type()})'
 
     def __hash__(self):
         return hash((self.source_pos, self.target_pos))
@@ -52,7 +41,7 @@ class SubType:
     def __eq__(self, other):
         return self.source_pos == other.source_pos and self.target_pos == other.target_pos
 
-    def _is_subtype_type(self, pos1, pos2):
+    def is_subtype_type(self, pos1, pos2):
         return (self.source_pos == pos1 and self.target_pos == pos2 or
                 self.source_pos == pos2 and self.target_pos == pos1)
 
@@ -64,27 +53,33 @@ class ShadowTypes:
         validate_ap_type(self.ap_type_str)
         validate_subtype(self.subtype_str)
 
-        self.last_shadow_type_str = list(self.ap_type_str) # will be mutated to latest shadow type
-        self.original_ap_type = self.last_shadow_type_str[:]
+        self.last_shadow_type = list(self.ap_type_str) # will be mutated to latest shadow type
+        self.original_ap_type = self.last_shadow_type[:]
 
-        self.subtypes = [SubType(self.last_shadow_type_str, i + 1, int(c)) for i, c in enumerate(self.subtype_str)]
+        self.subtypes = [SubType(self.last_shadow_type, i + 1, int(c)) for i, c in enumerate(self.subtype_str)]
 
         self.shadow_types = {self.ap_type_str: "AP type"}
         self.swapped_to_obscured = set() # set of SubTypes that have already been swapped
 
-        # Do subtypes pointing to an obscured aspect first, unless it has another aspect pointing at it
+        # attenuated and obscured aspects are not moved
+
+        # swap subtypes pointing to an obscured aspect first, unless it has another aspect pointing at it
+        # these would be swapped later anyway, but do it early in this case
         for subtype in self.subtypes:
-            if subtype.subtype_type == 'O':
+            if subtype.target_pos == 0: # obscured
                 self.swap_obscured_shadow_type(subtype)
 
-        self.swap_shadow_type('M1') # Method 2-3 or 3-2
-        self.swap_shadow_type('M2') # Method 1-4 or 4-1
+        # swap method subtypes
+        self.swap_shadow_type(2, 3) # 2-3 or 3-2
+        self.swap_shadow_type(1, 4) # 1-4 or 4-1
 
-        self.swap_shadow_type('S1') # Self 1-2 or 2-1
-        self.swap_shadow_type('S2') # Self 3-4 or 4-3
+        # swap self subtypes
+        self.swap_shadow_type(1, 2) # 1-2 or 2-1
+        self.swap_shadow_type(3, 4) # 3-4 or 4-3
 
-        self.swap_shadow_type('O1') # Other 1-3 or 3-1
-        self.swap_shadow_type('O2') # Other 2-4 or 4-2
+        # swap others subtypes
+        self.swap_shadow_type(1, 3) # 1-3 or 3-1
+        self.swap_shadow_type(2, 4) # 2-4 or 4-2
 
     def description(self) -> str:
         return f'{self.ap_type_str} {self.subtype_str}'
@@ -94,18 +89,19 @@ class ShadowTypes:
             debug(f'Skipped {subtype} - already swapped')
             return
 
-        pos1 = self.last_shadow_type_str.index(subtype.aspect) + 1
+        pos1 = self.last_shadow_type.index(subtype.aspect) + 1 # position currently containing aspect
         pos2 = subtype.target_pos
 
         if pos1 == pos2:
-            # subtypes in the same pair, e.g. 2-3 or 3-2, will usually produce the same result, ignore
-            shadow_type_str = ''.join(self.last_shadow_type_str)
+            # subtypes in the same pair, e.g. 2-3 or 3-2, ignore
+            # this case will usually produce the same result, but can
+            shadow_type_str = ''.join(self.last_shadow_type)
             # this can happen for subtypes in the same pair, e.g. 2-3 and 3-2
             debug(f'Already swapped {subtype}')
             self.shadow_types[shadow_type_str] = f'{self.shadow_types[shadow_type_str]} and {subtype}'
         else:
-            self.last_shadow_type_str[pos1 - 1], self.last_shadow_type_str[pos2 - 1] = self.last_shadow_type_str[pos2 - 1], self.last_shadow_type_str[pos1 - 1]
-            shadow_type_str = ''.join(self.last_shadow_type_str)
+            self.last_shadow_type[pos1 - 1], self.last_shadow_type[pos2 - 1] = self.last_shadow_type[pos2 - 1], self.last_shadow_type[pos1 - 1]
+            shadow_type_str = ''.join(self.last_shadow_type)
             debug(f'swapped {subtype} -> {shadow_type_str}')
             if obscured_subtype:
                 self.shadow_types[shadow_type_str] = f'swapped {subtype} for {obscured_subtype}'
@@ -127,9 +123,9 @@ class ShadowTypes:
         else:
             debug(f'Skipped {obscured_subtype} - no matches')
 
-    def swap_shadow_type(self, subtype_type: str):
+    def swap_shadow_type(self, pos1: int, pos2: int):
         for subtype in self.subtypes:
-            if subtype.subtype_type == subtype_type:
+            if subtype.is_subtype_type(pos1, pos2):
                 self.swap(subtype)
 
 def input_ap_type() -> str:
