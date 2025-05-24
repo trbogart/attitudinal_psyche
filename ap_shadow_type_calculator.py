@@ -97,6 +97,7 @@ class ShadowTypes:
         pos2 = subtype.target_pos
 
         if pos1 == pos2:
+            # subtypes in the same pair, e.g. 2-3 or 3-2, will usually produce the same result, ignore
             shadow_type_str = ''.join(self.last_shadow_type_str)
             # this can happen for subtypes in the same pair, e.g. 2-3 and 3-2
             debug(f'Already swapped {subtype}')
@@ -109,8 +110,6 @@ class ShadowTypes:
                 self.shadow_types[shadow_type_str] = f'swapped {subtype} for {obscured_subtype}'
             else:
                 self.shadow_types[shadow_type_str] = f'swapped {subtype}'
-
-        # else subtypes in the same pair, e.g. 2-3 or 3-2, will usually produce the same result, ignore
 
     def swap_obscured_shadow_type(self, obscured_subtype: SubType) -> None:
         swap_subtype = None
