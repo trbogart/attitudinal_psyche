@@ -18,4 +18,5 @@ Subtype is 4 digits between 0 and 4.
 
 To build Windows version:
 - Install pyinstaller (see https://pyinstaller.org/)
-- pyinstaller --onefile ap_shadow_type_calculator.py
+- Run `pyinstaller --distpath dist\windows --onefile ap_shadow_type_calculator.py`
+- File will be created as dist/windows/ap_shadow_type_calculator.exe
