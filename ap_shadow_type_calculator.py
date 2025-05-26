@@ -1,5 +1,4 @@
-# Licensed under the Creative Commons BY license:
-# https://creativecommons.org/licenses/by/4.0/
+# Licensed under the Creative Commons BY license: https://creativecommons.org/licenses/by/4.0/
 
 # To run the script in interactive mode:
 #   python ap_shadow_type_calculator.py
@@ -8,8 +7,6 @@
 
 import argparse
 import sys
-
-verbose = False
 
 class SubType:
     def __init__(self, ap_type, source_pos, target_pos):
@@ -46,7 +43,8 @@ class SubType:
                 self.source_pos == pos2 and self.target_pos == pos1)
 
 class ShadowTypes:
-    def __init__(self, ap_type_str: str, subtype_str: str):
+    def __init__(self, ap_type_str: str, subtype_str: str, verbose: bool = False):
+        self.verbose = verbose
         self.ap_type_str = ap_type_str.strip().upper()
         self.subtype_str = subtype_str.strip()
 
@@ -81,12 +79,16 @@ class ShadowTypes:
         self.swap_shadow_type(1, 3) # 1-3 or 3-1
         self.swap_shadow_type(2, 4) # 2-4 or 4-2
 
+    def debug(self, s: str) -> None:
+        if self.verbose:
+            print(s)
+
     def description(self) -> str:
         return f'{self.ap_type_str} {self.subtype_str}'
 
     def swap(self, subtype: SubType, obscured_subtype: SubType = None) -> None:
         if subtype in self.swapped_to_obscured:
-            debug(f'Skipped {subtype} - already swapped')
+            self.debug(f'Skipped {subtype} - already swapped')
             return
 
         pos1 = self.last_shadow_type.index(subtype.aspect) + 1 # position currently containing aspect
@@ -97,16 +99,16 @@ class ShadowTypes:
             # this case will usually produce the same result, but can
             shadow_type_str = ''.join(self.last_shadow_type)
             # this can happen for subtypes in the same pair, e.g. 2-3 and 3-2
-            debug(f'Already swapped {subtype}')
+            self.debug(f'Already swapped {subtype}')
             self.shadow_types[shadow_type_str] = f'{self.shadow_types[shadow_type_str]} and {subtype}'
         else:
             self.last_shadow_type[pos1 - 1], self.last_shadow_type[pos2 - 1] = self.last_shadow_type[pos2 - 1], self.last_shadow_type[pos1 - 1]
             shadow_type_str = ''.join(self.last_shadow_type)
-            debug(f'swapped {subtype} -> {shadow_type_str}')
+            self.debug(f'Swapped {subtype} -> {shadow_type_str}')
             if obscured_subtype:
-                self.shadow_types[shadow_type_str] = f'swapped {subtype} for {obscured_subtype}'
+                self.shadow_types[shadow_type_str] = f'Swapped {subtype} for {obscured_subtype}'
             else:
-                self.shadow_types[shadow_type_str] = f'swapped {subtype}'
+                self.shadow_types[shadow_type_str] = f'Swapped {subtype}'
 
     def swap_obscured_shadow_type(self, obscured_subtype: SubType) -> None:
         swap_subtype = None
@@ -114,14 +116,14 @@ class ShadowTypes:
             if other_subtype.target_pos == obscured_subtype.source_pos: # obscured
                 if swap_subtype:
                     # multiple matches, do not swap
-                    debug(f'Skipped {obscured_subtype} - multiple matches')
+                    self.debug(f'Skipped {obscured_subtype} - multiple matches')
                     return
                 swap_subtype = other_subtype
         if swap_subtype:
             self.swap(swap_subtype, obscured_subtype)
             self.swapped_to_obscured.add(swap_subtype)
         else:
-            debug(f'Skipped {obscured_subtype} - no matches')
+            self.debug(f'Skipped {obscured_subtype} - no matches')
 
     def swap_shadow_type(self, pos1: int, pos2: int):
         for subtype in self.subtypes:
@@ -158,8 +160,8 @@ def validate_subtype(subtype_str: str) -> None:
     if len(subtype_str) != 4 or not all(map(lambda c: '0' <= c <= '4', subtype_str)):
         raise ValueError(f'Invalid subtype {subtype_str}')
 
-def print_shadow_types(ap_type_str: str, subtype_str: str) -> None:
-    shadow_types = ShadowTypes(ap_type_str, subtype_str)
+def print_shadow_types(ap_type_str: str, subtype_str: str, verbose: bool = False) -> None:
+    shadow_types = ShadowTypes(ap_type_str, subtype_str, verbose)
     print(f'Shadow types for {shadow_types.description()}')
     for shadow_type, reason in shadow_types.shadow_types.items():
         print(f'- {shadow_type}: {reason}')
@@ -170,16 +172,13 @@ def run_interactive() -> None:
     print_shadow_types(ap_type_str, subtype_str)
     print()
 
-def run_with_args(ap_type_str: str, subtype_str: str) -> None:
+def run_with_args(ap_type_str: str, subtype_str: str, verbose: bool = False) -> None:
     try:
-        print_shadow_types(ap_type_str, subtype_str)
+        print_shadow_types(ap_type_str, subtype_str, verbose)
     except ValueError as e:
         sys.stderr.write(f'{e.args[0]}\n')
         exit(1)
 
-def debug(s) -> None:
-    if verbose:
-        print(s)
 
 if __name__ == '__main__':
     if len(sys.argv) == 1:
@@ -188,10 +187,12 @@ if __name__ == '__main__':
             run_interactive()
     else:
         parser = argparse.ArgumentParser(
-            'ap_shadow_type_calculator',
-            'Calculate AP shadow types (no arguments to run interactively)',
+            prog = 'ap_shadow_type_calculator',
+            usage = 'Calculate AP shadow types (no arguments to run interactively)',
+            add_help = True, # add -h/--help option
         )
-        parser.add_argument('ap_type')
-        parser.add_argument('subtype')
+        parser.add_argument('ap_type', help = 'AP type (any permutation of FLEV)')
+        parser.add_argument('subtype', help = 'AP subtype (4 digits between 0 and 4, inclusive)')
+        parser.add_argument('-v', '--verbose', action='store_true', help = 'print verbose messages')
         args = parser.parse_args()
-        run_with_args(args.ap_type, args.subtype)
+        run_with_args(args.ap_type, args.subtype, args.verbose)
