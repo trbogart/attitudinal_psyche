@@ -15,3 +15,7 @@ To run the script with arguments:
 
 AP type is any of the 24 permutation of FLEV (e.g. LFEV and LEFV).
 Subtype is 4 digits between 0 and 4.
+
+To build Windows version:
+- Install pyinstaller (see https://pyinstaller.org/)
+- pyinstaller --onefile ap_shadow_type_calculator.py
