@@ -183,7 +183,7 @@ class ApShadowTypeCalculatorTest(unittest.TestCase):
 
     @staticmethod
     def all_valid_ap_types():
-        for ap_type in permutations(['V', 'L', 'E', 'F']):
+        for ap_type in permutations('VELF'):
             yield ''.join(ap_type)
 
 
