@@ -18,10 +18,10 @@ Subtype is 4 digits between 0 and 4.
 
 To build Windows version:
 - Install pyinstaller (see https://pyinstaller.org/)
-- Run `pyinstaller --distpath dist\windows --onefile ap_shadow_type_calculator.py`
+- pyinstaller --distpath dist\windows --onefile ap_shadow_type_calculator.py
 - File will be created as dist/windows/ap_shadow_type_calculator.exe
 
 To build Mac version:
 - Install pyinstaller (see https://pyinstaller.org/)
-- Run `pyinstaller --distpath dist/macos --onefile --target-arch universal2 ap_shadow_type_calculator.py`
-- File will be created as dist/windows/ap_shadow_type_calculator.exe
+- pyinstaller --distpath dist/macos --onefile --target-arch universal2 ap_shadow_type_calculator.py
+- zip dist/macos/ap_shadow_type_calculator.zip dist/macos/ap_shadow_type_calculator 
