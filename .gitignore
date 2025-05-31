@@ -3,3 +3,4 @@ build/
 *.spec
 __pycache__/
 .DS_Store
+dist/macos/ap_shadow_type_calculator
