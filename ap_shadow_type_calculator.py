@@ -160,25 +160,40 @@ def validate_subtype(subtype_str: str) -> None:
     if len(subtype_str) != 4 or not all(map(lambda c: '0' <= c <= '4', subtype_str)):
         raise ValueError(f'Invalid subtype {subtype_str}')
 
-def print_shadow_types(ap_type_str: str, subtype_str: str, verbose: bool = False) -> None:
+def calculate_shadow_types(ap_type_str: str, subtype_str: str, verbose: bool = False) -> dict:
     shadow_types = ShadowTypes(ap_type_str, subtype_str, verbose)
-    print(f'Shadow types for {shadow_types.description()}')
-    for shadow_type, reason in shadow_types.shadow_types.items():
-        print(f'- {shadow_type}: {reason}')
+    shadow_types_with_descriptions = [
+        {
+            'shadow_type': shadow_type,
+            'description': description,
+        } for shadow_type, description in shadow_types.shadow_types.items()]
+    return {
+        'ap_type': shadow_types.ap_type_str, # normalized
+        'subtype': shadow_types.subtype_str, # normalized
+        'shadow_types': shadow_types_with_descriptions
+    }
+
+def get_shadow_types_str(ap_type_str: str, subtype_str: str, verbose: bool = False) -> str:
+    shadow_types = calculate_shadow_types(ap_type_str, subtype_str, verbose)
+    results = [f'Shadow types for {shadow_types['ap_type']} {shadow_types["subtype"]}:']
+
+    for shadow_type in shadow_types['shadow_types']:
+        results.append(f'-{shadow_type['shadow_type']}: {shadow_type["description"]}')
+
+    return '\n'.join(results)
 
 def run_interactive() -> None:
     ap_type_str = input_ap_type()
     subtype_str = input_subtype()
-    print_shadow_types(ap_type_str, subtype_str)
+    print(get_shadow_types_str(ap_type_str, subtype_str))
     print()
 
 def run_with_args(ap_type_str: str, subtype_str: str, verbose: bool = False) -> None:
     try:
-        print_shadow_types(ap_type_str, subtype_str, verbose)
+        print(get_shadow_types_str(ap_type_str, subtype_str, verbose))
     except ValueError as e:
         sys.stderr.write(f'{e.args[0]}\n')
         exit(1)
-
 
 if __name__ == '__main__':
     if len(sys.argv) == 1:
