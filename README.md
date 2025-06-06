@@ -20,9 +20,3 @@ To build Windows version:
 - Install pyinstaller (see https://pyinstaller.org/)
 - pyinstaller --distpath dist\windows --onefile ap_shadow_type_calculator.py
 - File will be created as dist/windows/ap_shadow_type_calculator.exe
-
-To build Mac version:
-- Install pyinstaller (see https://pyinstaller.org/)
-- pyinstaller --distpath dist/macos --onefile --target-arch universal2 ap_shadow_type_calculator.py
-- cd dist/macos
-- zip ap_shadow_type_calculator.zip ap_shadow_type_calculator
