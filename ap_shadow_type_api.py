@@ -1,6 +1,5 @@
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import JSONResponse
-from starlette.responses import PlainTextResponse, HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 
 from ap_shadow_type_calculator import calculate_shadow_types, get_shadow_types_str
 
