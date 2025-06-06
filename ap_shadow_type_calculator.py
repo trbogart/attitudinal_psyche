@@ -191,7 +191,7 @@ def get_shadow_types_str(ap_type_str: str, subtype_str: str, verbose: bool = Fal
         results = [f'Shadow types for {shadow_types['ap_type']} {shadow_types["subtype"]}:']
 
         for shadow_type in shadow_types['shadow_types']:
-            results.append(f'-{shadow_type['shadow_type']}: {shadow_type["description"]}')
+            results.append(f'- {shadow_type['shadow_type']}: {shadow_type["description"]}')
 
         return '\n'.join(results)
 
