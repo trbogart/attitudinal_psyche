@@ -173,6 +173,8 @@ class ApShadowTypeCalculatorTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             ShadowTypes(ap_type, '10041')
 
+    # TODO test JSON
+
     @staticmethod
     def all_valid_subtypes():
         for pos1 in range(5):

@@ -6,6 +6,7 @@
 #   python ap_shadow_type_calculator.py [AP type] [subtype]
 
 import argparse
+from json import dumps
 import sys
 
 class SubType:
@@ -173,14 +174,18 @@ def calculate_shadow_types(ap_type_str: str, subtype_str: str, verbose: bool = F
         'shadow_types': shadow_types_with_descriptions
     }
 
-def get_shadow_types_str(ap_type_str: str, subtype_str: str, verbose: bool = False) -> str:
+def get_shadow_types_str(ap_type_str: str, subtype_str: str, verbose: bool = False, json: bool = False) -> str:
     shadow_types = calculate_shadow_types(ap_type_str, subtype_str, verbose)
-    results = [f'Shadow types for {shadow_types['ap_type']} {shadow_types["subtype"]}:']
+    if json:
+        my_dict = calculate_shadow_types(ap_type_str, subtype_str, verbose)
+        return dumps(my_dict, indent=4)
+    else:
+        results = [f'Shadow types for {shadow_types['ap_type']} {shadow_types["subtype"]}:']
 
-    for shadow_type in shadow_types['shadow_types']:
-        results.append(f'-{shadow_type['shadow_type']}: {shadow_type["description"]}')
+        for shadow_type in shadow_types['shadow_types']:
+            results.append(f'-{shadow_type['shadow_type']}: {shadow_type["description"]}')
 
-    return '\n'.join(results)
+        return '\n'.join(results)
 
 def run_interactive() -> None:
     ap_type_str = input_ap_type()
@@ -188,9 +193,9 @@ def run_interactive() -> None:
     print(get_shadow_types_str(ap_type_str, subtype_str))
     print()
 
-def run_with_args(ap_type_str: str, subtype_str: str, verbose: bool = False) -> None:
+def run_with_args(ap_type_str: str, subtype_str: str, verbose: bool = False, json: bool = False) -> None:
     try:
-        print(get_shadow_types_str(ap_type_str, subtype_str, verbose))
+        print(get_shadow_types_str(ap_type_str, subtype_str, verbose,  json))
     except ValueError as e:
         sys.stderr.write(f'{e.args[0]}\n')
         exit(1)
@@ -208,6 +213,7 @@ if __name__ == '__main__':
         )
         parser.add_argument('ap_type', help = 'AP type (any permutation of FLEV)')
         parser.add_argument('subtype', help = 'AP subtype (4 digits between 0 and 4, inclusive)')
+        parser.add_argument('-j', '--json', action='store_true', help = 'return answer in JSON format')
         parser.add_argument('-v', '--verbose', action='store_true', help = 'print verbose messages')
         args = parser.parse_args()
-        run_with_args(args.ap_type, args.subtype, args.verbose)
+        run_with_args(args.ap_type, args.subtype, args.verbose, args.json)
