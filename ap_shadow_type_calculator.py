@@ -174,24 +174,20 @@ def calculate_shadow_types(ap_type_str: str, subtype_str: str, verbose: bool = F
         'shadow_types': shadow_types_with_descriptions
     }
 
-def get_shadow_types_str(ap_type_str: str, subtype_str: str, verbose: bool = False, json: bool = False, html: bool = False) -> str:
+def get_shadow_types_str(ap_type_str: str, subtype_str: str, verbose: bool = False, json: bool = False) -> str:
     shadow_types = calculate_shadow_types(ap_type_str, subtype_str, verbose)
     if json:
         my_dict = calculate_shadow_types(ap_type_str, subtype_str, verbose)
         return dumps(my_dict, indent=4)
-    elif html:
-        results = [f'<h1>Shadow types for {shadow_types['ap_type']} {shadow_types["subtype"]}:</h1><ol>']
-
-        for shadow_type in shadow_types['shadow_types']:
-            results.append(f'<li>{shadow_type['shadow_type']}: {shadow_type["description"]}</li>')
-        results.append('</ol>')
-
-        return ''.join(results)
     else:
-        results = [f'Shadow types for {shadow_types['ap_type']} {shadow_types["subtype"]}:']
+        ap_type = shadow_types['ap_type']
+        subtype = shadow_types['subtype']
+        results = [f'Shadow types for {ap_type} {subtype}:']
 
-        for shadow_type in shadow_types['shadow_types']:
-            results.append(f'- {shadow_type['shadow_type']}: {shadow_type["description"]}')
+        for shadow_type_description in shadow_types['shadow_types']:
+            shadow_type = shadow_type_description['shadow_type']
+            description = shadow_type_description['description']
+            results.append(f'- {shadow_type}: {description}')
 
         return '\n'.join(results)
 

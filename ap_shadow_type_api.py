@@ -19,10 +19,14 @@ async def get_shadow_html(ap_type: str, subtype: str):
     try:
         shadow_types = calculate_shadow_types(ap_type, subtype)
 
-        results = [f'<h1>Shadow types for {shadow_types['ap_type']} {shadow_types["subtype"]}:</h1><ol>']
+        ap_type = shadow_types['ap_type']
+        subtype = shadow_types["subtype"]
+        results = [f'<h1>Shadow types for {ap_type} {subtype}:</h1><ol>']
 
-        for shadow_type in shadow_types['shadow_types']:
-            results.append(f'<li>{shadow_type['shadow_type']}: {shadow_type["description"]}</li>')
+        for shadow_type_and_description in shadow_types['shadow_types']:
+            shadow_type = shadow_type_and_description['shadow_type']
+            description = shadow_type_and_description["description"]
+            results.append(f'<li>{shadow_type}: {description}</li>')
         results.append('</ol>')
 
         content = ''.join(results)
