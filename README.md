@@ -24,6 +24,7 @@ To build Windows desktop program:
 To create Discord bot:
 - Create an application at https://discord.com/developers/applications
 - Go to Bot tab
+  - Set username and icon (can use `Shadow.jpg`) 
   - Enable "Public Bot"
   - Enable "Message Content Intent"
   - Copy token
