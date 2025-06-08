@@ -34,5 +34,6 @@ To create Discord bot:
   - Copy generated URL. An admin for the Discord server can go there to add the bot to the server.
 - Create `.env` file in same directory where `ap_shadow_type_discord.py` will be run (do not commit to git)
   - `DISCORD_TOKEN=<token from bot page>` 
+  - This can be set as an environment variable instead
 - To run server:
   - `python ap_shadow_type_discord.py`
