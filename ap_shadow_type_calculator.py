@@ -131,10 +131,10 @@ class ShadowTypes:
             if subtype.is_subtype_type(pos1, pos2):
                 self.swap(subtype)
 
-def input_ap_type() -> str:
+def input_ap_type(msg: str = 'Enter AP type (q to quit): ') -> str:
     while True:
-        ap_type_str = input('Enter AP type (q to quit): ').strip()
-        if ap_type_str in {'q', 'Q'}:
+        ap_type_str = input(msg).upper().strip()
+        if ap_type_str == 'Q':
             sys.exit(0)
         try:
             validate_ap_type(ap_type_str)
@@ -161,7 +161,7 @@ def validate_subtype(subtype_str: str) -> None:
     if len(subtype_str) != 4 or not all(map(lambda c: '0' <= c <= '4', subtype_str)):
         raise ValueError(f'Invalid subtype {subtype_str}')
 
-def calculate_shadow_types(ap_type_str: str, subtype_str: str, verbose: bool = False) -> dict:
+def calculate_shadow_types(ap_type_str: str, subtype_str: str, verbose: bool = False) -> dict[str, str]:
     shadow_types = ShadowTypes(ap_type_str, subtype_str, verbose)
     shadow_types_with_descriptions = [
         {
