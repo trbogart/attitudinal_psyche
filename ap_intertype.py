@@ -51,11 +51,10 @@ if __name__ == '__main__':
     else:
         parser = argparse.ArgumentParser(
             prog = 'ap_shadow_type_calculator',
-            usage = 'Calculate AP shadow types (no arguments to run interactively)',
+            usage = 'Calculate intertype relation between 2 AP types (no arguments to run interactively)',
             add_help = True, # add -h/--help option
         )
         parser.add_argument('ap_type1', help = 'AP type 1 (any permutation of FLEV)')
         parser.add_argument('ap_type1', help = 'AP type 2 (any permutation of FLEV)')
-        parser.add_argument('-v', '--verbose', action='store_true', help = 'print verbose messages')
         args = parser.parse_args()
         print(get_intertype(args.ap_type1.upper().strip(), args.ap_type2.upper().strip()))
