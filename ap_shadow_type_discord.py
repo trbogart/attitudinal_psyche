@@ -32,7 +32,7 @@ async def intertype_command(interaction: discord.Interaction, ap_type1: str, ap_
     except ValueError as e:
         await interaction.response.send_message(f"Error: {e}")
 
-@bot.tree.command(name="intertypes", description="Get all intertype relation for an AP type")
+@bot.tree.command(name="intertypes", description="Get all intertype relations for an AP type")
 async def intertypes_command(interaction: discord.Interaction, ap_type: str):
     try:
         relations = [f'Intertype relations for {ap_type.upper()}:']
