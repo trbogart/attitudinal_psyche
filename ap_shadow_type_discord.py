@@ -15,7 +15,7 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 async def on_ready():
     await bot.tree.sync()
 
-@bot.tree.command(name="shadow", description="Get shadow types, if any, for AP type and subtype")
+@bot.tree.command(name="shadow", description="List shadow types, if any, for AP type and subtype")
 async def shadow_command(interaction: discord.Interaction, ap_type: str, subtype: str):
     try:
         result = get_shadow_types_str(ap_type.upper(), subtype)
@@ -24,7 +24,7 @@ async def shadow_command(interaction: discord.Interaction, ap_type: str, subtype
         await interaction.response.send_message(f"Error: {e}")
 
 
-@bot.tree.command(name="intertype", description="Get intertype relation between 2 AP types")
+@bot.tree.command(name="intertype", description="Show intertype relation between 2 AP types")
 async def intertype_command(interaction: discord.Interaction, ap_type1: str, ap_type2: str):
     try:
         result = get_intertype(ap_type1.upper(), ap_type2.upper())
@@ -32,7 +32,7 @@ async def intertype_command(interaction: discord.Interaction, ap_type1: str, ap_
     except ValueError as e:
         await interaction.response.send_message(f"Error: {e}")
 
-@bot.tree.command(name="intertypes", description="Get all intertype relations for an AP type")
+@bot.tree.command(name="intertypes", description="List all intertype relations for an AP type")
 async def intertypes_command(interaction: discord.Interaction, ap_type: str):
     try:
         relations = [f'Intertype relations for {ap_type.upper()}:']
