@@ -61,7 +61,7 @@ def get_results(triad_groups: list[TriadGroup]) -> list[str]:
 
 class InvalidValue(ValueError):
     def __init__(self, trifix_or_archetype: str):
-        super().__init__(f'Invalid trifix (e.g. "369") or EI archetype with optional center stacking (e.g. "BG-FD-EX" or "SPI SY-CY-UN"): {trifix_or_archetype}')
+        super().__init__(f'Invalid trifix (e.g. "369") or EI archetype with optional center stacking (e.g. "BG-FD-EX" or "SPI SY-CY-UN"): "{trifix_or_archetype}"')
 
 # triads for enneagram trifix, e.g. 592
 def get_trifix_triads(input: str) -> list[str]:
