@@ -1,4 +1,5 @@
 import argparse
+import re
 import sys
 
 # List triad counts, nicknames, and other information for Enneagram trifixes ([234][567][891] in any order) or
@@ -59,7 +60,7 @@ def order_triads(triad_groups: list[TriadGroup]) -> list[TriadGroup]:
 def get_results(triad_groups: list[TriadGroup]) -> list[str]:
     return [str(group) for group in order_triads(triad_groups)]
 
-class InvalidValue(ValueError):
+class InvalidInput(ValueError):
     def __init__(self, trifix_or_archetype: str):
         super().__init__(f'Invalid trifix (e.g. "369") or EI archetype with optional center stacking (e.g. "BG-FD-EX" or "SPI SY-CY-UN"): "{trifix_or_archetype}"')
 
@@ -67,7 +68,7 @@ class InvalidValue(ValueError):
 def get_trifix_triads(input: str) -> list[str]:
     # validate trifix
     if len(input) != 3:
-        raise InvalidValue(input)
+        raise InvalidInput(input)
     trifix = input.upper()
 
     # centers, used for validation only
@@ -82,7 +83,7 @@ def get_trifix_triads(input: str) -> list[str]:
             centers.add(enneagram_type)
         centers.validate_centers()
     except:
-        raise InvalidValue(input)
+        raise InvalidInput(input)
 
     object_relation_triads = TriadGroup('Object relation triads', {
         'frustration': ['1', '4', '7'],
@@ -143,21 +144,21 @@ def get_trifix_triads(input: str) -> list[str]:
 
 # get triads for Expanded Instincts archetype
 def get_archetype_triads(input: str) -> list[str]:
-    if ' ' in input:
-        # center stacking given explicitly
-        tokens = input.upper().split(' ')
+    tokens = re.split('[ -]', input.upper())
+    if len(tokens) == 4:
         center_stacking = tokens[0]
-        archetype = tokens[1]
+        if sorted(center_stacking) != ['I', 'P', 'S']:
+            raise InvalidInput(input)
+        instincts = tokens[1:]
     else:
         center_stacking = None # will be calculated later
-        archetype = input.upper()
+        instincts = tokens
 
-    instincts = archetype.split('-')
     # validate archetype
     if len(instincts) != 3:
-        raise InvalidValue(input)
+        raise InvalidInput(input)
 
-    # centers, used for validation only
+    # centers, used for validation only (must have 1 instinct in each center)
     centers = Centers('centers', {
         'SUR': ['FD', 'SY', 'SM'],
         'INT': ['AY', 'CY', 'BG'],
@@ -169,7 +170,7 @@ def get_archetype_triads(input: str) -> list[str]:
             centers.add(instinct)
         centers.validate_centers()
     except:
-        raise InvalidValue(input)
+        raise InvalidInput(input)
 
     experiential_triads = TriadGroup('Experiential triads', {
         'memorial': ['SM', 'BG', 'UN'],
@@ -223,21 +224,22 @@ def get_archetype_triads(input: str) -> list[str]:
         'SM-BG-SS': 'Perfect Delusion'
     }
     if center_stacking:
-        # given center stacking, so recalculate archetype based on center stacking
+        # given center stacking, so reorder instincts based on center stacking
         fixed_instincts = []
         for center in center_stacking:
             for instinct in instincts:
                 if centers.triads_by_value[instinct][0] == center:
                     fixed_instincts.append(instinct)
                     break
-        archetype = '-'.join(fixed_instincts)
+        instincts = fixed_instincts
     else:
         # calculate center stacking based on instincts (use first letter of center, e.g. INT to I)
         center_stacking = ''.join(map(lambda instinct: centers.triads_by_value[instinct][0], instincts))
 
+    archetype = '-'.join(instincts)
     canonical_archetype = '-'.join(centers.get_canonical_values()) # sort in SUR-INT-PUR order
-    header = f'Triads for {center_stacking} {archetype} ({nicknames[canonical_archetype]}):'
-    results = [header]
+
+    results = [f'Triads for {center_stacking} {archetype} ({nicknames[canonical_archetype]}):']
     results.extend(get_results([experiential_triads, movement_triads, source_triads]))
 
     # resonant/dissonant with center stacking
@@ -281,7 +283,7 @@ def get_triads(trifix_or_archetype: str) -> list[str]:
 def run_interactive() -> None:
     while True:
         try:
-            trifix_or_archetype = input('Enter trifix (e.g. 936) or EI archetype (e.g. EX-SY-BG), in any order (Q to quit): ')
+            trifix_or_archetype = input('Enter trifix, EI instinct, or center stacking and EI instinct (Q to quit): ')
             if trifix_or_archetype == 'Q':
                 sys.exit(0)
             print('\n- '.join(get_triads(trifix_or_archetype)))
