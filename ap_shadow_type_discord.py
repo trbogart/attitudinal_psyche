@@ -19,7 +19,7 @@ async def on_ready():
 @bot.tree.command(name="triads", description='Show triads for Enneagram trifix or EI archetype')
 async def triads_command(interaction: discord.Interaction, trifix_or_archetype: str):
     try:
-        result = '\n- '.join(get_triads(trifix_or_archetype.upper().strip()))
+        result = '\n- '.join(get_triads(trifix_or_archetype.strip()))
         await interaction.response.send_message(result)
     except ValueError as e:
         await interaction.response.send_message(f"Error: {e}")

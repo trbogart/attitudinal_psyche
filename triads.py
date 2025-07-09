@@ -1,6 +1,11 @@
 import argparse
 import sys
 
+# List triad counts, nicknames, and other information for Enneagram trifixes ([234][567][891] in any order) or
+# Expanded Instincts (EI) archetypes, e.g. SY-CY-FD, also in any order.
+
+# For EI, an optional center stacking (any permutation of SIP) may be used to override the ordering.
+
 # group of 3 triads
 class TriadGroup:
     def __init__(self, name: str, triads_and_values: dict[str, list[str]]):
@@ -15,13 +20,13 @@ class TriadGroup:
             for value in values:
                 self.triads_by_value[value] = triad
 
-    def max_count(self):
+    def max_count(self) -> int:
         return max(self.triad_counts.values())
 
     def add(self, value: str) -> None:
         self.triad_counts[self.triads_by_value[value]] += 1
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         sorted_counts_by_triad = sorted(self.triad_counts.items(), key=lambda item: item[1], reverse=True)
         counts = ', '.join([f'{count}x {triad}' for triad, count in sorted_counts_by_triad])
 
@@ -39,14 +44,16 @@ class Centers(TriadGroup):
         super().add(value)
         self.canonical_values[self.triads_by_value[value]] = value
 
-    # validate that there is one value in each triad (only use for centers)
-    def validate_centers(self):
+    # validate that there is exactly one value in each triad
+    def validate_centers(self) -> None:
         for key, count in self.triad_counts.items():
             if count != 1:
                 raise ValueError()
 
 def order_triads(triad_groups: list[TriadGroup]) -> list[TriadGroup]:
-    # put group with a triple first (max 1), then groups with a double, then evenly divided groups
+    # Put group with a triple first (max 1), then groups with a double, then evenly divided groups
+    # In practice, there will either be a single group with a triple value (e.g. 3x attachment) and other groups with 1x each,
+    # or all 3 groups will contain 2x/1x/0x pattern.
     return sorted(triad_groups, key=lambda group: group.max_count(), reverse=True)
 
 def get_results(triad_groups: list[TriadGroup]) -> list[str]:
@@ -54,13 +61,14 @@ def get_results(triad_groups: list[TriadGroup]) -> list[str]:
 
 class InvalidValue(ValueError):
     def __init__(self, trifix_or_archetype: str):
-        super().__init__(f'Invalid trifix or EI archetype: {trifix_or_archetype}')
+        super().__init__(f'Invalid trifix (e.g. "369") or EI archetype with optional center stacking (e.g. "BG-FD-EX" or "SPI SY-CY-UN"): {trifix_or_archetype}')
 
 # triads for enneagram trifix, e.g. 592
-def get_trifix_triads(trifix: str) -> list[str]:
+def get_trifix_triads(input: str) -> list[str]:
     # validate trifix
-    if len(trifix) != 3:
-        raise InvalidValue(trifix)
+    if len(input) != 3:
+        raise InvalidValue(input)
+    trifix = input.upper()
 
     # centers, used for validation only
     centers = Centers('centers', {
@@ -74,7 +82,7 @@ def get_trifix_triads(trifix: str) -> list[str]:
             centers.add(enneagram_type)
         centers.validate_centers()
     except:
-        raise InvalidValue(trifix)
+        raise InvalidValue(input)
 
     object_relation_triads = TriadGroup('Object relation triads', {
         'frustration': ['1', '4', '7'],
@@ -134,19 +142,20 @@ def get_trifix_triads(trifix: str) -> list[str]:
     return results
 
 # get triads for Expanded Instincts archetype
-def get_archetype_triads(archetype: str) -> list[str]:
-    if ' ' in archetype:
+def get_archetype_triads(input: str) -> list[str]:
+    if ' ' in input:
         # center stacking given explicitly
-        tokens = archetype.split(' ')
+        tokens = input.upper().split(' ')
         center_stacking = tokens[0]
         archetype = tokens[1]
     else:
         center_stacking = None # will be calculated later
+        archetype = input.upper()
 
     instincts = archetype.split('-')
     # validate archetype
     if len(instincts) != 3:
-        raise InvalidValue(archetype)
+        raise InvalidValue(input)
 
     # centers, used for validation only
     centers = Centers('centers', {
@@ -160,7 +169,7 @@ def get_archetype_triads(archetype: str) -> list[str]:
             centers.add(instinct)
         centers.validate_centers()
     except:
-        raise InvalidValue(archetype)
+        raise InvalidValue(input)
 
     experiential_triads = TriadGroup('Experiential triads', {
         'memorial': ['SM', 'BG', 'UN'],
@@ -272,7 +281,7 @@ def get_triads(trifix_or_archetype: str) -> list[str]:
 def run_interactive() -> None:
     while True:
         try:
-            trifix_or_archetype = input('Enter trifix (e.g. 936) or EI archetype (e.g. EX-SY-BG), in any order (Q to quit): ').upper()
+            trifix_or_archetype = input('Enter trifix (e.g. 936) or EI archetype (e.g. EX-SY-BG), in any order (Q to quit): ')
             if trifix_or_archetype == 'Q':
                 sys.exit(0)
             print('\n- '.join(get_triads(trifix_or_archetype)))
