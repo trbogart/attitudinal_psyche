@@ -112,7 +112,7 @@ def get_trifix_triads(trifix: str) -> list[str]:
         '459': 'Hateful Ghost',
         '468': 'Public Display of Affliction',
         '469': 'Whiny Tears',
-        '478': 'Resolving Door Rehab',
+        '478': 'Revolving Door Rehab',
         '479': 'Huh?',
     }
 
@@ -186,7 +186,7 @@ def get_archetype_triads(archetype: str) -> list[str]:
         'FD-CY-UN': 'Apocalypse Adventurer',
         'FD-AY-EX': 'Soul Harvester',
         'FD-BG-EX': 'Social Experiment',
-        'FD-AY-SS': 'Rubberneck Train wreck',
+        'FD-AY-SS': 'Rubberneck Trainwreck',
         'FD-BG-UN': 'Dazzling Kamikaze',
         'FD-AY-UN': 'Astral Succubus',
         'FD-BG-SS': 'Domination Station',
