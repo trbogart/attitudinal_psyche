@@ -1,8 +1,9 @@
 import argparse
 import sys
 
+# group of 3 triads
 class TriadGroup:
-    def __init__(self, name: str, triads_and_values: dict[str, set[str]]):
+    def __init__(self, name: str, triads_and_values: dict[str, list[str]]):
         self.name = name
         self.triads_and_values = triads_and_values
 
@@ -14,16 +15,10 @@ class TriadGroup:
             for value in values:
                 self.triads_by_value[value] = triad
 
-    # validate that there is one value in each triad (only use for centers)
-    def validate_centers(self):
-        for key, count in self.triad_counts.items():
-            if count != 1:
-                raise ValueError()
-
     def max_count(self):
         return max(self.triad_counts.values())
 
-    def add(self, value):
+    def add(self, value: str) -> None:
         self.triad_counts[self.triads_by_value[value]] += 1
 
     def __repr__(self):
@@ -31,6 +26,24 @@ class TriadGroup:
         counts = ', '.join([f'{count}x {triad}' for triad, count in sorted_counts_by_triad])
 
         return f'{self.name}: {counts}'
+
+class Centers(TriadGroup):
+    def __init__(self, name: str, triads_and_values: dict[str, list[str]]):
+        super().__init__(name, triads_and_values)
+        self.canonical_values = {}
+
+    def get_canonical_values(self) -> list[str]:
+        return [self.canonical_values[triad] for triad in self.triads_and_values.keys()]
+
+    def add(self, value: str) -> None:
+        super().add(value)
+        self.canonical_values[self.triads_by_value[value]] = value
+
+    # validate that there is one value in each triad (only use for centers)
+    def validate_centers(self):
+        for key, count in self.triad_counts.items():
+            if count != 1:
+                raise ValueError()
 
 def order_triads(triad_groups: list[TriadGroup]) -> list[TriadGroup]:
     # put group with a triple first (max 1), then groups with a double, then evenly divided groups
@@ -50,10 +63,10 @@ def get_trifix_triads(trifix: str) -> list[str]:
         raise InvalidValue(trifix)
 
     # centers, used for validation only
-    centers = TriadGroup('centers', {
-        'gut': {'8', '9', '1'},
-        'image': {'2', '3', '4'},
-        'head': {'5', '6', '7'}
+    centers = Centers('centers', {
+        'gut': ['8', '9', '1'],
+        'image': ['2', '3', '4'],
+        'head': ['5', '6', '7']
     })
 
     try:
@@ -64,21 +77,21 @@ def get_trifix_triads(trifix: str) -> list[str]:
         raise InvalidValue(trifix)
 
     object_relation_triads = TriadGroup('Object relation triads', {
-        'frustration': {'1', '4', '7'},
-        'rejection': {'2', '5', '8'},
-        'attachment': {'3', '6', '9'}
+        'frustration': ['1', '4', '7'],
+        'rejection': ['2', '5', '8'],
+        'attachment': ['3', '6', '9']
     })
 
     harmonic_triads = TriadGroup('Harmonic triads', {
-        'competency': {'1', '3', '5'},
-        'positive outlook': {'2', '7', '9'},
-        'reactive': {'4', '6', '8'}
+        'competency': ['1', '3', '5'],
+        'positive outlook': ['2', '7', '9'],
+        'reactive': ['4', '6', '8']
     })
 
     hornevian_triads = TriadGroup('Hornevian triads', {
-        'superego': {'1', '2', '6'},
-        'assertive': {'3', '7', '8'},
-        'withdrawn': {'4', '5', '9'}
+        'superego': ['1', '2', '6'],
+        'assertive': ['3', '7', '8'],
+        'withdrawn': ['4', '5', '9']
     })
     for enneagram_type in trifix:
         object_relation_triads.add(enneagram_type)
@@ -136,10 +149,10 @@ def get_archetype_triads(archetype: str) -> list[str]:
         raise InvalidValue(archetype)
 
     # centers, used for validation only
-    centers = TriadGroup('centers', {
-        'SUR': {'FD', 'SY', 'SM'},
-        'INT': {'AY', 'CY', 'BG'},
-        'PUR': {'SS', 'EX', 'UN'}
+    centers = Centers('centers', {
+        'SUR': ['FD', 'SY', 'SM'],
+        'INT': ['AY', 'CY', 'BG'],
+        'PUR': ['SS', 'EX', 'UN']
     })
 
     try:
@@ -150,21 +163,21 @@ def get_archetype_triads(archetype: str) -> list[str]:
         raise InvalidValue(archetype)
 
     experiential_triads = TriadGroup('Experiential triads', {
-        'memorial': {'SM', 'BG', 'UN'},
-        'immersion': {'AY', 'SS', 'FD'},
-        'distinction': {'SY', 'CY', 'EX'}
+        'memorial': ['SM', 'BG', 'UN'],
+        'immersion': ['AY', 'SS', 'FD'],
+        'distinction': ['SY', 'CY', 'EX']
     })
 
     movement_triads = TriadGroup('Movement triads', {
-        'escaping (yin)': {'SY', 'AY', 'UN'},
-        'aligning (neutral)': {'SM', 'CY', 'SS'},
-        'directing (yang)': {'FD', 'BG', 'EX'}
+        'escaping (yin)': ['SY', 'AY', 'UN'],
+        'aligning (neutral)': ['SM', 'CY', 'SS'],
+        'directing (yang)': ['FD', 'BG', 'EX']
     })
 
     source_triads = TriadGroup('Source triads', {
-        'internalizing': {'SY', 'BG', 'SS'},
-        'externalizing': {'FD', 'CY', 'UN'},
-        'exchanging': {'SM', 'AY', 'EX'}
+        'internalizing': ['SY', 'BG', 'SS'],
+        'externalizing': ['FD', 'CY', 'UN'],
+        'exchanging': ['SM', 'AY', 'EX']
     })
     for instinct in instincts:
         experiential_triads.add(instinct)
@@ -200,31 +213,21 @@ def get_archetype_triads(archetype: str) -> list[str]:
         'SM-AY-UN': 'Edgers Anonymous',
         'SM-BG-SS': 'Perfect Delusion'
     }
-    ordering = {
-        'FD': 0, 'SY': 0, 'SM': 0,
-        'AY': 1, 'CY': 1, 'BG': 1,
-        'SS': 2, 'EX': 2, 'UN': 2,
-    }
-    centers = {
-        'FD': 'S', 'SY': 'S', 'SM': 'S',
-        'AY': 'I', 'CY': 'I', 'BG': 'I',
-        'SS': 'P', 'EX': 'P', 'UN': 'P',
-    }
-    canonical_instincts = '-'.join(sorted(instincts, key=lambda instinct: ordering[instinct]))
     if center_stacking:
         # given center stacking, so recalculate archetype based on center stacking
         fixed_instincts = []
         for center in center_stacking:
             for instinct in instincts:
-                if centers[instinct] == center:
+                if centers.triads_by_value[instinct][0] == center:
                     fixed_instincts.append(instinct)
                     break
         archetype = '-'.join(fixed_instincts)
-
     else:
-        # calculate center stacking based on instincts
-        center_stacking = ''.join(map(lambda instinct: centers[instinct], instincts))
-    header = f'Triads for {center_stacking} {archetype} ({nicknames[canonical_instincts]}):'
+        # calculate center stacking based on instincts (use first letter of center, e.g. INT to I)
+        center_stacking = ''.join(map(lambda instinct: centers.triads_by_value[instinct][0], instincts))
+
+    canonical_archetype = '-'.join(centers.get_canonical_values()) # sort in SUR-INT-PUR order
+    header = f'Triads for {center_stacking} {archetype} ({nicknames[canonical_archetype]}):'
     results = [header]
     results.extend(get_results([experiential_triads, movement_triads, source_triads]))
 
@@ -246,7 +249,7 @@ def get_archetype_triads(archetype: str) -> list[str]:
         'PIS': ['AY', 'SM'],
     }
 
-    def get_instincts(instincts_by_center: dict[str, set[str]]) -> str:
+    def get_instincts(instincts_by_center: dict[str, list[str]]) -> str:
         instincts_for_center = instincts_by_center[center_stacking]
         stacking_instincts = list(filter(lambda instinct: instinct in instincts_for_center, instincts))
         if stacking_instincts:
