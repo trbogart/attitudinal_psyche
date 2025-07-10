@@ -20,6 +20,7 @@ async def on_ready():
 @bot.tree.command(name="triads", description='Show triads for Enneagram trifix or EI archetype')
 async def triads_command(interaction: discord.Interaction, trifix_or_archetype: str):
     try:
+        logger.info(f'Command: triads, trifix_or_archetype="{trifix_or_archetype}"')
         result = '\n- '.join(get_triads(trifix_or_archetype.strip()))
         await interaction.response.send_message(result)
     except ValueError as e:
@@ -30,6 +31,7 @@ async def triads_command(interaction: discord.Interaction, trifix_or_archetype: 
 @bot.tree.command(name="shadow", description="List shadow types, if any, for AP type and subtype")
 async def shadow_command(interaction: discord.Interaction, ap_type: str, subtype: str):
     try:
+        logger.info(f'Command: shadow, ap_type="{ap_type}", subtype="{subtype}"')
         result = get_shadow_types_str(ap_type.upper().strip(), subtype)
         await interaction.response.send_message(result)
     except ValueError as e:
@@ -40,6 +42,7 @@ async def shadow_command(interaction: discord.Interaction, ap_type: str, subtype
 @bot.tree.command(name="intertype", description="Show intertype relation between 2 AP types")
 async def intertype_command(interaction: discord.Interaction, ap_type1: str, ap_type2: str):
     try:
+        logger.info(f'Command: intertype, ap_type1="{ap_type1}", ap_type2="{ap_type2}"')
         result = get_intertype(ap_type1.upper().strip(), ap_type2.upper().strip())
         await interaction.response.send_message(result)
     except ValueError as e:
@@ -49,6 +52,7 @@ async def intertype_command(interaction: discord.Interaction, ap_type1: str, ap_
 
 @bot.tree.command(name="intertypes", description="List all intertype relations for an AP type")
 async def intertypes_command(interaction: discord.Interaction, ap_type: str):
+    logger.info(f'Command: intertypes, ap_type="{ap_type}"')
     try:
         relations = [f'Intertype relations for {ap_type.upper()}:']
         for relation, ap_type in get_all_intertypes(ap_type.upper().strip()).items():
@@ -62,7 +66,7 @@ async def intertypes_command(interaction: discord.Interaction, ap_type: str):
 
 logger = logging.getLogger(__name__)
 FORMAT = '[%(asctime)s] [%(levelname)-8s] %(message)s'
-logging.basicConfig(format=FORMAT, datefmt='%Y-%m-%d %H:%M:%S')
+logging.basicConfig(format=FORMAT, datefmt='%Y-%m-%d %H:%M:%S', level=logging.INFO)
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
