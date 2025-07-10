@@ -1,4 +1,5 @@
 import discord
+import logging
 import os
 from dotenv import load_dotenv
 from discord.ext import commands
@@ -8,9 +9,13 @@ from ap_intertype import get_intertype
 from ap_shadow_type_calculator import get_shadow_types_str
 from triads import get_triads
 
+logger = logging.getLogger(__name__)
 intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix='!', intents=intents)
+
+FORMAT = '[%(asctime)s] [%(levelname)-8s] %(message)s'
+logging.basicConfig(format=FORMAT, datefmt='%Y-%m-%d %H:%M:%S')
 
 @bot.event
 async def on_ready():
@@ -22,8 +27,9 @@ async def triads_command(interaction: discord.Interaction, trifix_or_archetype: 
         result = '\n- '.join(get_triads(trifix_or_archetype.strip()))
         await interaction.response.send_message(result)
     except ValueError as e:
-        await interaction.response.send_message(f"Error: {e}")
-
+        msg = f"Error: {e}"
+        logger.error(msg)
+        await interaction.response.send_message(msg)
 
 @bot.tree.command(name="shadow", description="List shadow types, if any, for AP type and subtype")
 async def shadow_command(interaction: discord.Interaction, ap_type: str, subtype: str):
@@ -31,7 +37,9 @@ async def shadow_command(interaction: discord.Interaction, ap_type: str, subtype
         result = get_shadow_types_str(ap_type.upper().strip(), subtype)
         await interaction.response.send_message(result)
     except ValueError as e:
-        await interaction.response.send_message(f"Error: {e}")
+        msg = f"Error: {e}"
+        logger.error(msg)
+        await interaction.response.send_message(msg)
 
 @bot.tree.command(name="intertype", description="Show intertype relation between 2 AP types")
 async def intertype_command(interaction: discord.Interaction, ap_type1: str, ap_type2: str):
@@ -39,7 +47,9 @@ async def intertype_command(interaction: discord.Interaction, ap_type1: str, ap_
         result = get_intertype(ap_type1.upper().strip(), ap_type2.upper().strip())
         await interaction.response.send_message(result)
     except ValueError as e:
-        await interaction.response.send_message(f"Error: {e}")
+        msg = f"Error: {e}"
+        logger.error(msg)
+        await interaction.response.send_message(msg)
 
 @bot.tree.command(name="intertypes", description="List all intertype relations for an AP type")
 async def intertypes_command(interaction: discord.Interaction, ap_type: str):
@@ -50,7 +60,9 @@ async def intertypes_command(interaction: discord.Interaction, ap_type: str):
         result = '\n'.join(relations)
         await interaction.response.send_message(result)
     except ValueError as e:
-        await interaction.response.send_message(f"Error: {e}")
+        msg = f"Error: {e}"
+        logger.error(msg)
+        await interaction.response.send_message(msg)
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
