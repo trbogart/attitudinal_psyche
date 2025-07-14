@@ -144,7 +144,7 @@ def get_trifix_triads(input: str) -> list[str]:
 
 # get triads for Expanded Instincts archetype
 def get_archetype_triads(input: str) -> list[str]:
-    tokens = re.split('[ -]', input.upper())
+    tokens = re.split('[ -/]', input.upper())
     if len(tokens) == 4:
         center_stacking = tokens[0]
         if sorted(center_stacking) != ['I', 'P', 'S']:
