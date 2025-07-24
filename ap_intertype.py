@@ -8,7 +8,7 @@ mapping_dict = {
     '4231': 'Solution: {0} <—> {1} (shared sexta)',
     '1324': 'Sister: {0} <—> {1} (shared sexta)',
     '4123': 'Radiance: {0} <—> {1} (square)',
-    '2341': 'Radiance: {1} <—> {0} (square)',
+    '2341': 'Radiance: {0} <—> {1} (square)',
     '4312': 'Instruction: {1} —> {0} (square)',
     '3421': 'Instruction: {0} —> {1} (square)',
     '1342': 'Invention: {1} —> {0} (triangular)',
