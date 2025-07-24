@@ -11,7 +11,6 @@ class Direction(Enum):
     TO = 1
     FROM = 2
 
-
 class ApIntertypeTest(unittest.TestCase):
     def _validate(self, ap_type1, ap_type2, intertype_relation, relation_type, direction = Direction.SYMMETRICAL, reversed = False):
         result = get_intertype(ap_type1, ap_type2)
@@ -27,6 +26,7 @@ class ApIntertypeTest(unittest.TestCase):
         self.assertEqual(result, expected)
 
         if not reversed:
+            # test in the reverse direction
             if direction == Direction.FROM:
                 reversed_direction = Direction.TO
             elif direction == Direction.TO:
@@ -78,10 +78,10 @@ class ApIntertypeTest(unittest.TestCase):
         self._validate('FVLE', 'EFLV', 'Enhancement', 'triangular', direction = Direction.FROM)
 
     def test_get_intertype_regular1(self):
-        self._validate('FVLE', 'VLFE', 'Regulation', 'triangular', direction = Direction.FROM)
+        self._validate('FVLE', 'LFVE', 'Regulation', 'triangular', direction = Direction.TO)
 
     def test_get_intertype_regular2(self):
-        self._validate('FVLE', 'LFVE', 'Regulation', 'triangular', direction = Direction.TO)
+        self._validate('FVLE', 'VLFE', 'Regulation', 'triangular', direction = Direction.FROM)
 
     def test_get_intertype_near_identical(self):
         self._validate('FVLE', 'VFLE', 'Near-Identical', 'linear')
