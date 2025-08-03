@@ -1,11 +1,8 @@
 .idea/
 build/
+dist/
 *.spec
-<<<<<<< Updated upstream
 __pycache__/
 .DS_Store
-dist/macos/ap_shadow_type_calculator
-=======
-__pycache__
 .env
->>>>>>> Stashed changes
+*.log

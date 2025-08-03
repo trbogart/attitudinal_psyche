@@ -28,7 +28,7 @@ To create Discord bot:
   - Enable "Public Bot"
   - Enable "Message Content Intent"
   - Copy token (for next step)
-- Create `.env` file in same directory where `ap_shadow_type_discord.py` will be run (do not commit to git)
+- Create `.env` file in same directory where `ap_discord.py` will be run (do not commit to git)
   - `DISCORD_TOKEN=<token from bot page>` 
   - This can be set as an environment variable instead
 - Go to OAuth2 tab
