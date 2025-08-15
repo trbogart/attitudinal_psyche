@@ -1,6 +1,7 @@
 #! /bin/zsh
 
-cd "${0:a:h}"
+SCRIPT_DIR="${0:a:h}"
+cd "$SCRIPT_DIR"
 
 if [[ ! -d .vm/bin ]]; then
   python3 -m venv .vm || exit 1

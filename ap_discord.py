@@ -1,6 +1,7 @@
 import discord
 import logging
 import os
+import sys
 from dotenv import load_dotenv
 from discord.ext import commands
 
@@ -64,11 +65,18 @@ async def intertypes_command(interaction: discord.Interaction, ap_type: str):
         logger.error(msg)
         await interaction.response.send_message(msg)
 
-logger = logging.getLogger(__name__)
-FORMAT = '[%(asctime)s] [%(levelname)-8s] %(message)s'
-logging.basicConfig(format=FORMAT, datefmt='%Y-%m-%d %H:%M:%S', level=logging.INFO)
+if __name__ == '__main__':
+    logger = logging.getLogger(__name__)
+    logger.setLevel(logging.INFO)
 
-load_dotenv()
-TOKEN = os.getenv('DISCORD_TOKEN')
+    handler = logging.StreamHandler(sys.stderr)
 
-bot.run(TOKEN)
+    FORMAT = '[%(asctime)s] [%(levelname)-8s] %(message)s'
+    handler.setFormatter(logging.Formatter(FORMAT))
+
+    logger.addHandler(handler)
+
+    load_dotenv()
+    TOKEN = os.getenv('DISCORD_TOKEN')
+
+    bot.run(TOKEN)

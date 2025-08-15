@@ -62,7 +62,7 @@ def get_results(triad_groups: list[TriadGroup]) -> list[str]:
 
 class InvalidInput(ValueError):
     def __init__(self, trifix_or_archetype: str):
-        super().__init__(f'Invalid trifix (e.g. "369") or EI archetype with optional center stacking (e.g. "BG-FD-EX" or "SPI SY-CY-UN"): "{trifix_or_archetype}"')
+        super().__init__(f'Invalid value: {trifix_or_archetype}\nEnter trifix (e.g. "369") or EI archetype with or without center stacking (e.g. "BG-FD-EX" or "SPI SY-CY-UN")')
 
 # triads for enneagram trifix, e.g. 592
 def get_trifix_triads(input: str) -> list[str]:
@@ -254,10 +254,10 @@ def get_archetype_triads(input: str) -> list[str]:
     dissonant_instincts = {
         'SIP': ['SM', 'BG'],
         'SPI': ['FD', 'SS'],
-        'IPS': ['UN', 'BG'],
+        'IPS': ['BG', 'UN'],
         'ISP': ['AY', 'FD'],
-        'PSI': ['UN', 'SS'],
-        'PIS': ['AY', 'SM'],
+        'PSI': ['UN', 'SM'],
+        'PIS': ['SS', 'AY'],
     }
 
     def get_instincts(instincts_by_center: dict[str, list[str]]) -> str:
