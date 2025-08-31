@@ -1,11 +1,11 @@
-#! /bin/zsh
+#! /bin/bash
 
-SCRIPT_DIR="${0:a:h}"
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 cd "$SCRIPT_DIR"
 
-if [[ ! -d .vm/bin ]]; then
-  python3 -m venv .vm || exit 1
-  pip install -r requirements.txt || exit 1
+if [[ ! -d .venv/bin ]]; then
+  python3 -m venv .venv || exit 1
 fi
-. .vm/bin/activate || exit 1
+. .venv/bin/activate || exit 1
+pip install -q -r requirements.txt || exit 1
 python3 ap_discord.py | tee discord.log 2>&1
