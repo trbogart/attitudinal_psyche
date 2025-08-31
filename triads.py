@@ -268,9 +268,9 @@ def get_archetype_triads(input: str) -> list[str]:
         return 'none'
 
     results.append(f'Resonant instincts for {center_stacking}: {get_instincts(resonant_instincts)} '
-                   f'(most resonant {'/'.join(resonant_instincts[center_stacking])})')
+                   f'(most resonant {"/".join(resonant_instincts[center_stacking])})')
     results.append(f'Dissonant instincts for {center_stacking}: {get_instincts(dissonant_instincts)} '
-                   f'(most dissonant {'/'.join(dissonant_instincts[center_stacking])})')
+                   f'(most dissonant {"/".join(dissonant_instincts[center_stacking])})')
 
     return results
 

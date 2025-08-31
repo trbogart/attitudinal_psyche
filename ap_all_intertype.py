@@ -8,10 +8,10 @@ def modify(ap_type_str: str, map_str: str) -> str:
 def get_all_intertypes(ap_type_str: str) -> dict[str, str]:
     validate_ap_type(ap_type_str)
     results = {}
-    results['Dual'] = f'{ap_type_str} <—> {modify(ap_type_str, '4321')} (shared sexta)'
+    results['Dual'] = f'{ap_type_str} <—> {modify(ap_type_str, "4321")} (shared sexta)'
     results['Identical'] = f'{ap_type_str} <—> {ap_type_str} (shared sexta)'
-    results['Solution'] = f'{ap_type_str} <—> {modify(ap_type_str, '4231')} (shared sexta)'
-    results['Sister'] = f'{ap_type_str} <—> {modify(ap_type_str, '1324')} (shared sexta)'
+    results['Solution'] = f'{ap_type_str} <—> {modify(ap_type_str, "4231")} (shared sexta)'
+    results['Sister'] = f'{ap_type_str} <—> {modify(ap_type_str, "1324")} (shared sexta)'
     radiance_1 = modify(ap_type_str, '4123')
     radiance_2 = modify(ap_type_str, '2341')
     results['Radiance'] = f'{radiance_1} <—> {ap_type_str} <—> {radiance_2} (square)'
@@ -30,15 +30,15 @@ def get_all_intertypes(ap_type_str: str) -> dict[str, str]:
     regulation_1 = modify(ap_type_str, '2314')
     regulation_2 = modify(ap_type_str, '3124')
     results['Regulation'] = f'{regulation_1} —> {ap_type_str} —> {regulation_2} (triangular)'
-    results['Near-Identical'] = f'{ap_type_str} <—> {modify(ap_type_str, '2134')} (linear)'
-    results['Cousin'] = f'{ap_type_str} <—> {modify(ap_type_str, '1243')} (linear)'
-    results['Customary'] = f'{ap_type_str} <—> {modify(ap_type_str, '1432')} (linear)'
-    results['Specificity'] = f'{ap_type_str} <—> {modify(ap_type_str, '3214')} (linear)'
-    results['Faux-Identical'] = f'{ap_type_str} <—> {modify(ap_type_str, '2143')} (opposed sexta)'
+    results['Near-Identical'] = f'{ap_type_str} <—> {modify(ap_type_str, "2134")} (linear)'
+    results['Cousin'] = f'{ap_type_str} <—> {modify(ap_type_str, "1243")} (linear)'
+    results['Customary'] = f'{ap_type_str} <—> {modify(ap_type_str, "1432")} (linear)'
+    results['Specificity'] = f'{ap_type_str} <—> {modify(ap_type_str, "3214")} (linear)'
+    results['Faux-Identical'] = f'{ap_type_str} <—> {modify(ap_type_str, "2143")} (opposed sexta)'
     suffocation_1 = modify(ap_type_str, '2413')
     suffocation_2 = modify(ap_type_str, '3142')
     results['Suffocation'] = f'{suffocation_1} <—> {ap_type_str} <—> {suffocation_2} (opposed sexta, square)'
-    results['Conflict'] = f'{ap_type_str} <—> {modify(ap_type_str, '3412')} (opposed sexta)'
+    results['Conflict'] = f'{ap_type_str} <—> {modify(ap_type_str, "3412")} (opposed sexta)'
     return results
 
 def get_all_intertypes_str(ap_type_str: str) -> str:
