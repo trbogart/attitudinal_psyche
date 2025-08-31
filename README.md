@@ -35,6 +35,15 @@ To create Discord bot:
   - Select "bot" and "applications.commands" under scopes
   - Select "Send Messages" in "Bot Permissions"
   - Copy generated URL. An admin for the Discord server can go there to add the bot to the server.
-- To run server (in VM):
-  - `pip install discord dotenv` 
-  - `python ap_shadow_type_discord.py`
+
+To run Discord server:
+1. Make sure that Python is installed
+2. Obtain .env file and copy to this directory 
+3. Run command:
+   - Linux/Mac: `run_ap_discord.sh`
+   - Windows: `run_ap_discord.bat`
+   - Manual:
+     1. Create VM (`python -m venv .venv`)
+     2. Start VM (`. .venv/bin/activate` in Linux/Mac or `.venv\Scripts\activate.bat` in Windows)
+     3. Use pip to install requirements.txt (`pip install -r requirements.txt`)
+     4. Start Discord bot (`python ap_discord.py`)
