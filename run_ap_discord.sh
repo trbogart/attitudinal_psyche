@@ -9,7 +9,7 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 # shellcheck disable=SC2164
 cd "$SCRIPT_DIR" || error "Unable to find script directory $SCRIPT_DIR"
 
-if [[ ! -d .venv/bin ]]; then
+if [[ ! -f .venv/bin/activate ]]; then
   if command -v python3 >/dev/null 2>&1; then
     python3 -m venv .venv || error "Unable to create venv"
   elif command -v python >/dev/null 2>&1; then
