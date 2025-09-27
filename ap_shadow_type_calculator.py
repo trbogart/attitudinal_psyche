@@ -44,13 +44,22 @@ class SubType:
                 self.source_pos == pos2 and self.target_pos == pos1)
 
 class ShadowTypes:
-    blocks = {
+    elements = {
         'EF': 'Reactivist (%s): Responding, Performing, Acting, Prompting',
         'EL': 'Evaluator (%s): Judging, Valuing, Ranking, Labeling',
         'EV': 'Conceptualist (%s): Imagining, Creating, Envisioning, Idealizing',
         'FL': 'Realist (%s): Measuring, Correcting, Fitting, Improving',
         'FV': 'Experiencer (%s): Perceiving, Experiencing, Taking In, Realizing',
         'LV': 'Strategist (%s): Projecting, Modeling, Pathing, Hypothesizing'
+    }
+
+    dichotomy_positions = {
+        '1+2': 'Energizing',
+        '1+3': 'Vulnerable',
+        '1+4': 'Results',
+        '2+3': 'Process',
+        '2+4': 'Fearless',
+        '3+4': 'Taxing'
     }
 
     def __init__(self, ap_type_str: str, subtype_str: str, verbose: bool = False):
@@ -96,8 +105,11 @@ class ShadowTypes:
             for pos2 in range(pos1+1, 5):
                 block = [self.original_ap_type[pos1-1], self.original_ap_type[pos2-1]]
                 block_text = '/'.join(block)
-                sorted_block = ''.join(sorted(block))
-                yield self.blocks[sorted_block] % block_text
+                dichotomy = ''.join(sorted(block))
+                description = self.elements[dichotomy] % block_text
+                pos = f'{pos1}+{pos2}'
+                pos_text = f'{pos} ({self.dichotomy_positions[pos]})'
+                yield f'{pos_text} - {description}'
 
     def debug(self, s: str) -> None:
         if self.verbose:
