@@ -89,16 +89,15 @@ class ShadowTypes:
         self.swap_shadow_type(1, 3) # 1-3 or 3-1
         self.swap_shadow_type(2, 4) # 2-4 or 4-2
 
-        self.dichotomies = self.calculate_dichotomies(self.original_ap_type, self.blocks)
+        self.dichotomies = self.calculate_dichotomies()
 
-    @staticmethod
-    def calculate_dichotomies(ap_type, blocks):
+    def calculate_dichotomies(self):
         for pos1 in range(1, 4):
             for pos2 in range(pos1+1, 5):
-                block = [ap_type[pos1-1], ap_type[pos2-1]]
+                block = [self.original_ap_type[pos1-1], self.original_ap_type[pos2-1]]
                 block_text = '/'.join(block)
                 sorted_block = ''.join(sorted(block))
-                yield blocks[sorted_block] % block_text
+                yield self.blocks[sorted_block] % block_text
 
     def debug(self, s: str) -> None:
         if self.verbose:
