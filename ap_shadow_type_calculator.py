@@ -43,6 +43,15 @@ class SubType:
         return (self.source_pos == pos1 and self.target_pos == pos2 or
                 self.source_pos == pos2 and self.target_pos == pos1)
 
+blocks = {
+    'EF': 'Reactivist (F/E): Responding, Performing, Acting, Prompting',
+    'EL': 'Evaluator (L/E): Judging, Valuing, Ranking, Labeling',
+    'EV': 'Conceptualist (V/E): Imagining, Creating, Envisioning, Idealizing',
+    'FL': 'Realist (L/F): Measuring, Correcting, Fitting, Improving',
+    'FV': 'Experiencer (V/F): Perceiving, Experiencing, Taking In, Realizing',
+    'LV': 'Strategist (V/L): Projecting, Modeling, Pathing, Hypothesizing'
+}
+
 class ShadowTypes:
     def __init__(self, ap_type_str: str, subtype_str: str, verbose: bool = False):
         self.verbose = verbose
@@ -79,6 +88,14 @@ class ShadowTypes:
         # swap others subtypes
         self.swap_shadow_type(1, 3) # 1-3 or 3-1
         self.swap_shadow_type(2, 4) # 2-4 or 4-2
+
+        self.dichotomies = self.calculate_dichotomies(self.original_ap_type)
+
+    @staticmethod
+    def calculate_dichotomies(ap_type):
+        for pos1 in range(1, 4):
+            for pos2 in range(pos1+1, 5):
+                yield blocks[''.join(sorted([ap_type[pos1-1], ap_type[pos2-1]]))]
 
     def debug(self, s: str) -> None:
         if self.verbose:
@@ -171,7 +188,8 @@ def calculate_shadow_types(ap_type_str: str, subtype_str: str, verbose: bool = F
     return {
         'ap_type': shadow_types.ap_type_str, # normalized
         'subtype': shadow_types.subtype_str, # normalized
-        'shadow_types': shadow_types_with_descriptions
+        'shadow_types': shadow_types_with_descriptions,
+        'dichotomies': shadow_types.dichotomies
     }
 
 def get_shadow_types_str(ap_type_str: str, subtype_str: str, verbose: bool = False, json: bool = False) -> str:
@@ -184,10 +202,18 @@ def get_shadow_types_str(ap_type_str: str, subtype_str: str, verbose: bool = Fal
         subtype = shadow_types['subtype']
         results = [f'Shadow types for {ap_type} {subtype}:']
 
-        for shadow_type_description in shadow_types['shadow_types']:
-            shadow_type = shadow_type_description['shadow_type']
-            description = shadow_type_description['description']
-            results.append(f'- {shadow_type}: {description}')
+        types = shadow_types['shadow_types'][1:]
+        if types:
+            for shadow_type_description in types:
+                shadow_type = shadow_type_description['shadow_type']
+                description = shadow_type_description['description']
+                results.append(f'- {shadow_type}: {description}')
+        else:
+            results.append('- None')
+
+        results.append(f'\nDichotomies for {ap_type} (experimental):')
+        for i, dichotomy in enumerate(shadow_types['dichotomies']):
+            results.append(f'{i+1}. {dichotomy}')
 
         return '\n'.join(results)
 
