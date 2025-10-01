@@ -54,12 +54,12 @@ class ShadowTypes:
     }
 
     dichotomy_positions = {
-        '1+2': 'Energizing',
-        '1+3': 'Vulnerable',
-        '1+4': 'Results',
-        '2+3': 'Process',
-        '2+4': 'Fearless',
-        '3+4': 'Taxing'
+        '1+2': 'Energizing (Self+)',
+        '1+3': 'Defensive (Others-)',
+        '1+4': 'Outcome (Result)',
+        '2+3': 'Narrative (Process)',
+        '2+4': 'Calm (Others+)',
+        '3+4': 'Taxing (Self-)'
     }
 
     def __init__(self, ap_type_str: str, subtype_str: str, verbose: bool = False):
@@ -108,7 +108,7 @@ class ShadowTypes:
                 dichotomy = ''.join(sorted(block))
                 description = self.elements[dichotomy] % block_text
                 pos = f'{pos1}+{pos2}'
-                pos_text = f'{pos} ({self.dichotomy_positions[pos]})'
+                pos_text = f'{pos} - {self.dichotomy_positions[pos]}'
                 yield f'{pos_text} - {description}'
 
     def debug(self, s: str) -> None:
