@@ -44,7 +44,7 @@ class SubType:
                 self.source_pos == pos2 and self.target_pos == pos1)
 
 class ShadowTypes:
-    elements = {
+    blocks = {
         'EF': 'Reactivist (%s): Responding, Performing, Acting, Prompting',
         'EL': 'Evaluator (%s): Judging, Valuing, Ranking, Labeling',
         'EV': 'Conceptualist (%s): Imagining, Creating, Envisioning, Idealizing',
@@ -53,13 +53,13 @@ class ShadowTypes:
         'LV': 'Strategist (%s): Projecting, Modeling, Pathing, Hypothesizing'
     }
 
-    dichotomy_positions = {
-        '1+2': 'Energizing (Self+)',
-        '1+3': 'Defensive (Others-)',
-        '1+4': 'Outcome (Result)',
-        '2+3': 'Narrative (Process)',
-        '2+4': 'Calm (Others+)',
-        '3+4': 'Taxing (Self-)'
+    functions_by_pos = {
+        '1+2': 'Lifeblood (Self+)',
+        '1+3': 'Security (Others-)',
+        '1+4': 'Launch (Result)',
+        '2+3': 'Spin-out (Process)',
+        '2+4': 'Haphazard (Others+)',
+        '3+4': 'Burnout (Self-)'
     }
 
     def __init__(self, ap_type_str: str, subtype_str: str, verbose: bool = False):
@@ -98,18 +98,18 @@ class ShadowTypes:
         self.swap_shadow_type(1, 3) # 1-3 or 3-1
         self.swap_shadow_type(2, 4) # 2-4 or 4-2
 
-        self.dichotomies = self.calculate_dichotomies()
+        self.functions = self.calculate_functions()
 
-    def calculate_dichotomies(self):
+    def calculate_functions(self):
         for pos1 in range(1, 4):
             for pos2 in range(pos1+1, 5):
                 block = [self.original_ap_type[pos1-1], self.original_ap_type[pos2-1]]
                 block_text = '/'.join(block)
-                dichotomy = ''.join(sorted(block))
-                description = self.elements[dichotomy] % block_text
+                sorted_block = ''.join(sorted(block))
+                block_description = self.blocks[sorted_block] % block_text
                 pos = f'{pos1}+{pos2}'
-                pos_text = f'{pos} - {self.dichotomy_positions[pos]}'
-                yield f'{pos_text} - {description}'
+                pos_text = f'{pos} - {self.functions_by_pos[pos]}'
+                yield f'{pos_text} - {block_description}'
 
     def debug(self, s: str) -> None:
         if self.verbose:
@@ -203,7 +203,7 @@ def calculate_shadow_types(ap_type_str: str, subtype_str: str, verbose: bool = F
         'ap_type': shadow_types.ap_type_str, # normalized
         'subtype': shadow_types.subtype_str, # normalized
         'shadow_types': shadow_types_with_descriptions,
-        'dichotomies': shadow_types.dichotomies
+        'functions': shadow_types.functions
     }
 
 def get_shadow_types_str(ap_type_str: str, subtype_str: str, verbose: bool = False, json: bool = False) -> str:
@@ -225,8 +225,8 @@ def get_shadow_types_str(ap_type_str: str, subtype_str: str, verbose: bool = Fal
         else:
             results.append('- None')
 
-        results.append(f'\nDichotomies for {ap_type} (experimental):')
-        for i, dichotomy in enumerate(shadow_types['dichotomies']):
+        results.append(f'\nFunctions for {ap_type} (experimental):')
+        for i, dichotomy in enumerate(shadow_types['functions']):
             results.append(f'{i+1}. {dichotomy}')
 
         return '\n'.join(results)
