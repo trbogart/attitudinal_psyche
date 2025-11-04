@@ -45,11 +45,11 @@ class SubType:
 
 class ShadowTypes:
     blocks = {
-        'EF': 'Reactivist (%s): Responding, Performing, Acting, Prompting',
+        'EF': 'Reactivist (%s): Responding, Performing, Acting, Expressing',
         'EL': 'Evaluator (%s): Judging, Valuing, Ranking, Labeling',
-        'EV': 'Conceptualist (%s): Imagining, Creating, Envisioning, Idealizing',
-        'FL': 'Realist (%s): Measuring, Correcting, Fitting, Improving',
-        'FV': 'Experiencer (%s): Perceiving, Experiencing, Taking In, Realizing',
+        'EV': 'Conceptualist (%s): Idealizing, Glorifying, Influencing, Exalting',
+        'FL': 'Realist (%s): Measuring, Correcting, Tinkering, Improvising',
+        'FV': 'Experiencer (%s): Maneuvering, Locating, Perceiving, Positioning',
         'LV': 'Strategist (%s): Projecting, Modeling, Pathing, Hypothesizing'
     }
 
@@ -225,7 +225,7 @@ def get_shadow_types_str(ap_type_str: str, subtype_str: str, verbose: bool = Fal
         else:
             results.append('- None')
 
-        results.append(f'\nFunctions for {ap_type} (experimental):')
+        results.append(f'\nFunctions for {ap_type}:')
         for i, dichotomy in enumerate(shadow_types['functions']):
             results.append(f'{i+1}. {dichotomy}')
 
