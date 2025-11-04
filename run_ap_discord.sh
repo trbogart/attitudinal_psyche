@@ -11,7 +11,7 @@ cd "$SCRIPT_DIR" || error "Unable to find script directory $SCRIPT_DIR"
 
 if [[ ! -f .venv/bin/activate ]]; then
   if command -v python3 >/dev/null 2>&1; then
-    python3 -m venv .venv || error "Unable to create venv"
+    python3 -m venv .venv || error "Unable to create venv (verify Python installed)"
   elif command -v python >/dev/null 2>&1; then
     python -m venv .venv || error "Unable to create venv"
   else
@@ -19,6 +19,7 @@ if [[ ! -f .venv/bin/activate ]]; then
   fi
 fi
 . .venv/bin/activate || error "Unable to activate venv"
+python -m ensurepip --upgrade || error "Unable to install/upgrade pip"
 pip install -q -r requirements.txt || error "Unable to install requirements"
 if command -v python3 >/dev/null 2>&1; then
   python3 ap_discord.py | tee discord.log 2>&1
