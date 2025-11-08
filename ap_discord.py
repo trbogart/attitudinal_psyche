@@ -36,7 +36,7 @@ async def triads_command(interaction: discord.Interaction, trifix_or_archetype: 
 async def shadow_command(interaction: discord.Interaction, ap_type: str, subtype: str):
     try:
         logger.info(f'Command: shadow, ap_type="{ap_type}", subtype="{subtype}"')
-        result = get_shadow_types_str(ap_type.upper().strip(), subtype)
+        result = get_shadow_types_str(ap_type.strip().upper(), subtype.strip())
         await interaction.response.send_message(result)
     except ValueError as e:
         msg = f"Error: {e}"
