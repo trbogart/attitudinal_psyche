@@ -48,12 +48,12 @@ class TypingStats:
 
         # blocks
         self.print_blocks('Strategist', 'V', 'L')
-        self.print_blocks('Experiencer', 'V', 'F')
-        self.print_blocks('Conceptualist', 'V', 'E')
-
-        # blocks that can be derived from the previous 3, so do not increment counts
         self.print_blocks('Reactivist', 'F', 'E')
+
+        self.print_blocks('Experiencer', 'V', 'F')
         self.print_blocks('Evaluator', 'L', 'E')
+
+        self.print_blocks('Conceptualist', 'V', 'E')
         self.print_blocks('Realist', 'L', 'F')
 
         print('Summary:')
