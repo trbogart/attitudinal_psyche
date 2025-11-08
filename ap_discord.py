@@ -48,7 +48,7 @@ async def shadow_command(interaction: discord.Interaction, ap_type: str, subtype
 async def intertype_command(interaction: discord.Interaction, ap_type1: str, ap_type2: str):
     try:
         logger.info(f'Command: intertype, ap_type1="{ap_type1}", ap_type2="{ap_type2}"')
-        result = get_intertype(ap_type1.upper().strip(), ap_type2.upper().strip())
+        result = get_intertype(ap_type1.strip().upper(), ap_type2.strip().upper())
         await interaction.response.send_message(result)
     except ValueError as e:
         msg = f"Error: {e}"
@@ -61,7 +61,7 @@ async def intertypes_command(interaction: discord.Interaction, ap_type: str):
     logger.info(f'Command: intertypes, ap_type="{ap_type}"')
     try:
         relations = [f'Intertype relations for {ap_type.upper()}:']
-        for relation, ap_type in get_all_intertypes(ap_type.upper().strip()).items():
+        for relation, ap_type in get_all_intertypes(ap_type.strip().upper()).items():
             relations.append(f'- {relation}: {ap_type}')
         result = '\n'.join(relations)
         await interaction.response.send_message(result)
