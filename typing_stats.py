@@ -3,7 +3,7 @@
 # typing videos with function/block
 typing_videos = [
     'FVLE', # Adriana Lima 9/8
-    'VFEL', # Kate Moss 9/15
+    #'VFEL', # Kate Moss 9/15
     'FLVE', # Bailey Sarian 9/22
     'VLFE', # Azealia Banks 9/23
     'FVEL', # Sofia Isella 9/29
