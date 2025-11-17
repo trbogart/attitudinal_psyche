@@ -16,6 +16,8 @@ typing_videos = [
     'VLFE', # Bo Burnham 10/27
     'VELF', # Seal 11/3
     'ELVF', # Asmongold 11/6 (theory)
+    'FLEV', # Kurt Cobain 11/10
+    'FEVL', # Kate Moss 11/17
 ]
 
 class TypingStats:
