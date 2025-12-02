@@ -18,6 +18,7 @@ typing_videos = [
     'ELVF', # Asmongold 11/6 (theory)
     'FLEV', # Kurt Cobain 11/10
     'FEVL', # Kate Moss 11/17
+    'VELF', # Paris Hilton 11/30
 ]
 
 class TypingStats:
