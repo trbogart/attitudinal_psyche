@@ -9,6 +9,7 @@ import argparse
 from json import dumps
 import sys
 
+
 class SubType:
     def __init__(self, ap_type, source_pos, target_pos):
         self.source_pos = source_pos
@@ -43,31 +44,111 @@ class SubType:
         return (self.source_pos == pos1 and self.target_pos == pos2 or
                 self.source_pos == pos2 and self.target_pos == pos1)
 
+class Aspect:
+    def __init__(self, aspect: str, flag: int):
+        self.aspect = aspect
+        self.flag = flag
+
+    def __gt__(self, other):
+        return self.flag > other.flag
+
+    def __lt__(self, other):
+        return self.flag < other.flag
+
+    def __eq__(self, other):
+        return self.flag == other.flag
+
+    def __hash__(self):
+        return self.flag
+
+    def __str__(self):
+        return self.aspect
+
+
+aspectV = Aspect('V', 1)
+aspectL = Aspect('L', 2)
+aspectE = Aspect('E', 4)
+aspectF = Aspect('F', 8)
+
+aspects: dict[str, Aspect] = { aspect.aspect: aspect for aspect in [aspectV, aspectL, aspectE, aspectF] }
+
+class Block:
+    def __init__(self, aspect1: Aspect, aspect2: Aspect):
+        if aspect1.flag < aspect2.flag:
+            self.aspect1 = aspect1
+            self.aspect2 = aspect2
+        else:
+            self.aspect1 = aspect2
+            self.aspect2 = aspect1
+        self.flag = self.aspect1.flag + self.aspect2.flag
+        self.key = f'{self.aspect1.aspect}+{self.aspect2.aspect}'
+
+    def __gt__(self, other):
+        return self.flag > other.flag
+
+    def __lt__(self, other):
+        return self.flag < other.flag
+
+    def __eq__(self, other):
+        return self.flag == other.flag
+
+    def __hash__(self):
+        return self.flag
+
+    def __str__(self):
+        return self.key
+
+    def __repr__(self):
+        return self.key
+
+class BlockDescription:
+    def __init__(self, block: Block, name: str, description: str):
+        self.block = block
+        self.name = name
+        self.description = description
+        self.flag = block.flag
+
+    def __gt__(self, other):
+        return self.flag > other.flag
+
+    def __lt__(self, other):
+        return self.flag < other.flag
+
+    def __eq__(self, other):
+        return self.flag == other.flag
+
+    def __hash__(self):
+        return self.flag
+
+    def __str__(self):
+        return f'{self.name} ({self.block.key}): {self.description}'
+
+blockVF = Block(aspectV, aspectF)
+blockVL = Block(aspectV, aspectL)
+blockVE = Block(aspectV, aspectE)
+blockLE = Block(aspectL, aspectE)
+blockEF = Block(aspectE, aspectF)
+blockLF = Block(aspectL, aspectF)
+
+blocks: dict[Block, BlockDescription] = {
+    blockVF: BlockDescription(blockVF, 'Experiencer', 'Maneuvering, Locating, Perceiving, Positioning'),
+    blockVL: BlockDescription(blockVL, 'Strategist', 'Projecting, Modeling, Pathing, Hypothesizing'),
+    blockVE: BlockDescription(blockVE, 'Conceptualist', 'Idealizing, Glorifying, Influencing, Exalting'),
+    blockLE: BlockDescription(blockLE, 'Evaluator', 'Judging, Valuing, Ranking, Labeling'),
+    blockEF: BlockDescription(blockEF, 'Reactivist', 'Responding, Performing, Acting, Emoting'),
+    blockLF: BlockDescription(blockLF, 'Realist', 'Measuring, Correcting, Tinkering, Improvising'),
+}
+
+functions_by_pos = {
+    '1+2': 'Lifeblood (Self+)',
+    '1+3': 'Security (Others-)',
+    '1+4': 'Launch (Result)',
+    '2+3': 'Spin-out (Process)',
+    '2+4': 'Haphazard (Others+)',
+    '3+4': 'Burnout (Self-)'
+}
+
 class ShadowTypes:
-    blocks = {
-        # V+F
-        'FV': 'Experiencer (%s): Maneuvering, Locating, Perceiving, Positioning',
-        # V+L
-        'LV': 'Strategist (%s): Projecting, Modeling, Pathing, Hypothesizing',
-        # V+E
-        'EV': 'Conceptualist (%s): Idealizing, Glorifying, Influencing, Exalting',
-        # L+E
-        'EL': 'Evaluator (%s): Judging, Valuing, Ranking, Labeling',
-        # E+F
-        'EF': 'Reactivist (%s): Responding, Performing, Acting, Emoting',
-        # L+F
-        'FL': 'Realist (%s): Measuring, Correcting, Tinkering, Improvising',
-    }
-
-    functions_by_pos = {
-        '1+2': 'Lifeblood (Self+)',
-        '1+3': 'Security (Others-)',
-        '1+4': 'Launch (Result)',
-        '2+3': 'Spin-out (Process)',
-        '2+4': 'Haphazard (Others+)',
-        '3+4': 'Burnout (Self-)'
-    }
-
     def __init__(self, ap_type_str: str, subtype_str: str, verbose: bool = False):
         self.verbose = verbose
         self.ap_type_str = ap_type_str.strip().upper()
@@ -104,17 +185,17 @@ class ShadowTypes:
         self.swap_shadow_type(1, 3) # 1-3 or 3-1
         self.swap_shadow_type(2, 4) # 2-4 or 4-2
 
-        self.functions = self.calculate_functions()
+        self.functions: list[str] = list(self.calculate_functions())
 
     def calculate_functions(self):
         for pos1 in range(1, 4):
             for pos2 in range(pos1+1, 5):
-                block = [self.original_ap_type[pos1-1], self.original_ap_type[pos2-1]]
-                block_text = '/'.join(block)
-                sorted_block = ''.join(sorted(block))
-                block_description = self.blocks[sorted_block] % block_text
+                aspect1 = aspects[self.original_ap_type[pos1-1]]
+                aspect2 = aspects[self.original_ap_type[pos2-1]]
+                block = Block(aspect1, aspect2)
+                block_description = blocks[block]
                 pos = f'{pos1}+{pos2}'
-                pos_text = f'{pos} - {self.functions_by_pos[pos]}'
+                pos_text = f'{pos} - {functions_by_pos[pos]}'
                 yield f'{pos_text} - {block_description}'
 
     def debug(self, s: str) -> None:
@@ -200,11 +281,14 @@ def validate_subtype(subtype_str: str) -> None:
 
 def calculate_shadow_types(ap_type_str: str, subtype_str: str, verbose: bool = False) -> dict[str, str]:
     shadow_types = ShadowTypes(ap_type_str, subtype_str, verbose)
+    shadow_type_dict = shadow_types.shadow_types
+
     shadow_types_with_descriptions = [
         {
             'shadow_type': shadow_type,
             'description': description,
-        } for shadow_type, description in shadow_types.shadow_types.items()]
+        } for shadow_type, description in shadow_type_dict.items()
+    ]
     return {
         'ap_type': shadow_types.ap_type_str, # normalized
         'subtype': shadow_types.subtype_str, # normalized

@@ -1,7 +1,8 @@
 import unittest
 from itertools import permutations
 
-from ap_shadow_type_calculator import validate_subtype, validate_ap_type, ShadowTypes
+from ap_shadow_type_calculator import validate_subtype, validate_ap_type, ShadowTypes, calculate_shadow_types
+
 
 class ApShadowTypeCalculatorTest(unittest.TestCase):
 
@@ -173,7 +174,80 @@ class ApShadowTypeCalculatorTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             ShadowTypes(ap_type, '10041')
 
-    # TODO test JSON
+    def test_json_no_shadow_type(self):
+        ap_type_str = 'VELF'
+        subtype_str = '1234'
+        shadow_types_json = calculate_shadow_types(ap_type_str, subtype_str)
+        expected = {
+            'ap_type': ap_type_str,
+            'subtype': subtype_str,
+            'shadow_types': [
+                {'shadow_type': ap_type_str, 'description': 'AP type'}
+            ],
+            'functions': [
+                '1+2 - Lifeblood (Self+) - Conceptualist (V+E): Idealizing, Glorifying, Influencing, Exalting',
+                '1+3 - Security (Others-) - Strategist (V+L): Projecting, Modeling, Pathing, Hypothesizing',
+                '1+4 - Launch (Result) - Experiencer (V+F): Maneuvering, Locating, Perceiving, Positioning',
+                '2+3 - Spin-out (Process) - Evaluator (L+E): Judging, Valuing, Ranking, Labeling',
+                '2+4 - Haphazard (Others+) - Reactivist (E+F): Responding, Performing, Acting, Emoting',
+                '3+4 - Burnout (Self-) - Realist (L+F): Measuring, Correcting, Tinkering, Improvising',
+            ]
+        }
+        self.assertDictEqual(shadow_types_json, expected)
+
+
+    def test_json_with_one_shadow_type(self):
+        ap_type_str = 'FVLE'
+        subtype_str = '0220'
+        shadow_types_json = calculate_shadow_types(ap_type_str, subtype_str)
+
+        expected = {
+            'ap_type': ap_type_str,
+            'subtype': subtype_str,
+            'shadow_types': [
+                {'shadow_type': ap_type_str, 'description': 'AP type'},
+                {'shadow_type': 'FLVE', 'description': 'Swapped 3L-2 (method)'},
+            ],
+            'functions': [
+                '1+2 - Lifeblood (Self+) - Experiencer (V+F): Maneuvering, Locating, Perceiving, Positioning',
+                '1+3 - Security (Others-) - Realist (L+F): Measuring, Correcting, Tinkering, Improvising',
+                '1+4 - Launch (Result) - Reactivist (E+F): Responding, Performing, Acting, Emoting',
+                '2+3 - Spin-out (Process) - Strategist (V+L): Projecting, Modeling, Pathing, Hypothesizing',
+                '2+4 - Haphazard (Others+) - Conceptualist (V+E): Idealizing, Glorifying, Influencing, Exalting',
+                '3+4 - Burnout (Self-) - Evaluator (L+E): Judging, Valuing, Ranking, Labeling',
+            ]
+        }
+        self.assertDictEqual(shadow_types_json, expected)
+
+    def test_json_with_multiple_shadow_types(self):
+        ap_type_str = 'LVEF'
+        subtype_str = '4343'
+        shadow_types_json = calculate_shadow_types(ap_type_str, subtype_str)
+
+        import json
+        formatted_json = json.dumps(shadow_types_json, indent=4)
+        print(formatted_json)
+
+        expected = {
+            'ap_type': ap_type_str,
+            'subtype': subtype_str,
+            'shadow_types': [
+                {'shadow_type': ap_type_str, 'description': 'AP type'},
+                {'shadow_type': 'LEVF', 'description': 'Swapped 2V-3 (method)'},
+                {'shadow_type': 'FEVL', 'description': 'Swapped 1L-4 (method)'},
+                {'shadow_type': 'FLVE', 'description': 'Swapped 3E-4 (self)'},
+                {'shadow_type': 'VLFE', 'description': 'Swapped 4F-3 (self)'},
+            ],
+            'functions': [
+                '1+2 - Lifeblood (Self+) - Strategist (V+L): Projecting, Modeling, Pathing, Hypothesizing',
+                '1+3 - Security (Others-) - Evaluator (L+E): Judging, Valuing, Ranking, Labeling',
+                '1+4 - Launch (Result) - Realist (L+F): Measuring, Correcting, Tinkering, Improvising',
+                '2+3 - Spin-out (Process) - Conceptualist (V+E): Idealizing, Glorifying, Influencing, Exalting',
+                '2+4 - Haphazard (Others+) - Experiencer (V+F): Maneuvering, Locating, Perceiving, Positioning',
+                '3+4 - Burnout (Self-) - Reactivist (E+F): Responding, Performing, Acting, Emoting',
+            ]
+        }
+        self.assertDictEqual(shadow_types_json, expected)
 
     @staticmethod
     def all_valid_subtypes():
