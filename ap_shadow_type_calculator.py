@@ -45,12 +45,18 @@ class SubType:
 
 class ShadowTypes:
     blocks = {
-        'EF': 'Reactivist (%s): Responding, Performing, Acting, Expressing',
-        'EL': 'Evaluator (%s): Judging, Valuing, Ranking, Labeling',
-        'EV': 'Conceptualist (%s): Idealizing, Glorifying, Influencing, Exalting',
-        'FL': 'Realist (%s): Measuring, Correcting, Tinkering, Improvising',
+        # V+F
         'FV': 'Experiencer (%s): Maneuvering, Locating, Perceiving, Positioning',
-        'LV': 'Strategist (%s): Projecting, Modeling, Pathing, Hypothesizing'
+        # V+L
+        'LV': 'Strategist (%s): Projecting, Modeling, Pathing, Hypothesizing',
+        # V+E
+        'EV': 'Conceptualist (%s): Idealizing, Glorifying, Influencing, Exalting',
+        # L+E
+        'EL': 'Evaluator (%s): Judging, Valuing, Ranking, Labeling',
+        # E+F
+        'EF': 'Reactivist (%s): Responding, Performing, Acting, Emoting',
+        # L+F
+        'FL': 'Realist (%s): Measuring, Correcting, Tinkering, Improvising',
     }
 
     functions_by_pos = {
