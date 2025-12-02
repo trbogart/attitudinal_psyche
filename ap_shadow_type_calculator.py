@@ -157,13 +157,13 @@ class ShadowTypes:
         validate_ap_type(self.ap_type_str)
         validate_subtype(self.subtype_str)
 
-        self.last_shadow_type = list(self.ap_type_str) # will be mutated to latest shadow type
+        self.last_shadow_type: list[str] = list(self.ap_type_str) # will be mutated to latest shadow type
         self.original_ap_type = self.last_shadow_type[:]
 
-        self.subtypes = [SubType(self.last_shadow_type, i + 1, int(c)) for i, c in enumerate(self.subtype_str)]
+        self.subtypes: list[SubType] = [SubType(self.last_shadow_type, i + 1, int(c)) for i, c in enumerate(self.subtype_str)]
 
-        self.shadow_types = {self.ap_type_str: "AP type"}
-        self.swapped_to_obscured = set() # set of SubTypes that have already been swapped
+        self.shadow_types: dict[str, str] = {self.ap_type_str: "AP type"}
+        self.swapped_to_obscured: set[SubType] = set() # set of SubTypes that have already been swapped
 
         # attenuated and obscured aspects are not moved
 
@@ -238,7 +238,7 @@ class ShadowTypes:
                     self.debug(f'Skipped {obscured_subtype} - multiple matches')
                     return
                 swap_subtype = other_subtype
-        if swap_subtype:
+        if swap_subtype is not None:
             self.swap(swap_subtype, obscured_subtype)
             self.swapped_to_obscured.add(swap_subtype)
         else:
