@@ -19,6 +19,7 @@ typing_videos = [
     'FLEV', # Kurt Cobain 11/10
     'FEVL', # Kate Moss 11/17
     'VELF', # Paris Hilton 11/30
+    'VEFL', # Vic DiCara 12/8
 ]
 
 class TypingStats:
@@ -61,7 +62,7 @@ class TypingStats:
 
         print('Summary:')
         print(f'- {len(typing_videos)} typing videos with functions and blocks')
-        print(f'- {len(self.type_set)} of 24 types')
+        print(f'- {len(self.type_set)} of 24 types ({len(typing_videos)-len(self.type_set)} duplicates)')
         print(f'- {16-len(self.missing_attitudes)} of 16 attitudes')
         print(f'- {self.pair_count} of 36 unique function/block pairs')
         print(f'- {self.pair_count_directional} of 72 unique function/block pairs (directional)')
