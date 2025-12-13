@@ -23,7 +23,6 @@ typing_videos = [
 ]
 
 class TypingStats:
-    # TODO keep track of counts and/or specific types
     def __init__(self):
         self.type_set = set(typing_videos)
         self.pair_count = 0
@@ -81,21 +80,24 @@ class TypingStats:
         return missing_attitudes
 
     def print_blocks(self, block, aspect1, aspect2):
-        print(f'Functions with {block} ({aspect1}+{aspect2})')
+        print(f'Functions with {block} block ({aspect1}+{aspect2})')
         for i in range(4):
             for j in range(i+1, 4):
-                aspects = []
-                if any(type[i] == aspect1 and type[j] == aspect2 for type in self.type_set):
-                    aspects.append(f'{aspect1}{aspect2}')
-                if any(type[i] == aspect2 and type[j] == aspect1 for type in self.type_set):
-                    aspects.append(f'{aspect2}{aspect1}')
-                if aspects:
+                aspect_counts = []
+                count1 = len([type for type in typing_videos if type[i] == aspect1 and type[j] == aspect2])
+                count2 = len([type for type in typing_videos if type[i] == aspect2 and type[j] == aspect1])
+
+                if count1 > 0:
+                    aspect_counts.append(f'{count1} {i+1}{aspect1}+{j+1}{aspect2}')
+                if count2 > 0:
+                    aspect_counts.append(f'{count2} {i+1}{aspect2}+{j+1}{aspect1}')
+                if aspect_counts:
                     self.pair_count = self.pair_count + 1
-                    self.pair_count_directional = self.pair_count_directional + len(aspects)
-                    aspects_string = ' and '.join(aspects)
+                    self.pair_count_directional = self.pair_count_directional + len(aspect_counts)
+                    aspects_string = f'{count1 + count2} total ({' and '.join(aspect_counts)})'
                 else:
                     aspects_string = 'None'
-                print(f'- {i+1}+{j+1} {block}: {aspects_string}')
+                print(f'- {i+1}+{j+1}: {aspects_string}')
         print()
 
 if __name__ == '__main__':
