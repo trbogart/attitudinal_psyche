@@ -20,6 +20,7 @@ typing_videos = [
     'FEVL', # Kate Moss 11/17
     'VELF', # Paris Hilton 11/30
     'VEFL', # Vic DiCara 12/8
+    'FEVL', # David Lynch 12/12
 ]
 
 class TypingStats:
@@ -84,8 +85,8 @@ class TypingStats:
         for i in range(4):
             for j in range(i+1, 4):
                 aspect_counts = []
-                count1 = len([type for type in typing_videos if type[i] == aspect1 and type[j] == aspect2])
-                count2 = len([type for type in typing_videos if type[i] == aspect2 and type[j] == aspect1])
+                count1 = sum(1 for _ in filter(lambda type: type[i] == aspect1 and type[j] == aspect2, typing_videos))
+                count2 = sum(1 for _ in filter(lambda type: type[i] == aspect2 and type[j] == aspect1, typing_videos))
 
                 if count1 > 0:
                     aspect_counts.append(f'{count1} {i+1}{aspect1}+{j+1}{aspect2}')
