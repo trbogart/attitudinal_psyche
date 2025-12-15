@@ -215,9 +215,7 @@ class ShadowTypes:
 
         if pos1 == pos2:
             # subtypes in the same pair, e.g. 2-3 or 3-2, ignore
-            # this case will usually produce the same result, but can
             shadow_type_str = ''.join(self.last_shadow_type)
-            # this can happen for subtypes in the same pair, e.g. 2-3 and 3-2
             self.debug(f'Already swapped {subtype}')
             self.shadow_types[shadow_type_str] = f'{self.shadow_types[shadow_type_str]} and {subtype}'
         else:
