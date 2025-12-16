@@ -1,6 +1,6 @@
 # temporary script to calculate function/blocks that have been found with new typings
 
-# typing videos with function/block
+# typing videos with new definitions
 typing_videos = [
     'FVLE', # Adriana Lima 9/8
     #'VFEL', # Kate Moss 9/15
@@ -21,6 +21,7 @@ typing_videos = [
     'VELF', # Paris Hilton 11/30
     'VEFL', # Vic DiCara 12/8
     'FEVL', # David Lynch 12/12
+    'VLFE', # Courtney Love 12/15
 ]
 
 class TypingStats:
