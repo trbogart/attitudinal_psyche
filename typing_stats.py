@@ -75,17 +75,14 @@ class TypingStats:
 
         self.attitude_counts = self.calculate_attitude_counts()
 
-        self.missing_types = [ap_type for ap_type in self.paid_typings.keys() if ap_type not in self.type_set]
+        self.type_counts = self.calculate_type_counts()
 
-        print(f'Missing types ({len(self.missing_types)})')
-        if len(self.missing_types) == 0:
-            print('- None')
-        else:
-            for ap_type in self.missing_types:
-                print(f'- {ap_type}')
+        print(f'Type counts ({self.get_missing_count(self.type_counts)} missing):')
+        for ap_type, count in self.type_counts.items():
+            print(f'- {ap_type}: {count}')
         print()
 
-        print(f'Attitude counts:')
+        print(f'Attitude counts ({self.get_missing_count(self.attitude_counts)} missing):')
         for key, count in self.attitude_counts.items():
             print(f'- {key}: {count}')
         print()
@@ -105,6 +102,18 @@ class TypingStats:
         print(f'- {len(self.type_set)} of 24 types ({len(self.all_typings) - len(self.type_set)} duplicates)')
         print(f'- {self.pair_count} of 36 unique function/block pairs')
         print(f'- {self.pair_count_directional} of 72 unique function/block pairs (directional)')
+
+    def get_missing_count(self, counts: dict[str, int]) -> int:
+        return sum(1 for count in counts.values() if count == 0)
+
+    def calculate_type_counts(self):
+        type_counts = {}
+        for ap_type in self.paid_typings.keys():
+            type_counts[ap_type] = 0
+
+        for ap_type in self.all_typings:
+            type_counts[ap_type] += 1
+        return dict(sorted(type_counts.items(), key=lambda item: item[1], reverse=True))
 
     def calculate_attitude_counts(self):
         attitude_counts = {}
