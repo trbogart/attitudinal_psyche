@@ -27,6 +27,7 @@ class TypingStats:
         'VLFE',  # Courtney Love 12/15
     ]
     paid_typings = {
+        # as of 12/16/2025
         'FVLE': 5,
         'FLVE': 9,
         'EVLF': 2,
