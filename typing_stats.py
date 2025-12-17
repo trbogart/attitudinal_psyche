@@ -6,7 +6,7 @@ class TypingStats:
     # typing videos with new definitions
     celebrity_typings = [
         'FVLE',  # Adriana Lima 9/8
-        # 'VFEL', # Kate Moss 9/15
+        # 'VFEL', # Kate Moss 9/15 (retyped 11/17)
         'FLVE',  # Bailey Sarian 9/22
         'VLFE',  # Azealia Banks 9/23
         'FVEL',  # Sofia Isella 9/29
