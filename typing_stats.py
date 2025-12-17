@@ -70,8 +70,8 @@ class TypingStats:
                 self.all_typings.extend(itertools.repeat(ap_type, count))
 
         self.type_set = set(self.all_typings)
-        self.pair_count = 0
-        self.pair_count_directional = 0
+        self.missing_pairs = []
+        self.missing_pairs_directional = []
 
         self.attitude_counts = self.calculate_attitude_counts()
 
@@ -100,8 +100,11 @@ class TypingStats:
         print('Summary:')
         print(f'- {len(self.all_typings)} typings')
         print(f'- {len(self.type_set)} of 24 types ({len(self.all_typings) - len(self.type_set)} duplicates)')
-        print(f'- {self.pair_count} of 36 unique function/block pairs')
-        print(f'- {self.pair_count_directional} of 72 unique function/block pairs (directional)')
+
+        missing_pairs_suffix = f': {', '.join(self.missing_pairs)}' if len(self.missing_pairs) > 0 else ''
+        print(f'- Missing {len(self.missing_pairs)} of 36 unique function/block pairs: {missing_pairs_suffix}')
+        missing_pairs_directional_suffix = f': {', '.join(self.missing_pairs_directional)}' if len(self.missing_pairs_directional) > 0 else ''
+        print(f'- Missing {len(self.missing_pairs_directional)} of 72 unique function/block pairs (directional){missing_pairs_directional_suffix}')
 
     def get_missing_count(self, counts: dict[str, int]) -> int:
         return sum(1 for count in counts.values() if count == 0)
@@ -132,20 +135,32 @@ class TypingStats:
         print(f'Functions with {block} block ({aspect1}+{aspect2})')
         for i in range(4):
             for j in range(i+1, 4):
-                aspect_counts = []
                 count1 = sum(1 for _ in filter(lambda type: type[i] == aspect1 and type[j] == aspect2, self.all_typings))
                 count2 = sum(1 for _ in filter(lambda type: type[i] == aspect2 and type[j] == aspect1, self.all_typings))
 
-                if count1 > 0:
-                    aspect_counts.append(f'{count1} {i+1}{aspect1}+{j+1}{aspect2}')
-                if count2 > 0:
-                    aspect_counts.append(f'{count2} {i+1}{aspect2}+{j+1}{aspect1}')
-                if aspect_counts:
-                    self.pair_count = self.pair_count + 1
-                    self.pair_count_directional = self.pair_count_directional + len(aspect_counts)
-                    aspects_string = f'{count1 + count2} total ({' and '.join(aspect_counts)})'
-                else:
+                aspect_string = f'{i+1}+{j+1}|{aspect1}+{aspect2}'
+                aspect1_string = f'{i+1}{aspect1}+{j+1}{aspect2}'
+                aspect2_string = f'{i+1}{aspect2}+{j+1}{aspect1}'
+
+                count1_string = f'{count1} {aspect1_string}'
+                count2_string = f'{count2} {aspect2_string}'
+
+                count_strings = [count1_string, count2_string]
+
+                if count1 == 0 and count2 == 0:
                     aspects_string = 'None'
+                    self.missing_pairs.append(aspect_string)
+                    self.missing_pairs_directional.append(aspect1_string)
+                    self.missing_pairs_directional.append(aspect2_string)
+                else:
+                    if count1 == 0:
+                        self.missing_pairs_directional.append(aspect1_string)
+                    elif count2 == 0:
+                        self.missing_pairs_directional.append(aspect2_string)
+                    if count2 > count1:
+                        count_strings = reversed(count_strings)
+                    aspects_string = f'{count1 + count2} total ({' and '.join(count_strings)})'
+
                 print(f'- {i+1}+{j+1}: {aspects_string}')
         print()
 
