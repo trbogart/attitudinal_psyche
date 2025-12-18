@@ -77,14 +77,14 @@ class TypingStats:
 
         self.type_counts = self.calculate_type_counts()
 
-        print(f'Type counts ({self.get_missing_count(self.type_counts)} missing):')
+        print(f'Type counts ({self.get_missing_count(self.type_counts)} missing)')
         for ap_type, count in self.type_counts.items():
-            print(f'- {ap_type}: {count}')
+            print(f'- {ap_type}: {count} ({self.get_percentage(count)}%)')
         print()
 
         print(f'Attitude counts ({self.get_missing_count(self.attitude_counts)} missing):')
         for key, count in self.attitude_counts.items():
-            print(f'- {key}: {count}')
+            print(f'- {key}: {count} ({self.get_percentage(count)}%)')
         print()
 
         # blocks
@@ -118,6 +118,9 @@ class TypingStats:
             type_counts[ap_type] += 1
         return dict(sorted(type_counts.items(), key=lambda item: item[1], reverse=True))
 
+    def get_percentage(self, count):
+        return round(100*count/len(self.all_typings))
+
     def calculate_attitude_counts(self):
         attitude_counts = {}
         for pos in range(1, 5):
@@ -142,8 +145,13 @@ class TypingStats:
                 aspect1_string = f'{i+1}{aspect1}+{j+1}{aspect2}'
                 aspect2_string = f'{i+1}{aspect2}+{j+1}{aspect1}'
 
-                count1_string = f'{count1} {aspect1_string}'
-                count2_string = f'{count2} {aspect2_string}'
+                def get_count_string(count, s):
+                    if count == 0:
+                        return f'no {s}'
+                    return f'{count} {s} ({self.get_percentage(count)}%)'
+
+                count1_string = get_count_string(count1, aspect1_string)
+                count2_string = get_count_string(count2, aspect2_string)
 
                 count_strings = [count1_string, count2_string]
 
@@ -159,7 +167,8 @@ class TypingStats:
                         self.missing_pairs_directional.append(aspect2_string)
                     if count2 > count1:
                         count_strings = reversed(count_strings)
-                    aspects_string = f'{count1 + count2} total ({' and '.join(count_strings)})'
+                    total_string = f'{count1 + count2} ({self.get_percentage(count1+count2)}%) total'
+                    aspects_string = f'{total_string} - {' and '.join(count_strings)}'
 
                 print(f'- {i+1}+{j+1}: {aspects_string}')
         print()
