@@ -152,7 +152,6 @@ class TypingStats:
 
                 count1_string = get_count_string(count1, aspect1_string)
                 count2_string = get_count_string(count2, aspect2_string)
-
                 count_strings = [count1_string, count2_string]
 
                 if count1 == 0 and count2 == 0:
@@ -167,7 +166,7 @@ class TypingStats:
                         self.missing_pairs_directional.append(aspect2_string)
                     if count2 > count1:
                         count_strings = reversed(count_strings)
-                    total_string = f'{count1 + count2} ({self.get_percentage(count1+count2)}%) total'
+                    total_string = f'{(count1 + count2)} ({self.get_percentage(count1+count2)}%) total'
                     aspects_string = f'{total_string} - {' and '.join(count_strings)}'
 
                 print(f'- {i+1}+{j+1}: {aspects_string}')
