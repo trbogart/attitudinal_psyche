@@ -11,7 +11,6 @@ from ap_shadow_type_calculator import get_shadow_types_str
 from triads import get_triads
 
 intents = discord.Intents.default()
-intents.message_content = True
 bot = commands.Bot(command_prefix='!', intents=intents)
 
 @bot.event
