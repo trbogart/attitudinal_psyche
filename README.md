@@ -18,7 +18,6 @@ To create Discord bot (only needs to be done once):
 - Go to Bot tab
   - Set username and icon (can use `Shadow.jpg`) 
   - Enable "Public Bot"
-  - Enable "Message Content Intent"
   - Copy token (for next step)
 - Create `.env` file in same directory where `ap_discord.py` will be run (do not commit to git)
   - `DISCORD_TOKEN=<token from bot page>` 
