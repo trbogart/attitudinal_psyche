@@ -106,7 +106,8 @@ class TypingStats:
         missing_pairs_directional_suffix = f': {', '.join(self.missing_pairs_directional)}' if len(self.missing_pairs_directional) > 0 else ''
         print(f'- Missing {len(self.missing_pairs_directional)} of 72 unique function/block pairs (directional){missing_pairs_directional_suffix}')
 
-    def get_missing_count(self, counts: dict[str, int]) -> int:
+    @staticmethod
+    def get_missing_count(counts: dict[str, int]) -> int:
         return sum(1 for count in counts.values() if count == 0)
 
     def calculate_type_counts(self):
