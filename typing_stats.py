@@ -7,6 +7,7 @@ class TypingStats:
     celebrity_typings = [
         'FVLE',  # Adriana Lima 9/8
         # 'VFEL', # Kate Moss 9/15 (retyped 11/17)
+        # 'VFEL', # Kate Moss 9/15 (retyped 11/17)
         'FLVE',  # Bailey Sarian 9/22
         'VLFE',  # Azealia Banks 9/23
         'FVEL',  # Sofia Isella 9/29
@@ -69,23 +70,26 @@ class TypingStats:
             for ap_type, count in self.paid_typings.items():
                 self.all_typings.extend(itertools.repeat(ap_type, count))
 
-        self.type_set = set(self.all_typings)
+        type_set = set(self.all_typings)
+
+        attitude_counts = self.calculate_attitude_counts()
+
+        type_counts = self.calculate_type_counts()
+        missing_types = [ap_type for ap_type, count in type_counts.items() if count == 0]
+
+        print(f'Type counts ({len(missing_types)} missing)')
+        for ap_type, count in type_counts.items():
+            print(f'- {ap_type}: {count} ({self.get_percentage(count)})')
+        print()
+
+        print(f'Attitude counts ({self.get_missing_count(attitude_counts)} missing):')
+        for key, count in attitude_counts.items():
+            print(f'- {key}: {count} ({self.get_percentage(count)})')
+        print()
+
+        # missing pairs (populated by print_blocks)
         self.missing_pairs = []
-        self.missing_pairs_directional = []
-
-        self.attitude_counts = self.calculate_attitude_counts()
-
-        self.type_counts = self.calculate_type_counts()
-
-        print(f'Type counts ({self.get_missing_count(self.type_counts)} missing)')
-        for ap_type, count in self.type_counts.items():
-            print(f'- {ap_type}: {count} ({self.get_percentage(count)}%)')
-        print()
-
-        print(f'Attitude counts ({self.get_missing_count(self.attitude_counts)} missing):')
-        for key, count in self.attitude_counts.items():
-            print(f'- {key}: {count} ({self.get_percentage(count)}%)')
-        print()
+        self.missing_pairs_dir = []
 
         # blocks
         self.print_blocks('Strategist', 'V', 'L')
@@ -98,13 +102,20 @@ class TypingStats:
         self.print_blocks('Realist', 'L', 'F')
 
         print('Summary:')
-        print(f'- {len(self.all_typings)} typings')
-        print(f'- {len(self.type_set)} of 24 types ({len(self.all_typings) - len(self.type_set)} duplicates)')
+        print(f'- {len(self.all_typings)} typings ({len(type_set)} unique)')
+        missing_types_suffix = self.get_missing_suffix(missing_types)
+        print(f'- {len(type_set)} of 24 types{missing_types_suffix}')
+        missing_pairs_suffix = self.get_missing_suffix(self.missing_pairs)
+        print(f'- {36-len(self.missing_pairs)} of 36 function/block pairs{missing_pairs_suffix}')
+        missing_pairs_dir_suffix = self.get_missing_suffix(self.missing_pairs_dir)
+        print(f'- {72-len(self.missing_pairs_dir)} of 72 function/block pairs (directional){missing_pairs_dir_suffix}')
 
-        missing_pairs_suffix = f': {', '.join(self.missing_pairs)}' if len(self.missing_pairs) > 0 else ''
-        print(f'- Missing {len(self.missing_pairs)} of 36 unique function/block pairs: {missing_pairs_suffix}')
-        missing_pairs_directional_suffix = f': {', '.join(self.missing_pairs_directional)}' if len(self.missing_pairs_directional) > 0 else ''
-        print(f'- Missing {len(self.missing_pairs_directional)} of 72 unique function/block pairs (directional){missing_pairs_directional_suffix}')
+    @staticmethod
+    def get_missing_suffix(missing_list: list) -> str:
+        if len(missing_list) > 0:
+            list_str = f'{', '.join(missing_list)}' if len(missing_list) > 0 else 'None'
+            return f' - missing {len(missing_list)}: {list_str}'
+        return ''
 
     @staticmethod
     def get_missing_count(counts: dict[str, int]) -> int:
@@ -119,8 +130,10 @@ class TypingStats:
             type_counts[ap_type] += 1
         return dict(sorted(type_counts.items(), key=lambda item: item[1], reverse=True))
 
-    def get_percentage(self, count: int):
-        return round(100*count/len(self.all_typings))
+    def get_percentage(self, count: int) -> str:
+        if len(self.all_typings) > 0:
+            return f'{round(100*count/len(self.all_typings))}%'
+        return 'N/A'
 
     def calculate_attitude_counts(self):
         attitude_counts = {}
@@ -149,7 +162,7 @@ class TypingStats:
                 def get_count_string(count, s):
                     if count == 0:
                         return f'no {s}'
-                    return f'{count} {s} ({self.get_percentage(count)}%)'
+                    return f'{count} {s} ({self.get_percentage(count)})'
 
                 count1_string = get_count_string(count1, aspect1_string)
                 count2_string = get_count_string(count2, aspect2_string)
@@ -158,16 +171,16 @@ class TypingStats:
                 if count1 == 0 and count2 == 0:
                     aspects_string = 'None'
                     self.missing_pairs.append(aspect_string)
-                    self.missing_pairs_directional.append(aspect1_string)
-                    self.missing_pairs_directional.append(aspect2_string)
+                    self.missing_pairs_dir.append(aspect1_string)
+                    self.missing_pairs_dir.append(aspect2_string)
                 else:
                     if count1 == 0:
-                        self.missing_pairs_directional.append(aspect1_string)
+                        self.missing_pairs_dir.append(aspect1_string)
                     elif count2 == 0:
-                        self.missing_pairs_directional.append(aspect2_string)
+                        self.missing_pairs_dir.append(aspect2_string)
                     if count2 > count1:
                         count_strings = reversed(count_strings)
-                    total_string = f'{(count1 + count2)} ({self.get_percentage(count1+count2)}%) total'
+                    total_string = f'{(count1 + count2)} ({self.get_percentage(count1+count2)}) total'
                     aspects_string = f'{total_string} - {' and '.join(count_strings)}'
 
                 print(f'- {i+1}+{j+1}: {aspects_string}')
