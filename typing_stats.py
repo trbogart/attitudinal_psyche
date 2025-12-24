@@ -135,7 +135,7 @@ class TypingStats:
                 attitude_counts[attitude] += 1
         return dict(sorted(attitude_counts.items(), key=lambda item: item[1], reverse=True))
 
-    def print_blocks(self, block: str, aspect1: int, aspect2: int):
+    def print_blocks(self, block: str, aspect1: str, aspect2: str):
         print(f'Functions with {block} block ({aspect1}+{aspect2})')
         for i in range(4):
             for j in range(i+1, 4):
