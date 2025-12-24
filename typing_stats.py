@@ -119,7 +119,7 @@ class TypingStats:
             type_counts[ap_type] += 1
         return dict(sorted(type_counts.items(), key=lambda item: item[1], reverse=True))
 
-    def get_percentage(self, count):
+    def get_percentage(self, count: int):
         return round(100*count/len(self.all_typings))
 
     def calculate_attitude_counts(self):
