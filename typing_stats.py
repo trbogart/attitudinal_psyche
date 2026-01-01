@@ -5,27 +5,27 @@ import itertools
 class TypingStats:
     # typing videos with new definitions
     celebrity_typings = [
-        'FVLE',  # Adriana Lima 9/8
-        # 'VFEL', # Kate Moss 9/15 (retyped 11/17)
-        # 'VFEL', # Kate Moss 9/15 (retyped 11/17)
-        'FLVE',  # Bailey Sarian 9/22
-        'VLFE',  # Azealia Banks 9/23
-        'FVEL',  # Sofia Isella 9/29
-        'FVEL',  # Adrianne Lenker 10/3
-        'VLFE',  # Owen Cook 10/6
-        'LVFE',  # Nick LS De Cesare 10/10
-        'VEFL',  # Kobe Bryant 10/14
-        'FVEL',  # Bjork 10/18
-        'EFVL',  # HRH Collection 10/21
-        'VLFE',  # Bo Burnham 10/27
-        'VELF',  # Seal 11/3
-        'ELVF',  # Asmongold 11/6 (theory)
-        'FLEV',  # Kurt Cobain 11/10
-        'FEVL',  # Kate Moss 11/17
-        'VELF',  # Paris Hilton 11/30
-        'VEFL',  # Vic DiCara 12/8
-        'FEVL',  # David Lynch 12/12
-        'VLFE',  # Courtney Love 12/15
+        'FVLE',  # Adriana Lima 9/8/2025
+        # 'VFEL', # Kate Moss 9/15/2025 (retyped 11/17/2025)
+        'FLVE',  # Bailey Sarian 9/22/2025
+        'VLFE',  # Azealia Banks 9/23/2025
+        'FVEL',  # Sofia Isella 9/29/2025
+        'FVEL',  # Adrianne Lenker 10/3/2025
+        'VLFE',  # Owen Cook 10/6/2025
+        'LVFE',  # Nick LS De Cesare 10/10/2025
+        'VEFL',  # Kobe Bryant 10/14/2025
+        'FVEL',  # Bjork 10/18/2025
+        'EFVL',  # HRH Collection 10/21/2025
+        'VLFE',  # Bo Burnham 10/27/2025
+        'VELF',  # Seal 11/3/2025
+        'ELVF',  # Asmongold 11/6/2025 (theory)
+        'FLEV',  # Kurt Cobain 11/10/2025
+        'FEVL',  # Kate Moss 11/17/2025
+        'VELF',  # Paris Hilton 11/30/2025
+        'VEFL',  # Vic DiCara 12/8/2025
+        'FEVL',  # David Lynch 12/12/2025
+        'VLFE',  # Courtney Love 12/15/2025
+        'EFLV', # Trisha Paytas 12/29/2025
     ]
     paid_typings = {
         # as of 12/16/2025
