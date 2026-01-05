@@ -223,10 +223,6 @@ class ApShadowTypeCalculatorTest(unittest.TestCase):
         subtype_str = '4343'
         shadow_types_json = calculate_shadow_types(ap_type_str, subtype_str)
 
-        import json
-        formatted_json = json.dumps(shadow_types_json, indent=4)
-        print(formatted_json)
-
         expected = {
             'ap_type': ap_type_str,
             'subtype': subtype_str,
