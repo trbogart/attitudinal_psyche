@@ -5,28 +5,28 @@ import itertools
 class TypingStats:
     # typing videos with new definitions
     celebrity_typings = [
-        'FVLE', # Adriana Lima 9/8/2025
+        'FVLE',  # Adriana Lima 9/8/2025
         # 'VFEL', # Kate Moss 9/15/2025 (retyped 11/17/2025)
-        'FLVE', # Bailey Sarian 9/22/2025
-        'VLFE', # Azealia Banks 9/23/2025
-        'FVEL', # Sofia Isella 9/29/2025
-        'FVEL', # Adrianne Lenker 10/3/2025
-        'VLFE', # Owen Cook 10/6/2025
-        'LVFE', # Nick LS De Cesare 10/10/2025
-        'VEFL', # Kobe Bryant 10/14/2025
-        'FVEL', # Bjork 10/18/2025
-        'EFVL', # HRH Collection 10/21/2025
-        'VLFE', # Bo Burnham 10/27/2025
-        'VELF', # Seal 11/3/2025
-        'ELVF', # Asmongold 11/6/2025 (theory)
-        'FLEV', # Kurt Cobain 11/10/2025
-        'FEVL', # Kate Moss 11/17/2025
-        'VELF', # Paris Hilton 11/30/2025
-        'VEFL', # Vic DiCara 12/8/2025
-        'FEVL', # David Lynch 12/12/2025
-        'VLFE', # Courtney Love 12/15/2025
-        'EFLV', # Trisha Paytas 12/29/2025 <- last video I've seen
-        'FELV', # JMSN 1/5/2026
+        'FLVE',  # Bailey Sarian 9/22/2025
+        'VLFE',  # Azealia Banks 9/23/2025
+        'FVEL',  # Sofia Isella 9/29/2025
+        'FVEL',  # Adrianne Lenker 10/3/2025
+        'VLFE',  # Owen Cook 10/6/2025
+        'LVFE',  # Nick LS De Cesare 10/10/2025
+        'VEFL',  # Kobe Bryant 10/14/2025
+        'FVEL',  # Bjork 10/18/2025
+        'EFVL',  # HRH Collection 10/21/2025
+        'VLFE',  # Bo Burnham 10/27/2025
+        'VELF',  # Seal 11/3/2025
+        'ELVF',  # Asmongold 11/6/2025 (theory)
+        'FLEV',  # Kurt Cobain 11/10/2025
+        'FEVL',  # Kate Moss 11/17/2025
+        'VELF',  # Paris Hilton 11/30/2025
+        'VEFL',  # Vic DiCara 12/8/2025
+        'FEVL',  # David Lynch 12/12/2025
+        'VLFE',  # Courtney Love 12/15/2025
+        'EFLV',  # Trisha Paytas 12/29/2025 <- last video I've seen
+        'FELV',  # JMSN 1/5/2026
     ]
     paid_typings = {
         # as of 12/16/2025
@@ -79,7 +79,7 @@ class TypingStats:
         sexta_1st_att_counts = self.calculate_sexta_1st_att_counts()
         missing_types = [ap_type for ap_type, count in type_counts.items() if count == 0]
 
-        # missing pairs (populated by calculate_blocks)
+        # init variables calculated by calculate_functions_by_block
         self.missing_pairs = []
         self.missing_pairs_dir = []
         self.functions_by_block = []
@@ -99,9 +99,10 @@ class TypingStats:
         missing_types_suffix = self.get_missing_suffix(missing_types)
         print(f'- {len(self.type_set)} of 24 types{missing_types_suffix}')
         missing_pairs_suffix = self.get_missing_suffix(self.missing_pairs)
-        print(f'- {36-len(self.missing_pairs)} of 36 function/block pairs{missing_pairs_suffix}')
+        print(f'- {36 - len(self.missing_pairs)} of 36 function/block pairs{missing_pairs_suffix}')
         missing_pairs_dir_suffix = self.get_missing_suffix(self.missing_pairs_dir)
-        print(f'- {72-len(self.missing_pairs_dir)} of 72 function/block pairs (directional){missing_pairs_dir_suffix}')
+        print(
+            f'- {72 - len(self.missing_pairs_dir)} of 72 function/block pairs (directional){missing_pairs_dir_suffix}')
 
         print()
         print(f'Type counts ({len(missing_types)} missing)')
@@ -127,7 +128,6 @@ class TypingStats:
             print()
             for function in functions:
                 print(function)
-
 
     @staticmethod
     def get_missing_suffix(missing_list: list) -> str:
@@ -199,7 +199,7 @@ class TypingStats:
 
     def get_percentage(self, count: int) -> str:
         if len(self.all_typings) > 0:
-            return f'{round(100*count/len(self.all_typings))}%'
+            return f'{round(100 * count / len(self.all_typings))}%'
         return 'N/A'
 
     def calculate_attitude_counts(self):
@@ -210,7 +210,7 @@ class TypingStats:
                 attitude_counts[attitude] = 0
         for ap_type in self.all_typings:
             for pos in range(1, 5):
-                aspect = ap_type[pos-1]
+                aspect = ap_type[pos - 1]
                 attitude = f'{pos}{aspect}'
                 attitude_counts[attitude] += 1
         return dict(sorted(attitude_counts.items(), key=lambda item: item[1], reverse=True))
@@ -218,13 +218,15 @@ class TypingStats:
     def calculate_functions_by_block(self, block: str, aspect1: str, aspect2: str):
         functions = [f'Functions with {block} block ({aspect1}+{aspect2})']
         for i in range(4):
-            for j in range(i+1, 4):
-                count1 = sum(1 for _ in filter(lambda type: type[i] == aspect1 and type[j] == aspect2, self.all_typings))
-                count2 = sum(1 for _ in filter(lambda type: type[i] == aspect2 and type[j] == aspect1, self.all_typings))
+            for j in range(i + 1, 4):
+                count1 = sum(
+                    1 for _ in filter(lambda type: type[i] == aspect1 and type[j] == aspect2, self.all_typings))
+                count2 = sum(
+                    1 for _ in filter(lambda type: type[i] == aspect2 and type[j] == aspect1, self.all_typings))
 
-                aspect_string = f'{i+1}+{j+1}|{aspect1}+{aspect2}'
-                aspect1_string = f'{i+1}{aspect1}+{j+1}{aspect2}'
-                aspect2_string = f'{i+1}{aspect2}+{j+1}{aspect1}'
+                aspect_string = f'{i + 1}+{j + 1}|{aspect1}+{aspect2}'
+                aspect1_string = f'{i + 1}{aspect1}+{j + 1}{aspect2}'
+                aspect2_string = f'{i + 1}{aspect2}+{j + 1}{aspect1}'
 
                 def get_count_string(count, s):
                     if count == 0:
@@ -247,15 +249,16 @@ class TypingStats:
                         self.missing_pairs_dir.append(aspect2_string)
                     if count2 > count1:
                         count_strings = reversed(count_strings)
-                    total_string = f'{(count1 + count2)} ({self.get_percentage(count1+count2)}) total'
+                    total_string = f'{(count1 + count2)} ({self.get_percentage(count1 + count2)}) total'
                     aspects_string = f'{total_string} - {' and '.join(count_strings)}'
 
-                functions.append(f'- {i+1}+{j+1}: {aspects_string}')
+                functions.append(f'- {i + 1}+{j + 1}: {aspects_string}')
         self.functions_by_block.append(functions)
 
     def validate_ap_type(self, ap_type: str):
         if sorted(ap_type) != self.valid_types:
             raise ValueError(f'Invalid AP type: {ap_type}')
+
 
 if __name__ == '__main__':
     TypingStats(include_celebrities=True, include_paid=False)
