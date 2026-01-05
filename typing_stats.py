@@ -135,7 +135,9 @@ class TypingStats:
 
     def calculate_type_counts(self):
         type_counts = {}
-        for ap_type in self.type_set:
+
+        # iterate over paid_typings, which includes all types in standard order
+        for ap_type in self.paid_typings:
             type_counts[ap_type] = 0
 
         for ap_type in self.all_typings:
