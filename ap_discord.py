@@ -1,9 +1,10 @@
-import discord
 import logging
 import os
 import sys
-from dotenv import load_dotenv
+
+import discord
 from discord.ext import commands
+from dotenv import load_dotenv
 
 from ap_all_intertype import get_all_intertypes
 from ap_intertype import get_intertype
@@ -13,9 +14,11 @@ from triads import get_triads
 intents = discord.Intents.default()
 bot = commands.Bot(command_prefix='!', intents=intents)
 
+
 @bot.event
 async def on_ready():
     await bot.tree.sync()
+
 
 @bot.tree.command(name="triads", description='Show triads for Enneagram trifix or EI archetype')
 async def triads_command(interaction: discord.Interaction, trifix_or_archetype: str):
@@ -28,6 +31,7 @@ async def triads_command(interaction: discord.Interaction, trifix_or_archetype: 
         logger.error(msg)
         await interaction.response.send_message(msg)
 
+
 @bot.tree.command(name="shadow", description="List shadow types, if any, for AP type and subtype")
 async def shadow_command(interaction: discord.Interaction, ap_type: str, subtype: str):
     try:
@@ -39,6 +43,7 @@ async def shadow_command(interaction: discord.Interaction, ap_type: str, subtype
         logger.error(msg)
         await interaction.response.send_message(msg)
 
+
 @bot.tree.command(name="intertype", description="Show intertype relation between 2 AP types")
 async def intertype_command(interaction: discord.Interaction, ap_type1: str, ap_type2: str):
     try:
@@ -49,6 +54,7 @@ async def intertype_command(interaction: discord.Interaction, ap_type1: str, ap_
         msg = f"Error: {e}"
         logger.error(msg)
         await interaction.response.send_message(msg)
+
 
 @bot.tree.command(name="intertypes", description="List all intertype relations for an AP type")
 async def intertypes_command(interaction: discord.Interaction, ap_type: str):
@@ -63,6 +69,7 @@ async def intertypes_command(interaction: discord.Interaction, ap_type: str):
         msg = f"Error: {e}"
         logger.error(msg)
         await interaction.response.send_message(msg)
+
 
 if __name__ == '__main__':
     logger = logging.getLogger(__name__)

@@ -2,6 +2,7 @@ import argparse
 import re
 import sys
 
+
 # List triad counts, nicknames, and other information for Enneagram trifixes ([234][567][891] in any order) or
 # Expanded Instincts (EI) archetypes, e.g. SY-CY-FD, also in any order.
 
@@ -33,6 +34,7 @@ class TriadGroup:
 
         return f'{self.name}: {counts}'
 
+
 class Centers(TriadGroup):
     def __init__(self, name: str, triads_and_values: dict[str, list[str]]):
         super().__init__(name, triads_and_values)
@@ -51,18 +53,23 @@ class Centers(TriadGroup):
             if count != 1:
                 raise ValueError()
 
+
 def order_triads(triad_groups: list[TriadGroup]) -> list[TriadGroup]:
     # Put group with a triple first (max 1), then groups with a double, then evenly divided groups
     # In practice, there will either be a single group with a triple value (e.g. 3x attachment) and other groups with 1x each,
     # or all 3 groups will contain 2x/1x/0x pattern.
     return sorted(triad_groups, key=lambda group: group.max_count(), reverse=True)
 
+
 def get_results(triad_groups: list[TriadGroup]) -> list[str]:
     return [str(group) for group in order_triads(triad_groups)]
 
+
 class InvalidInput(ValueError):
     def __init__(self, trifix_or_archetype: str):
-        super().__init__(f'Invalid value: {trifix_or_archetype}\nEnter trifix (e.g. "369") or EI archetype with or without center stacking (e.g. "BG-FD-EX" or "SPI SY-CY-UN")')
+        super().__init__(
+            f'Invalid value: {trifix_or_archetype}\nEnter trifix (e.g. "369") or EI archetype with or without center stacking (e.g. "BG-FD-EX" or "SPI SY-CY-UN")')
+
 
 # triads for enneagram trifix, e.g. 592
 def get_trifix_triads(input: str) -> list[str]:
@@ -142,6 +149,7 @@ def get_trifix_triads(input: str) -> list[str]:
     results.extend(get_results([object_relation_triads, harmonic_triads, hornevian_triads]))
     return results
 
+
 # get triads for Expanded Instincts archetype
 def get_archetype_triads(input: str) -> list[str]:
     tokens = re.split('[ -/]', input.upper())
@@ -151,7 +159,7 @@ def get_archetype_triads(input: str) -> list[str]:
             raise InvalidInput(input)
         instincts = tokens[1:]
     else:
-        center_stacking = None # will be calculated later
+        center_stacking = None  # will be calculated later
         instincts = tokens
 
     # validate archetype
@@ -237,7 +245,7 @@ def get_archetype_triads(input: str) -> list[str]:
         center_stacking = ''.join(map(lambda instinct: centers.triads_by_value[instinct][0], instincts))
 
     archetype = '-'.join(instincts)
-    canonical_archetype = '-'.join(centers.get_canonical_values()) # sort in SUR-INT-PUR order
+    canonical_archetype = '-'.join(centers.get_canonical_values())  # sort in SUR-INT-PUR order
 
     results = [f'Triads for {center_stacking} {archetype} ({nicknames[canonical_archetype]}):']
     results.extend(get_results([experiential_triads, movement_triads, source_triads]))
@@ -274,11 +282,13 @@ def get_archetype_triads(input: str) -> list[str]:
 
     return results
 
+
 def get_triads(trifix_or_archetype: str) -> list[str]:
     if len(trifix_or_archetype) == 3:
         return get_trifix_triads(trifix_or_archetype)
     else:
         return get_archetype_triads(trifix_or_archetype)
+
 
 def run_interactive() -> None:
     while True:
@@ -291,12 +301,14 @@ def run_interactive() -> None:
             print(f'{e.args[0]}')
         print()
 
+
 def run_with_args(trifix_or_archetype: str) -> None:
     try:
         print('\n- '.join(get_triads(trifix_or_archetype)))
     except ValueError as e:
         sys.stderr.write(f'{e.args[0]}\n')
         exit(1)
+
 
 if __name__ == '__main__':
     if len(sys.argv) == 1:
@@ -305,10 +317,11 @@ if __name__ == '__main__':
             run_interactive()
     else:
         parser = argparse.ArgumentParser(
-            prog = 'ap_shadow_type_calculator',
-            usage = 'Calculate AP shadow types (no arguments to run interactively)',
-            add_help = True, # add -h/--help option
+            prog='ap_shadow_type_calculator',
+            usage='Calculate AP shadow types (no arguments to run interactively)',
+            add_help=True,  # add -h/--help option
         )
-        parser.add_argument('trifix_or_archetype', help = 'Enneagram trifix (e.g. 925) or EI archetype (e.g. EX-SY-BG), in any order')
+        parser.add_argument('trifix_or_archetype',
+                            help='Enneagram trifix (e.g. 925) or EI archetype (e.g. EX-SY-BG), in any order')
         args = parser.parse_args()
         run_with_args(args.trifix_or_archetype)

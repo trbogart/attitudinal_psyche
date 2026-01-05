@@ -1,5 +1,6 @@
 import argparse
 import sys
+
 from ap_shadow_type_calculator import validate_ap_type, input_ap_type
 
 mapping_dict = {
@@ -29,8 +30,10 @@ mapping_dict = {
     '3412': 'Conflict: {0} <—> {1} (opposed sexta)',
 }
 
+
 def get_mapping(ap_type1_str: str, ap_type2_str: str) -> str:
-    return ''.join([str(1+ap_type1_str.find(c)) for c in ap_type2_str])
+    return ''.join([str(1 + ap_type1_str.find(c)) for c in ap_type2_str])
+
 
 def get_intertype(ap_type1_str: str, ap_type2_str: str) -> str:
     validate_ap_type(ap_type1_str)
@@ -38,10 +41,12 @@ def get_intertype(ap_type1_str: str, ap_type2_str: str) -> str:
     mapping = get_mapping(ap_type1_str, ap_type2_str)
     return mapping_dict[mapping].format(ap_type1_str, ap_type2_str)
 
+
 def run_interactive() -> None:
     ap_type1_str = input_ap_type('Enter AP type 1 (q to quit): ')
     ap_type2_str = input_ap_type('Enter AP type 2 (q to quit): ')
     print(get_intertype(ap_type1_str, ap_type2_str))
+
 
 if __name__ == '__main__':
     if len(sys.argv) == 1:
@@ -50,11 +55,11 @@ if __name__ == '__main__':
             run_interactive()
     else:
         parser = argparse.ArgumentParser(
-            prog = 'ap_shadow_type_calculator',
-            usage = 'Calculate intertype relation between 2 AP types (no arguments to run interactively)',
-            add_help = True, # add -h/--help option
+            prog='ap_shadow_type_calculator',
+            usage='Calculate intertype relation between 2 AP types (no arguments to run interactively)',
+            add_help=True,  # add -h/--help option
         )
-        parser.add_argument('ap_type1', help = 'AP type 1 (any permutation of FLEV)')
-        parser.add_argument('ap_type1', help = 'AP type 2 (any permutation of FLEV)')
+        parser.add_argument('ap_type1', help='AP type 1 (any permutation of FLEV)')
+        parser.add_argument('ap_type1', help='AP type 2 (any permutation of FLEV)')
         args = parser.parse_args()
         print(get_intertype(args.ap_type1.upper().strip(), args.ap_type2.upper().strip()))

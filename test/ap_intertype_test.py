@@ -1,18 +1,20 @@
 import unittest
+from enum import Enum
 from itertools import permutations
 
 from ap_all_intertype import get_all_intertypes
 from ap_intertype import get_intertype
 
-from enum import Enum
 
 class Direction(Enum):
     SYMMETRICAL = 0
     TO = 1
     FROM = 2
 
+
 class ApIntertypeTest(unittest.TestCase):
-    def _validate(self, ap_type1: str, ap_type2: str, intertype_relation: str, relation_type: str, direction: Direction = Direction.SYMMETRICAL, reversed_direction: bool = False):
+    def _validate(self, ap_type1: str, ap_type2: str, intertype_relation: str, relation_type: str,
+                  direction: Direction = Direction.SYMMETRICAL, reversed_direction: bool = False):
         result = get_intertype(ap_type1, ap_type2)
 
         if direction == Direction.SYMMETRICAL:
@@ -33,7 +35,8 @@ class ApIntertypeTest(unittest.TestCase):
                 reversed_direction = Direction.FROM
             else:
                 reversed_direction = direction
-            self._validate(ap_type2, ap_type1, intertype_relation, relation_type, reversed_direction, reversed_direction= True)
+            self._validate(ap_type2, ap_type1, intertype_relation, relation_type, reversed_direction,
+                           reversed_direction=True)
 
     def test_get_intertype_dual(self):
         self._validate('FVLE', 'ELVF', 'Dual', 'shared sexta')
@@ -54,34 +57,34 @@ class ApIntertypeTest(unittest.TestCase):
         self._validate('FVLE', 'EFVL', 'Radiance', 'square')
 
     def test_get_intertype_instruction1(self):
-        self._validate('FVLE', 'LEVF', 'Instruction', 'square', direction = Direction.TO)
+        self._validate('FVLE', 'LEVF', 'Instruction', 'square', direction=Direction.TO)
 
     def test_get_intertype_instruction2(self):
-        self._validate('FVLE', 'ELFV', 'Instruction', 'square', direction = Direction.FROM)
+        self._validate('FVLE', 'ELFV', 'Instruction', 'square', direction=Direction.FROM)
 
     def test_get_intertype_invention1(self):
-        self._validate('FVLE', 'FEVL', 'Invention', 'triangular', direction = Direction.TO)
+        self._validate('FVLE', 'FEVL', 'Invention', 'triangular', direction=Direction.TO)
 
     def test_get_intertype_invention2(self):
-        self._validate('FVLE', 'FLEV', 'Invention', 'triangular', direction = Direction.FROM)
+        self._validate('FVLE', 'FLEV', 'Invention', 'triangular', direction=Direction.FROM)
 
     def test_get_intertype_assistance1(self):
-        self._validate('FVLE', 'LVEF', 'Assistance', 'triangular', direction = Direction.TO)
+        self._validate('FVLE', 'LVEF', 'Assistance', 'triangular', direction=Direction.TO)
 
     def test_get_intertype_assistance2(self):
-        self._validate('FVLE', 'EVFL', 'Assistance', 'triangular', direction = Direction.FROM)
+        self._validate('FVLE', 'EVFL', 'Assistance', 'triangular', direction=Direction.FROM)
 
     def test_get_intertype_enhancement1(self):
-        self._validate('FVLE', 'VELF', 'Enhancement', 'triangular', direction = Direction.TO)
+        self._validate('FVLE', 'VELF', 'Enhancement', 'triangular', direction=Direction.TO)
 
     def test_get_intertype_enhancement2(self):
-        self._validate('FVLE', 'EFLV', 'Enhancement', 'triangular', direction = Direction.FROM)
+        self._validate('FVLE', 'EFLV', 'Enhancement', 'triangular', direction=Direction.FROM)
 
     def test_get_intertype_regular1(self):
-        self._validate('FVLE', 'LFVE', 'Regulation', 'triangular', direction = Direction.TO)
+        self._validate('FVLE', 'LFVE', 'Regulation', 'triangular', direction=Direction.TO)
 
     def test_get_intertype_regular2(self):
-        self._validate('FVLE', 'VLFE', 'Regulation', 'triangular', direction = Direction.FROM)
+        self._validate('FVLE', 'VLFE', 'Regulation', 'triangular', direction=Direction.FROM)
 
     def test_get_intertype_near_identical(self):
         self._validate('FVLE', 'VFLE', 'Near-Identical', 'linear')
@@ -99,10 +102,10 @@ class ApIntertypeTest(unittest.TestCase):
         self._validate('FVLE', 'VFEL', 'Faux-Identical', 'opposed sexta')
 
     def test_get_intertype_suffocation1(self):
-        self._validate('FVLE', 'LFEV', 'Suffocation', 'opposed sexta, square', direction = Direction.SYMMETRICAL)
+        self._validate('FVLE', 'LFEV', 'Suffocation', 'opposed sexta, square', direction=Direction.SYMMETRICAL)
 
     def test_get_intertype_suffocation2(self):
-        self._validate('FVLE', 'VEFL', 'Suffocation', 'opposed sexta, square', direction = Direction.SYMMETRICAL)
+        self._validate('FVLE', 'VEFL', 'Suffocation', 'opposed sexta, square', direction=Direction.SYMMETRICAL)
 
     def test_get_intertype_conflict(self):
         self._validate('FVLE', 'LEFV', 'Conflict', 'opposed sexta')

@@ -6,8 +6,8 @@
 #   python ap_shadow_type_calculator.py [AP type] [subtype]
 
 import argparse
-from json import dumps
 import sys
+from json import dumps
 
 
 class SubType:
@@ -28,7 +28,7 @@ class SubType:
         elif self.is_subtype_type(1, 3) or self.is_subtype_type(2, 4):
             return 'others'
         else:
-            raise ValueError(f'Invalid subtype: {self}') # shouldn't happen
+            raise ValueError(f'Invalid subtype: {self}')  # shouldn't happen
 
     # string form, including aspect, e.g. 1E-1
     def __repr__(self):
@@ -43,6 +43,7 @@ class SubType:
     def is_subtype_type(self, pos1, pos2):
         return (self.source_pos == pos1 and self.target_pos == pos2 or
                 self.source_pos == pos2 and self.target_pos == pos1)
+
 
 class Aspect:
     def __init__(self, aspect: str, flag: int):
@@ -70,7 +71,8 @@ aspectL = Aspect('L', 2)
 aspectE = Aspect('E', 4)
 aspectF = Aspect('F', 8)
 
-aspects: dict[str, Aspect] = { aspect.aspect: aspect for aspect in [aspectV, aspectL, aspectE, aspectF] }
+aspects: dict[str, Aspect] = {aspect.aspect: aspect for aspect in [aspectV, aspectL, aspectE, aspectF]}
+
 
 class Block:
     def __init__(self, aspect1: Aspect, aspect2: Aspect):
@@ -101,6 +103,7 @@ class Block:
     def __repr__(self):
         return self.key
 
+
 class BlockDescription:
     def __init__(self, block: Block, name: str, description: str):
         self.block = block
@@ -122,6 +125,7 @@ class BlockDescription:
 
     def __str__(self):
         return f'{self.name} ({self.block.key}): {self.description}'
+
 
 blockVF = Block(aspectV, aspectF)
 blockVL = Block(aspectV, aspectL)
@@ -148,6 +152,7 @@ functions_by_pos = {
     '3+4': 'Burnout (Self-)'
 }
 
+
 class ShadowTypes:
     def __init__(self, ap_type_str: str, subtype_str: str, verbose: bool = False):
         self.verbose = verbose
@@ -157,41 +162,42 @@ class ShadowTypes:
         validate_ap_type(self.ap_type_str)
         validate_subtype(self.subtype_str)
 
-        self.last_shadow_type: list[str] = list(self.ap_type_str) # will be mutated to latest shadow type
+        self.last_shadow_type: list[str] = list(self.ap_type_str)  # will be mutated to latest shadow type
         self.original_ap_type = self.last_shadow_type[:]
 
-        self.subtypes: list[SubType] = [SubType(self.last_shadow_type, i + 1, int(c)) for i, c in enumerate(self.subtype_str)]
+        self.subtypes: list[SubType] = [SubType(self.last_shadow_type, i + 1, int(c)) for i, c in
+                                        enumerate(self.subtype_str)]
 
         self.shadow_types: dict[str, str] = {self.ap_type_str: "AP type"}
-        self.swapped_to_obscured: set[SubType] = set() # set of SubTypes that have already been swapped
+        self.swapped_to_obscured: set[SubType] = set()  # set of SubTypes that have already been swapped
 
         # attenuated and obscured aspects are not moved
 
         # swap subtypes pointing to an obscured aspect first, unless it has another aspect pointing at it
         # these would be swapped later anyway, but do it early in this case
         for subtype in self.subtypes:
-            if subtype.target_pos == 0: # obscured
+            if subtype.target_pos == 0:  # obscured
                 self.swap_obscured_shadow_type(subtype)
 
         # swap method subtypes
-        self.swap_shadow_type(2, 3) # 2-3 or 3-2
-        self.swap_shadow_type(1, 4) # 1-4 or 4-1
+        self.swap_shadow_type(2, 3)  # 2-3 or 3-2
+        self.swap_shadow_type(1, 4)  # 1-4 or 4-1
 
         # swap self subtypes
-        self.swap_shadow_type(1, 2) # 1-2 or 2-1
-        self.swap_shadow_type(3, 4) # 3-4 or 4-3
+        self.swap_shadow_type(1, 2)  # 1-2 or 2-1
+        self.swap_shadow_type(3, 4)  # 3-4 or 4-3
 
         # swap others subtypes
-        self.swap_shadow_type(1, 3) # 1-3 or 3-1
-        self.swap_shadow_type(2, 4) # 2-4 or 4-2
+        self.swap_shadow_type(1, 3)  # 1-3 or 3-1
+        self.swap_shadow_type(2, 4)  # 2-4 or 4-2
 
         self.functions: list[str] = list(self.calculate_functions())
 
     def calculate_functions(self):
         for pos1 in range(1, 4):
-            for pos2 in range(pos1+1, 5):
-                aspect1 = aspects[self.original_ap_type[pos1-1]]
-                aspect2 = aspects[self.original_ap_type[pos2-1]]
+            for pos2 in range(pos1 + 1, 5):
+                aspect1 = aspects[self.original_ap_type[pos1 - 1]]
+                aspect2 = aspects[self.original_ap_type[pos2 - 1]]
                 block = Block(aspect1, aspect2)
                 block_description = blocks[block]
                 pos = f'{pos1}+{pos2}'
@@ -210,7 +216,7 @@ class ShadowTypes:
             self.debug(f'Skipped {subtype} - already swapped')
             return
 
-        pos1 = self.last_shadow_type.index(subtype.aspect) + 1 # position currently containing aspect
+        pos1 = self.last_shadow_type.index(subtype.aspect) + 1  # position currently containing aspect
         pos2 = subtype.target_pos
 
         if pos1 == pos2:
@@ -219,7 +225,8 @@ class ShadowTypes:
             self.debug(f'Already swapped {subtype}')
             self.shadow_types[shadow_type_str] = f'{self.shadow_types[shadow_type_str]} and {subtype}'
         else:
-            self.last_shadow_type[pos1 - 1], self.last_shadow_type[pos2 - 1] = self.last_shadow_type[pos2 - 1], self.last_shadow_type[pos1 - 1]
+            self.last_shadow_type[pos1 - 1], self.last_shadow_type[pos2 - 1] = self.last_shadow_type[pos2 - 1], \
+            self.last_shadow_type[pos1 - 1]
             shadow_type_str = ''.join(self.last_shadow_type)
             self.debug(f'Swapped {subtype} -> {shadow_type_str}')
             if obscured_subtype:
@@ -230,7 +237,7 @@ class ShadowTypes:
     def swap_obscured_shadow_type(self, obscured_subtype: SubType) -> None:
         swap_subtype = None
         for other_subtype in self.subtypes:
-            if other_subtype.target_pos == obscured_subtype.source_pos: # obscured
+            if other_subtype.target_pos == obscured_subtype.source_pos:  # obscured
                 if swap_subtype:
                     # multiple matches, do not swap
                     self.debug(f'Skipped {obscured_subtype} - multiple matches')
@@ -247,6 +254,7 @@ class ShadowTypes:
             if subtype.is_subtype_type(pos1, pos2):
                 self.swap(subtype)
 
+
 def input_ap_type(msg: str = 'Enter AP type (q to quit): ') -> str:
     while True:
         ap_type_str = input(msg).upper().strip()
@@ -257,6 +265,7 @@ def input_ap_type(msg: str = 'Enter AP type (q to quit): ') -> str:
             return ap_type_str
         except ValueError as e:
             print(f'{e.args[0]}')
+
 
 def input_subtype() -> str:
     while True:
@@ -269,13 +278,16 @@ def input_subtype() -> str:
         except ValueError as e:
             print(f'{e.args[0]}')
 
+
 def validate_ap_type(ap_type_str: str) -> None:
     if len(ap_type_str) != 4 or sorted(ap_type_str.upper()) != ['E', 'F', 'L', 'V']:
         raise ValueError(f'Invalid AP type {ap_type_str}')
 
+
 def validate_subtype(subtype_str: str) -> None:
     if len(subtype_str) != 4 or not all(map(lambda c: '0' <= c <= '4', subtype_str)):
         raise ValueError(f'Invalid subtype {subtype_str}')
+
 
 def calculate_shadow_types(ap_type_str: str, subtype_str: str, verbose: bool = False) -> dict[str, str]:
     shadow_types = ShadowTypes(ap_type_str, subtype_str, verbose)
@@ -288,11 +300,12 @@ def calculate_shadow_types(ap_type_str: str, subtype_str: str, verbose: bool = F
         } for shadow_type, description in shadow_type_dict.items()
     ]
     return {
-        'ap_type': shadow_types.ap_type_str, # normalized
-        'subtype': shadow_types.subtype_str, # normalized
+        'ap_type': shadow_types.ap_type_str,  # normalized
+        'subtype': shadow_types.subtype_str,  # normalized
         'shadow_types': shadow_types_with_descriptions,
         'functions': shadow_types.functions
     }
+
 
 def get_shadow_types_str(ap_type_str: str, subtype_str: str, verbose: bool = False, json: bool = False) -> str:
     shadow_types = calculate_shadow_types(ap_type_str, subtype_str, verbose)
@@ -315,9 +328,10 @@ def get_shadow_types_str(ap_type_str: str, subtype_str: str, verbose: bool = Fal
 
         results.append(f'\nFunctions for {ap_type}:')
         for i, dichotomy in enumerate(shadow_types['functions']):
-            results.append(f'{i+1}. {dichotomy}')
+            results.append(f'{i + 1}. {dichotomy}')
 
         return '\n'.join(results)
+
 
 def run_interactive() -> None:
     ap_type_str = input_ap_type()
@@ -325,12 +339,14 @@ def run_interactive() -> None:
     print(get_shadow_types_str(ap_type_str, subtype_str))
     print()
 
+
 def run_with_args(ap_type_str: str, subtype_str: str, verbose: bool = False, json: bool = False) -> None:
     try:
-        print(get_shadow_types_str(ap_type_str, subtype_str, verbose,  json))
+        print(get_shadow_types_str(ap_type_str, subtype_str, verbose, json))
     except ValueError as e:
         sys.stderr.write(f'{e.args[0]}\n')
         exit(1)
+
 
 if __name__ == '__main__':
     if len(sys.argv) == 1:
@@ -339,13 +355,13 @@ if __name__ == '__main__':
             run_interactive()
     else:
         parser = argparse.ArgumentParser(
-            prog = 'ap_shadow_type_calculator',
-            usage = 'Calculate AP shadow types (no arguments to run interactively)',
-            add_help = True, # add -h/--help option
+            prog='ap_shadow_type_calculator',
+            usage='Calculate AP shadow types (no arguments to run interactively)',
+            add_help=True,  # add -h/--help option
         )
-        parser.add_argument('ap_type', help = 'AP type (any permutation of FLEV)')
-        parser.add_argument('subtype', help = 'AP subtype (4 digits between 0 and 4, inclusive)')
-        parser.add_argument('-j', '--json', action='store_true', help = 'return answer in JSON format')
-        parser.add_argument('-v', '--verbose', action='store_true', help = 'print verbose messages')
+        parser.add_argument('ap_type', help='AP type (any permutation of FLEV)')
+        parser.add_argument('subtype', help='AP subtype (4 digits between 0 and 4, inclusive)')
+        parser.add_argument('-j', '--json', action='store_true', help='return answer in JSON format')
+        parser.add_argument('-v', '--verbose', action='store_true', help='print verbose messages')
         args = parser.parse_args()
         run_with_args(args.ap_type, args.subtype, args.verbose, args.json)

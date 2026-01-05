@@ -195,7 +195,6 @@ class ApShadowTypeCalculatorTest(unittest.TestCase):
         }
         self.assertDictEqual(shadow_types_json, expected)
 
-
     def test_json_with_one_shadow_type(self):
         ap_type_str = 'FVLE'
         subtype_str = '0220'

@@ -1,9 +1,12 @@
 import argparse
+
 from ap_shadow_type_calculator import validate_ap_type
+
 
 def modify(ap_type_str: str, map_str: str) -> str:
     ap_type = list(ap_type_str)
-    return ''.join([ap_type[int(i)-1] for i in map_str])
+    return ''.join([ap_type[int(i) - 1] for i in map_str])
+
 
 def get_all_intertypes(ap_type_str: str) -> dict[str, str]:
     validate_ap_type(ap_type_str)
@@ -41,6 +44,7 @@ def get_all_intertypes(ap_type_str: str) -> dict[str, str]:
     results['Conflict'] = f'{ap_type_str} <—> {modify(ap_type_str, "3412")} (opposed sexta)'
     return results
 
+
 def get_all_intertypes_str(ap_type_str: str) -> str:
     relations = []
     for relation, ap_type in get_all_intertypes(ap_type_str).items():
@@ -48,13 +52,14 @@ def get_all_intertypes_str(ap_type_str: str) -> str:
         relations.append(f'{tag:15s} {ap_type}')
     return '\n'.join(relations)
 
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-        prog = 'ap_intertype_calculator',
-        usage = 'List AP intertype relations of given AP type',
-        add_help = True, # add -h/--help option
+        prog='ap_intertype_calculator',
+        usage='List AP intertype relations of given AP type',
+        add_help=True,  # add -h/--help option
     )
-    parser.add_argument('ap_type', nargs='?', help = 'AP type (any permutation of FLEV)')
+    parser.add_argument('ap_type', nargs='?', help='AP type (any permutation of FLEV)')
     args = parser.parse_args()
     if args.ap_type is None:
         ap_type_str = input('Enter AP type: ')

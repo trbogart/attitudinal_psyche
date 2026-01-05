@@ -1,9 +1,10 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse, JSONResponse
 
-from ap_shadow_type_calculator import calculate_shadow_types, get_shadow_types_str
+from ap_shadow_type_calculator import calculate_shadow_types
 
 app = FastAPI()
+
 
 @app.get("/shadow/{ap_type}/{subtype}")
 async def get_shadow_json(ap_type: str, subtype: str):
@@ -12,7 +13,8 @@ async def get_shadow_json(ap_type: str, subtype: str):
         # Return as JSON response
         return JSONResponse(content=result_dict)
     except ValueError as e:
-        return HTTPException(status_code=400, detail = e.args[0])
+        return HTTPException(status_code=400, detail=e.args[0])
+
 
 @app.get("/shadow.html/{ap_type}/{subtype}")
 async def get_shadow_html(ap_type: str, subtype: str):
@@ -32,4 +34,4 @@ async def get_shadow_html(ap_type: str, subtype: str):
         content = ''.join(results)
         return HTMLResponse(content=content)
     except ValueError as e:
-        return HTTPException(status_code=400, detail = e.args[0])
+        return HTTPException(status_code=400, detail=e.args[0])
