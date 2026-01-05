@@ -157,10 +157,10 @@ class ApIntertypeTest(unittest.TestCase):
                     other_type1 = tokens[0]
 
                     if dir_marker == '<—>':
-                        # symmetrical (swap order to put type 1 first)
+                        # symmetrical (swap order to put type 1 first in get_intertype)
                         expected1 = f'{relation}: {ap_type} {dir_marker} {other_type1} {' '.join(tokens[5:])}'
                     else:
-                        # asymmetrical (preserve ordering)
+                        # asymmetrical (preserve ordering in get_intertype)
                         expected1 = f'{relation}: {other_type1} {dir_marker} {ap_type} {' '.join(tokens[5:])}'
 
                     self.assertEqual(get_intertype(ap_type, other_type1), expected1)
