@@ -25,7 +25,7 @@ class TypingStats:
         'VEFL', # Vic DiCara 12/8/2025
         'FEVL', # David Lynch 12/12/2025
         'VLFE', # Courtney Love 12/15/2025
-        'EFLV', # Trisha Paytas 12/29/2025
+        'EFLV', # Trisha Paytas 12/29/2025 <- last video I've seen
         'FELV', # JMSN 1/5/2026
     ]
     paid_typings = {
