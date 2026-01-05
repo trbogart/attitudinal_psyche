@@ -12,7 +12,7 @@ class Direction(Enum):
     FROM = 2
 
 class ApIntertypeTest(unittest.TestCase):
-    def _validate(self, ap_type1, ap_type2, intertype_relation, relation_type, direction = Direction.SYMMETRICAL, reversed = False):
+    def _validate(self, ap_type1: str, ap_type2: str, intertype_relation: str, relation_type: str, direction: Direction = Direction.SYMMETRICAL, reversed_direction: bool = False):
         result = get_intertype(ap_type1, ap_type2)
 
         if direction == Direction.SYMMETRICAL:
@@ -25,7 +25,7 @@ class ApIntertypeTest(unittest.TestCase):
         expected = f'{intertype_relation}: {intertype}'
         self.assertEqual(result, expected)
 
-        if not reversed:
+        if not reversed_direction:
             # test in the reverse direction
             if direction == Direction.FROM:
                 reversed_direction = Direction.TO
@@ -33,7 +33,7 @@ class ApIntertypeTest(unittest.TestCase):
                 reversed_direction = Direction.FROM
             else:
                 reversed_direction = direction
-            self._validate(ap_type2, ap_type1, intertype_relation, relation_type, reversed_direction, reversed = True)
+            self._validate(ap_type2, ap_type1, intertype_relation, relation_type, reversed_direction, reversed_direction= True)
 
     def test_get_intertype_dual(self):
         self._validate('FVLE', 'ELVF', 'Dual', 'shared sexta')
@@ -150,24 +150,21 @@ class ApIntertypeTest(unittest.TestCase):
             for relation, text in intertypes.items():
                 tokens = text.split()
                 if 'square' in text or 'triangular' in text:
-                    if tokens[1] == '<—>':
-                        # symmetrical
-                        other_type1 = tokens[0]
-                        expected1 = f'{relation}: {ap_type} <—> {other_type1} {' '.join(tokens[5:])}'
-                        self.assertEqual(get_intertype(ap_type, other_type1), expected1)
+                    dir_marker = tokens[1]
+                    other_type1 = tokens[0]
 
-                        other_type2 = tokens[4]
-                        expected2 = f'{relation}: {ap_type} <—> {other_type2} {' '.join(tokens[5:])}'
-                        self.assertEqual(get_intertype(ap_type, other_type2), expected2)
+                    if dir_marker == '<—>':
+                        # symmetrical (swap order to put type 1 first)
+                        expected1 = f'{relation}: {ap_type} {dir_marker} {other_type1} {' '.join(tokens[5:])}'
                     else:
-                        # asymmetrical
-                        other_type1 = tokens[0]
-                        expected1 = f'{relation}: {other_type1} —> {ap_type} {' '.join(tokens[5:])}'
-                        self.assertEqual(get_intertype(ap_type, other_type1), expected1)
+                        # asymmetrical (preserve ordering)
+                        expected1 = f'{relation}: {other_type1} {dir_marker} {ap_type} {' '.join(tokens[5:])}'
 
-                        other_type2 = tokens[4]
-                        expected2 = f'{relation}: {ap_type} —> {other_type2} {' '.join(tokens[5:])}'
-                        self.assertEqual(get_intertype(ap_type, other_type2), expected2)
+                    self.assertEqual(get_intertype(ap_type, other_type1), expected1)
+
+                    other_type2 = tokens[4]
+                    expected2 = f'{relation}: {ap_type} {dir_marker} {other_type2} {' '.join(tokens[5:])}'
+                    self.assertEqual(get_intertype(ap_type, other_type2), expected2)
                 else:
                     other_type = tokens[2]
                     expected = f'{relation}: {text}'
