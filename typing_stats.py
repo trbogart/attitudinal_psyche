@@ -76,42 +76,23 @@ class TypingStats:
         attitude_counts = self.calculate_attitude_counts()
         type_counts = self.calculate_type_counts()
         sexta_counts = self.calculate_sexta_counts()
-        sexta_dir_counts = self.calculate_sexta_dir_counts()
+        sexta_1st_att_counts = self.calculate_sexta_1st_att_counts()
         missing_types = [ap_type for ap_type, count in type_counts.items() if count == 0]
 
-        print(f'Type counts ({len(missing_types)} missing)')
-        for ap_type, count in type_counts.items():
-            print(f'- {ap_type}: {count} ({self.get_percentage(count)})')
-        print()
-
-        print(f'Attitude counts ({self.get_missing_count(attitude_counts)} missing):')
-        for key, count in attitude_counts.items():
-            print(f'- {key}: {count} ({self.get_percentage(count)})')
-        print()
-
-        print(f'Sexta counts ({self.get_missing_count(sexta_counts)} missing):')
-        for key, count in sexta_counts.items():
-            print(f'- {key}: {count} ({self.get_percentage(count)})')
-        print()
-
-        print(f'Sexta counts with 1st attitude ({self.get_missing_count(sexta_dir_counts)} missing):')
-        for key, count in sexta_dir_counts.items():
-            print(f'- {key}: {count} ({self.get_percentage(count)})')
-        print()
-
-        # missing pairs (populated by print_blocks)
+        # missing pairs (populated by calculate_blocks)
         self.missing_pairs = []
         self.missing_pairs_dir = []
+        self.functions_by_block = []
 
         # blocks
-        self.print_blocks('Strategist', 'V', 'L')
-        self.print_blocks('Reactivist', 'F', 'E')
+        self.calculate_functions_by_block('Strategist', 'V', 'L')
+        self.calculate_functions_by_block('Reactivist', 'F', 'E')
 
-        self.print_blocks('Experiencer', 'V', 'F')
-        self.print_blocks('Evaluator', 'L', 'E')
+        self.calculate_functions_by_block('Experiencer', 'V', 'F')
+        self.calculate_functions_by_block('Evaluator', 'L', 'E')
 
-        self.print_blocks('Conceptualist', 'V', 'E')
-        self.print_blocks('Realist', 'L', 'F')
+        self.calculate_functions_by_block('Conceptualist', 'V', 'E')
+        self.calculate_functions_by_block('Realist', 'L', 'F')
 
         print('Summary:')
         print(f'- {len(self.all_typings)} typings')
@@ -121,6 +102,32 @@ class TypingStats:
         print(f'- {36-len(self.missing_pairs)} of 36 function/block pairs{missing_pairs_suffix}')
         missing_pairs_dir_suffix = self.get_missing_suffix(self.missing_pairs_dir)
         print(f'- {72-len(self.missing_pairs_dir)} of 72 function/block pairs (directional){missing_pairs_dir_suffix}')
+
+        print()
+        print(f'Type counts ({len(missing_types)} missing)')
+        for ap_type, count in type_counts.items():
+            print(f'- {ap_type}: {count} ({self.get_percentage(count)})')
+
+        print()
+        print(f'Attitude counts ({self.get_missing_count(attitude_counts)} missing):')
+        for key, count in attitude_counts.items():
+            print(f'- {key}: {count} ({self.get_percentage(count)})')
+
+        print()
+        print(f'Sexta counts ({self.get_missing_count(sexta_counts)} missing):')
+        for key, count in sexta_counts.items():
+            print(f'- {key}: {count} ({self.get_percentage(count)})')
+
+        print()
+        print(f'Sexta counts with 1st attitude ({self.get_missing_count(sexta_1st_att_counts)} missing):')
+        for key, count in sexta_1st_att_counts.items():
+            print(f'- {key}: {count} ({self.get_percentage(count)})')
+
+        for functions in self.functions_by_block:
+            print()
+            for function in functions:
+                print(function)
+
 
     @staticmethod
     def get_missing_suffix(missing_list: list) -> str:
@@ -164,31 +171,31 @@ class TypingStats:
             sexta_counts[sexta] += 1
         return dict(sorted(sexta_counts.items(), key=lambda item: item[1], reverse=True))
 
-    def calculate_sexta_dir_counts(self):
-        sexta_dir_counts = {}
+    def calculate_sexta_1st_att_counts(self):
+        sexta_1st_att_counts = {}
         sexta_map = {
             # key is unsorted results aspects
-            'EF': 'Ena 1E',
-            'EL': 'Dio 1E',
-            'EV': 'Tria 1E',
-            'LV': 'Tessera 1L',
-            'FV': 'Pente 1F',
-            'FL': 'Exi 1F',
             'FE': 'Ena 1F',
+            'EF': 'Ena 1E',
             'LE': 'Dio 1L',
+            'EL': 'Dio 1E',
             'VE': 'Tria 1V',
+            'EV': 'Tria 1E',
             'VL': 'Tessera 1V',
+            'LV': 'Tessera 1L',
             'VF': 'Pente 1V',
+            'FV': 'Pente 1F',
             'LF': 'Exi 1L',
+            'FL': 'Exi 1F',
         }
         for sexta in sexta_map.values():
-            sexta_dir_counts[sexta] = 0
+            sexta_1st_att_counts[sexta] = 0
 
         for ap_type in self.all_typings:
             results_aspects = f'{ap_type[0]}{ap_type[3]}'
             sexta = sexta_map[results_aspects]
-            sexta_dir_counts[sexta] += 1
-        return dict(sorted(sexta_dir_counts.items(), key=lambda item: item[1], reverse=True))
+            sexta_1st_att_counts[sexta] += 1
+        return dict(sorted(sexta_1st_att_counts.items(), key=lambda item: item[1], reverse=True))
 
     def get_percentage(self, count: int) -> str:
         if len(self.all_typings) > 0:
@@ -208,8 +215,8 @@ class TypingStats:
                 attitude_counts[attitude] += 1
         return dict(sorted(attitude_counts.items(), key=lambda item: item[1], reverse=True))
 
-    def print_blocks(self, block: str, aspect1: str, aspect2: str):
-        print(f'Functions with {block} block ({aspect1}+{aspect2})')
+    def calculate_functions_by_block(self, block: str, aspect1: str, aspect2: str):
+        functions = [f'Functions with {block} block ({aspect1}+{aspect2})']
         for i in range(4):
             for j in range(i+1, 4):
                 count1 = sum(1 for _ in filter(lambda type: type[i] == aspect1 and type[j] == aspect2, self.all_typings))
@@ -243,8 +250,8 @@ class TypingStats:
                     total_string = f'{(count1 + count2)} ({self.get_percentage(count1+count2)}) total'
                     aspects_string = f'{total_string} - {' and '.join(count_strings)}'
 
-                print(f'- {i+1}+{j+1}: {aspects_string}')
-        print()
+                functions.append(f'- {i+1}+{j+1}: {aspects_string}')
+        self.functions_by_block.append(functions)
 
     def validate_ap_type(self, ap_type: str):
         if sorted(ap_type) != self.valid_types:
