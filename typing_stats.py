@@ -5,27 +5,28 @@ import itertools
 class TypingStats:
     # typing videos with new definitions
     celebrity_typings = [
-        'FVLE',  # Adriana Lima 9/8/2025
+        'FVLE', # Adriana Lima 9/8/2025
         # 'VFEL', # Kate Moss 9/15/2025 (retyped 11/17/2025)
-        'FLVE',  # Bailey Sarian 9/22/2025
-        'VLFE',  # Azealia Banks 9/23/2025
-        'FVEL',  # Sofia Isella 9/29/2025
-        'FVEL',  # Adrianne Lenker 10/3/2025
-        'VLFE',  # Owen Cook 10/6/2025
-        'LVFE',  # Nick LS De Cesare 10/10/2025
-        'VEFL',  # Kobe Bryant 10/14/2025
-        'FVEL',  # Bjork 10/18/2025
-        'EFVL',  # HRH Collection 10/21/2025
-        'VLFE',  # Bo Burnham 10/27/2025
-        'VELF',  # Seal 11/3/2025
-        'ELVF',  # Asmongold 11/6/2025 (theory)
-        'FLEV',  # Kurt Cobain 11/10/2025
-        'FEVL',  # Kate Moss 11/17/2025
-        'VELF',  # Paris Hilton 11/30/2025
-        'VEFL',  # Vic DiCara 12/8/2025
-        'FEVL',  # David Lynch 12/12/2025
-        'VLFE',  # Courtney Love 12/15/2025
+        'FLVE', # Bailey Sarian 9/22/2025
+        'VLFE', # Azealia Banks 9/23/2025
+        'FVEL', # Sofia Isella 9/29/2025
+        'FVEL', # Adrianne Lenker 10/3/2025
+        'VLFE', # Owen Cook 10/6/2025
+        'LVFE', # Nick LS De Cesare 10/10/2025
+        'VEFL', # Kobe Bryant 10/14/2025
+        'FVEL', # Bjork 10/18/2025
+        'EFVL', # HRH Collection 10/21/2025
+        'VLFE', # Bo Burnham 10/27/2025
+        'VELF', # Seal 11/3/2025
+        'ELVF', # Asmongold 11/6/2025 (theory)
+        'FLEV', # Kurt Cobain 11/10/2025
+        'FEVL', # Kate Moss 11/17/2025
+        'VELF', # Paris Hilton 11/30/2025
+        'VEFL', # Vic DiCara 12/8/2025
+        'FEVL', # David Lynch 12/12/2025
+        'VLFE', # Courtney Love 12/15/2025
         'EFLV', # Trisha Paytas 12/29/2025
+        'FELV', # JMSN 1/5/2026
     ]
     paid_typings = {
         # as of 12/16/2025
@@ -70,11 +71,12 @@ class TypingStats:
             for ap_type, count in self.paid_typings.items():
                 self.all_typings.extend(itertools.repeat(ap_type, count))
 
-        type_set = set(self.all_typings)
+        self.type_set = set(self.all_typings)
 
         attitude_counts = self.calculate_attitude_counts()
-
         type_counts = self.calculate_type_counts()
+        sexta_counts = self.calculate_sexta_counts()
+        sexta_dir_counts = self.calculate_sexta_dir_counts()
         missing_types = [ap_type for ap_type, count in type_counts.items() if count == 0]
 
         print(f'Type counts ({len(missing_types)} missing)')
@@ -84,6 +86,16 @@ class TypingStats:
 
         print(f'Attitude counts ({self.get_missing_count(attitude_counts)} missing):')
         for key, count in attitude_counts.items():
+            print(f'- {key}: {count} ({self.get_percentage(count)})')
+        print()
+
+        print(f'Sexta counts ({self.get_missing_count(sexta_counts)} missing):')
+        for key, count in sexta_counts.items():
+            print(f'- {key}: {count} ({self.get_percentage(count)})')
+        print()
+
+        print(f'Sexta counts with 1st attitude ({self.get_missing_count(sexta_dir_counts)} missing):')
+        for key, count in sexta_dir_counts.items():
             print(f'- {key}: {count} ({self.get_percentage(count)})')
         print()
 
@@ -102,9 +114,9 @@ class TypingStats:
         self.print_blocks('Realist', 'L', 'F')
 
         print('Summary:')
-        print(f'- {len(self.all_typings)} typings ({len(type_set)} unique)')
+        print(f'- {len(self.all_typings)} typings')
         missing_types_suffix = self.get_missing_suffix(missing_types)
-        print(f'- {len(type_set)} of 24 types{missing_types_suffix}')
+        print(f'- {len(self.type_set)} of 24 types{missing_types_suffix}')
         missing_pairs_suffix = self.get_missing_suffix(self.missing_pairs)
         print(f'- {36-len(self.missing_pairs)} of 36 function/block pairs{missing_pairs_suffix}')
         missing_pairs_dir_suffix = self.get_missing_suffix(self.missing_pairs_dir)
@@ -123,12 +135,58 @@ class TypingStats:
 
     def calculate_type_counts(self):
         type_counts = {}
-        for ap_type in self.paid_typings.keys():
+        for ap_type in self.type_set:
             type_counts[ap_type] = 0
 
         for ap_type in self.all_typings:
             type_counts[ap_type] += 1
         return dict(sorted(type_counts.items(), key=lambda item: item[1], reverse=True))
+
+    def calculate_sexta_counts(self):
+        sexta_counts = {}
+        sexta_map = {
+            # key is results aspects in alphabetical order
+            'EF': 'Ena',
+            'EL': 'Dio',
+            'EV': 'Tria',
+            'LV': 'Tessera',
+            'FV': 'Pente',
+            'FL': 'Exi'
+        }
+        for sexta in sexta_map.values():
+            sexta_counts[sexta] = 0
+
+        for ap_type in self.all_typings:
+            results_aspects = ''.join(sorted([ap_type[0], ap_type[3]]))
+            sexta = sexta_map[results_aspects]
+            sexta_counts[sexta] += 1
+        return dict(sorted(sexta_counts.items(), key=lambda item: item[1], reverse=True))
+
+    def calculate_sexta_dir_counts(self):
+        sexta_dir_counts = {}
+        sexta_map = {
+            # key is unsorted results aspects
+            'EF': 'Ena 1E',
+            'EL': 'Dio 1E',
+            'EV': 'Tria 1E',
+            'LV': 'Tessera 1L',
+            'FV': 'Pente 1F',
+            'FL': 'Exi 1F',
+            'FE': 'Ena 1F',
+            'LE': 'Dio 1L',
+            'VE': 'Tria 1V',
+            'VL': 'Tessera 1V',
+            'VF': 'Pente 1V',
+            'LF': 'Exi 1L',
+        }
+        for sexta in sexta_map.values():
+            sexta_dir_counts[sexta] = 0
+
+        for ap_type in self.all_typings:
+            results_aspects = f'{ap_type[0]}{ap_type[3]}'
+            sexta = sexta_map[results_aspects]
+            sexta_dir_counts[sexta] += 1
+        return dict(sorted(sexta_dir_counts.items(), key=lambda item: item[1], reverse=True))
 
     def get_percentage(self, count: int) -> str:
         if len(self.all_typings) > 0:
