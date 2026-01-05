@@ -95,7 +95,7 @@ class TypingStats:
         self.calculate_functions_by_block('Realist', 'L', 'F')
 
         print('Summary:')
-        print(f'- {len(self.all_typings)} typings')
+        print(f'- {len(self.all_typings)} total typings ({len(self.all_typings) - len(self.type_set)} duplicate types)')
         missing_types_suffix = self.get_missing_suffix(missing_types)
         print(f'- {len(self.type_set)} of 24 types{missing_types_suffix}')
         missing_pairs_suffix = self.get_missing_suffix(self.missing_pairs)
