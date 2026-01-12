@@ -5,41 +5,42 @@ import itertools
 class TypingStats:
     # typing videos with new definitions
     celebrity_typings = [
-        'EVFL', # Mr. Rogers 9/2/2025
-        'VLEF', # Neil DeGrasse Tyson, 9/5/2025
-        'FVLE',  # Adriana Lima 9/8/2025
-        # 'VFEL', # Kate Moss 9/15/2025 (retyped 11/17/2025)
-        'FLVE',  # Bailey Sarian 9/22/2025
-        'VLFE',  # Azealia Banks 9/23/2025
-        'FVEL',  # Sofia Isella 9/29/2025
-        'FVEL',  # Adrianne Lenker 10/3/2025
-        'VLFE',  # Owen Cook 10/6/2025
-        'LVFE',  # Nick LS De Cesare 10/10/2025
-        'VEFL',  # Kobe Bryant 10/14/2025
-        'FVEL',  # Bjork 10/18/2025
-        'EFVL',  # HRH Collection 10/21/2025
-        'VLFE',  # Bo Burnham 10/27/2025
-        'VELF',  # Seal 11/3/2025
-        'ELVF',  # Asmongold 11/6/2025 (theory)
-        'FLEV',  # Kurt Cobain 11/10/2025
-        'FEVL',  # Kate Moss 11/17/2025
-        'VELF',  # Paris Hilton 11/30/2025
-        'VEFL',  # Vic DiCara 12/8/2025
-        'FEVL',  # David Lynch 12/12/2025
-        'VLFE',  # Courtney Love 12/15/2025
-        'EFLV',  # Trisha Paytas 12/29/2025 <- last video I've seen
-        'FELV',  # JMSN 1/5/2026
-        # Retypings episode 1/12/206
-        'EFVL', # Chappell Roan
-        'VLEF', # Grimes
-        'FLVE', # Jenna Ortega
-        'VELF', # Rihanna
-        'FVLE', # Matthew Bellamy
-        'VLFE', # Philip DeFranco
-        'LVFE', # Sandra Bullock
-        'FELV', # Aaron Paul
-        'VFLE', # Gillian Anderson (? TBD)
-        'VELF', # Madonna
+        # From Celebrity Typing videos
+        'EFVL',  # 10.1 - Chappell Roan
+        'VLEF',  # 10.1 - Grimes
+        'FLVE',  # 10.1 - Jenna Ortega
+        'VELF',  # 10.1 - Rihanna
+        'FVLE',  # 10.1 - Matthew Bellamy
+        'VLFE',  # 10.1 - Philip DeFranco
+        'LVFE',  # 10.1 - Sandra Bullock
+        'FELV',  # 10.1 - Aaron Paul
+        'VFLE',  # 10.1 - Gillian Anderson (? TBD)
+        'VELF',  # 10.1 - Madonna
+        'EVFL', # 33 - Mr. Rogers
+        'VLEF', # 34 - Neil DeGrasse Tyson
+        'FVLE',  # 35 - Adriana Lima
+        'FEVL',  # 36.1 - Kate Moss
+        'FLVE',  # 37 - Bailey Sarian
+        'VLFE',  # 38 - Azealia Banks
+        'FVEL',  # 39 - Sofia Isella
+        'FVEL',  # 40 - Adrianne Lenker
+        'VLFE',  # 41 - Owen Cook
+        'LVFE',  # 42 - Nick LS De Cesare
+        'VEFL',  # 43 - Kobe Bryant
+        'FVEL',  # 44 - Bjork
+        'EFVL',  # 45 - HRH Collection
+        'VLFE',  # 46 - Bo Burnham
+        'VELF',  # 47 - Seal
+        'FLEV',  # 48 - Kurt Cobain
+        'VELF',  # 49 - Paris Hilton
+        'VEFL',  # 50 - Vic DiCara
+        'FEVL',  # 51 - David Lynch
+        'VLFE',  # 52 - Courtney Love
+        'EFLV',  # 53 - Trisha Paytas
+        'FELV',  # 54 - JMSN
+
+        # From Theory videos
+        'ELVF',  # Asmongold (4F: Refusing To Process the Aspect)
     ]
     paid_typings = {
         # as of 12/16/2025
