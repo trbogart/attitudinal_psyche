@@ -5,6 +5,8 @@ import itertools
 class TypingStats:
     # typing videos with new definitions
     celebrity_typings = [
+        'EVFL', # Mr. Rogers 9/2/2025
+        'VLEF', # Neil DeGrasse Tyson, 9/5/2025
         'FVLE',  # Adriana Lima 9/8/2025
         # 'VFEL', # Kate Moss 9/15/2025 (retyped 11/17/2025)
         'FLVE',  # Bailey Sarian 9/22/2025
@@ -27,6 +29,17 @@ class TypingStats:
         'VLFE',  # Courtney Love 12/15/2025
         'EFLV',  # Trisha Paytas 12/29/2025 <- last video I've seen
         'FELV',  # JMSN 1/5/2026
+        # Retypings episode 1/12/206
+        'EFVL', # Chappell Roan
+        'VLEF', # Grimes
+        'FLVE', # Jenna Ortega
+        'VELF', # Rihanna
+        'FVLE', # Matthew Bellamy
+        'VLFE', # Philip DeFranco
+        'LVFE', # Sandra Bullock
+        'FELV', # Aaron Paul
+        'VFLE', # Gillian Anderson (? TBD)
+        'VELF', # Madonna
     ]
     paid_typings = {
         # as of 12/16/2025
@@ -175,18 +188,18 @@ class TypingStats:
         sexta_1st_att_counts = {}
         sexta_map = {
             # key is unsorted results aspects
-            'FE': 'Ena 1F',
-            'EF': 'Ena 1E',
-            'LE': 'Dio 1L',
-            'EL': 'Dio 1E',
-            'VE': 'Tria 1V',
-            'EV': 'Tria 1E',
-            'VL': 'Tessera 1V',
-            'LV': 'Tessera 1L',
-            'VF': 'Pente 1V',
-            'FV': 'Pente 1F',
-            'LF': 'Exi 1L',
-            'FL': 'Exi 1F',
+            'FE': 'Ena 1F 4E',
+            'EF': 'Ena 1E 4F',
+            'LE': 'Dio 1L 4E',
+            'EL': 'Dio 1E 4L',
+            'VE': 'Tria 1V 4E',
+            'EV': 'Tria 1E 4V',
+            'VL': 'Tessera 1V 4L',
+            'LV': 'Tessera 1L 4V',
+            'VF': 'Pente 1V 4F',
+            'FV': 'Pente 1F 4V',
+            'LF': 'Exi 1L 4F',
+            'FL': 'Exi 1F 4L',
         }
         for sexta in sexta_map.values():
             sexta_1st_att_counts[sexta] = 0
