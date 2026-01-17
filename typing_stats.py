@@ -6,38 +6,39 @@ class TypingStats:
     # typing videos with new definitions
     celebrity_typings = [
         # From Celebrity Typing videos
-        'EFVL',  # 10.1 - Chappell Roan
-        'VLEF',  # 10.1 - Grimes
-        'FLVE',  # 10.1 - Jenna Ortega
-        'VELF',  # 10.1 - Rihanna
-        'FVLE',  # 10.1 - Matthew Bellamy
-        'VLFE',  # 10.1 - Philip DeFranco
-        'LVFE',  # 10.1 - Sandra Bullock
-        'FELV',  # 10.1 - Aaron Paul
-        'VFLE',  # 10.1 - Gillian Anderson (? TBD)
-        'VELF',  # 10.1 - Madonna
+        'EFVL', # 10.1 - Chappell Roan
+        'VLEF', # 10.1 - Grimes
+        'FLVE', # 10.1 - Jenna Ortega
+        'VELF', # 10.1 - Rihanna
+        'FVLE', # 10.1 - Matthew Bellamy
+        'VLFE', # 10.1 - Philip DeFranco
+        'LVFE', # 10.1 - Sandra Bullock
+        'FELV', # 10.1 - Aaron Paul
+        'VFLE', # 10.1 - Gillian Anderson (? TBD)
+        'VELF', # 10.1 - Madonna
         'EVFL', # 33 - Mr. Rogers
         'VLEF', # 34 - Neil DeGrasse Tyson
-        'FVLE',  # 35 - Adriana Lima
-        'FEVL',  # 36.1 - Kate Moss
-        'FLVE',  # 37 - Bailey Sarian
-        'VLFE',  # 38 - Azealia Banks
-        'FVEL',  # 39 - Sofia Isella
-        'FVEL',  # 40 - Adrianne Lenker
-        'VLFE',  # 41 - Owen Cook
-        'LVFE',  # 42 - Nick LS De Cesare
-        'VEFL',  # 43 - Kobe Bryant
-        'FVEL',  # 44 - Bjork
-        'EFVL',  # 45 - HRH Collection
-        'VLFE',  # 46 - Bo Burnham
-        'VELF',  # 47 - Seal
-        'FLEV',  # 48 - Kurt Cobain
-        'VELF',  # 49 - Paris Hilton
-        'VEFL',  # 50 - Vic DiCara
-        'FEVL',  # 51 - David Lynch
-        'VLFE',  # 52 - Courtney Love
-        'EFLV',  # 53 - Trisha Paytas
-        'FELV',  # 54 - JMSN
+        'FVLE', # 35 - Adriana Lima
+        'FEVL', # 36.1 - Kate Moss
+        'FLVE', # 37 - Bailey Sarian
+        'VLFE', # 38 - Azealia Banks
+        'FVEL', # 39 - Sofia Isella
+        'FVEL', # 40 - Adrianne Lenker
+        'VLFE', # 41 - Owen Cook
+        'LVFE', # 42 - Nick LS De Cesare
+        'VEFL', # 43 - Kobe Bryant
+        'FVEL', # 44 - Bjork
+        'EFVL', # 45 - HRH Collection
+        'VLFE', # 46 - Bo Burnham
+        'VELF', # 47 - Seal
+        'FLEV', # 48 - Kurt Cobain
+        'VELF', # 49 - Paris Hilton
+        'VEFL', # 50 - Vic DiCara
+        'FEVL', # 51 - David Lynch
+        'VLFE', # 52 - Courtney Love
+        'EFLV', # 53 - Trisha Paytas
+        'FELV', # 54 - JMSN
+        'LFVE', # 55 - Carl Jung
 
         # From Theory videos
         'ELVF',  # Asmongold (4F: Refusing To Process the Aspect)
