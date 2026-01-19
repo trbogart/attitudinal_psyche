@@ -39,6 +39,7 @@ class TypingStats:
         'EFLV', # 53 - Trisha Paytas
         'FELV', # 54 - JMSN
         'LFVE', # 55 - Carl Jung
+        'VELF', # 56 - Hayley Williams
 
         # From Theory videos
         'ELVF',  # Asmongold (4F: Refusing To Process the Aspect)
