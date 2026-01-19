@@ -87,12 +87,12 @@ class TypingStats:
             for ap_type, count in self.paid_typings.items():
                 self.all_typings.extend(itertools.repeat(ap_type, count))
 
-        self.type_set = set(self.all_typings)
+        unique_type_count = len(set(self.all_typings))
 
         attitude_counts = self.calculate_attitude_counts()
         type_counts = self.calculate_type_counts()
         sexta_counts = self.calculate_sexta_counts()
-        sexta_1st_att_counts = self.calculate_sexta_1st_att_counts()
+        sexta_1pos_counts = self.calculate_sexta_1pos_counts()
         missing_types = [ap_type for ap_type, count in type_counts.items() if count == 0]
 
         # init variables calculated by calculate_functions_by_block
@@ -111,9 +111,9 @@ class TypingStats:
         self.calculate_functions_by_block('Realist', 'L', 'F')
 
         print('Summary:')
-        print(f'- {len(self.all_typings)} total typings ({len(self.all_typings) - len(self.type_set)} duplicate types)')
+        print(f'- {len(self.all_typings)} total typings ({len(self.all_typings) - unique_type_count} duplicate types)')
         missing_types_suffix = self.get_missing_suffix(missing_types)
-        print(f'- {len(self.type_set)} of 24 types{missing_types_suffix}')
+        print(f'- {unique_type_count} of 24 types{missing_types_suffix}')
         missing_pairs_suffix = self.get_missing_suffix(self.missing_pairs)
         print(f'- {36 - len(self.missing_pairs)} of 36 function/block pairs{missing_pairs_suffix}')
         missing_pairs_dir_suffix = self.get_missing_suffix(self.missing_pairs_dir)
@@ -136,8 +136,8 @@ class TypingStats:
             print(f'- {key}: {count} ({self.get_percentage(count)})')
 
         print()
-        print(f'Sexta counts with 1st attitude ({self.get_missing_count(sexta_1st_att_counts)} missing):')
-        for key, count in sexta_1st_att_counts.items():
+        print(f'Sexta counts with 1st attitude ({self.get_missing_count(sexta_1pos_counts)} missing):')
+        for key, count in sexta_1pos_counts.items():
             print(f'- {key}: {count} ({self.get_percentage(count)})')
 
         for functions in self.functions_by_block:
@@ -187,7 +187,7 @@ class TypingStats:
             sexta_counts[sexta] += 1
         return dict(sorted(sexta_counts.items(), key=lambda item: item[1], reverse=True))
 
-    def calculate_sexta_1st_att_counts(self):
+    def calculate_sexta_1pos_counts(self):
         sexta_1st_att_counts = {}
         sexta_map = {
             # key is unsorted results aspects
