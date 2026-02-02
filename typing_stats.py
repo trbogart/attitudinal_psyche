@@ -40,6 +40,7 @@ class TypingStats:
         'FELV', # 54 - JMSN
         'LFVE', # 55 - Carl Jung
         'VELF', # 56 - Hayley Williams
+        'EVLF', # 57 - Taylor Swift
 
         # From Theory videos
         'ELVF',  # Asmongold (4F: Refusing To Process the Aspect)
