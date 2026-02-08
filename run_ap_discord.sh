@@ -36,6 +36,9 @@ source .venv/bin/activate || error "Unable to activate venv"
 log "Installing pip"
 run_python "Unable to install pip" -m ensurepip
 
+log "Upgrading pip"
+run_python "Unable to upgrade pip" -m pip install --upgrade pip
+
 log "Upgrading dependencies"
 pip install -q -U pip -r requirements.txt --require-virtualenv || error "Unable to upgrade dependencies"
 
