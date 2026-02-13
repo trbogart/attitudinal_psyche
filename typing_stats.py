@@ -44,6 +44,7 @@ class TypingStats:
         'EVLF', # Yorgos Lanthimos
         'EVLF', # Taylor Swift
         'FEVL', # Addison Rae
+        'VELF', # PinkPantheress
 
         # From Theory videos
         'ELVF',  # Asmongold (4F: Refusing To Process the Aspect)
