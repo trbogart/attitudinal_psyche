@@ -45,6 +45,10 @@ class TypingStats:
         'EVLF', # Taylor Swift
         'FEVL', # Addison Rae
         'VELF', # PinkPantheress
+        'EVFL', # Chester Bennington
+        'FEVL', # Michelle Pfeiffer
+        'VELF', # Brit Marling
+        'EFVL' , # Nicki Minaj
 
         # From Theory videos
         'ELVF',  # Asmongold (4F: Refusing To Process the Aspect)
