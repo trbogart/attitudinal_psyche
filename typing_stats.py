@@ -48,7 +48,8 @@ class TypingStats:
         'EVFL', # Chester Bennington
         'FEVL', # Michelle Pfeiffer
         'VELF', # Brit Marling
-        'EFVL' , # Nicki Minaj
+        'EFVL', # Nicki Minaj
+        'FVLE', # Lucy Lawless
 
         # From Theory videos
         'ELVF',  # Asmongold (4F: Refusing To Process the Aspect)
