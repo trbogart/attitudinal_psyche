@@ -137,7 +137,7 @@ class TypingStats:
         print(f'{' & '.join(typing_types)} Typing Stats {date.today()}')
 
         print('Summary:')
-        print(f'- {len(self.all_typings)} total typings ({len(self.all_typings) - unique_type_count} duplicate types)')
+        print(f'- {len(self.all_typings)} total typings')
         missing_types_suffix = self.get_missing_suffix(missing_types)
         print(f'- {unique_type_count} of 24 types{missing_types_suffix}')
         missing_pairs_suffix = self.get_missing_suffix(self.missing_pairs)
@@ -147,22 +147,22 @@ class TypingStats:
             f'- {72 - len(self.missing_pairs_dir)} of 72 function/block pairs (directional){missing_pairs_dir_suffix}')
 
         print()
-        print(f'Type counts ({len(missing_types)} missing)')
+        print(f'Type counts{self.get_missing_suffix(missing_types)}')
         for ap_type, count in type_counts.items():
             print(f'- {ap_type}: {count} ({self.get_percentage(count)})')
 
         print()
-        print(f'Attitude counts ({self.get_missing_count(attitude_counts)} missing):')
+        print(f'Attitude counts{self.get_missing_suffix(attitude_counts)}')
         for key, count in attitude_counts.items():
             print(f'- {key}: {count} ({self.get_percentage(count)})')
 
         print()
-        print(f'Sexta counts ({self.get_missing_count(sexta_counts)} missing):')
+        print(f'Sexta counts{self.get_missing_suffix(sexta_counts)}')
         for key, count in sexta_counts.items():
             print(f'- {key}: {count} ({self.get_percentage(count)})')
 
         print()
-        print(f'Sexta counts with 1st attitude ({self.get_missing_count(sexta_1pos_counts)} missing):')
+        print(f'Sexta counts with 1st attitude{self.get_missing_suffix(sexta_1pos_counts)}')
         for key, count in sexta_1pos_counts.items():
             print(f'- {key}: {count} ({self.get_percentage(count)})')
 
@@ -177,11 +177,15 @@ class TypingStats:
                 print(function)
 
     @staticmethod
-    def get_missing_suffix(missing_list: list) -> str:
-        if len(missing_list) > 0:
-            list_str = f'{', '.join(missing_list)}' if len(missing_list) > 0 else 'None'
-            return f' - missing {len(missing_list)}: {list_str}'
-        return ''
+    def get_missing_suffix(missing_list_or_counts) -> str:
+        if isinstance(missing_list_or_counts, dict):
+            missing_items = [key for key, count in missing_list_or_counts.items() if count == 0]
+        else:
+            missing_items = missing_list_or_counts
+
+        if len(missing_items) == 0:
+            return ''
+        return f' - missing {len(missing_items)}: {', '.join(missing_items)}'
 
     @staticmethod
     def get_missing_count(counts: dict[str, int]) -> int:
