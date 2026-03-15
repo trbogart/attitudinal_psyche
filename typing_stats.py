@@ -1,4 +1,5 @@
 # temporary script to calculate function/blocks that have been found with new typings
+from datetime import date
 import itertools
 
 
@@ -93,16 +94,19 @@ class TypingStats:
     }
 
     def __init__(self, include_celebrities: bool = True, include_community: bool = False):
+        typing_types = []
         for ap_type in self.celebrity_typings:
             self.validate_ap_type(ap_type)
         for ap_type in self.community_typings.keys():
             self.validate_ap_type(ap_type)
 
         if include_celebrities:
+            typing_types.append('Celebrity')
             self.all_typings = self.celebrity_typings
         else:
             self.all_typings = []
         if include_community:
+            typing_types.append('Paid')
             for ap_type, count in self.community_typings.items():
                 self.all_typings.extend(itertools.repeat(ap_type, count))
 
@@ -129,6 +133,8 @@ class TypingStats:
 
         self.calculate_blocks('Conceptualist', 'V', 'E')
         self.calculate_blocks('Realist', 'L', 'F')
+
+        print(f'{' & '.join(typing_types)} Typing Stats {date.today()}')
 
         print('Summary:')
         print(f'- {len(self.all_typings)} total typings ({len(self.all_typings) - unique_type_count} duplicate types)')
