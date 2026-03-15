@@ -1,56 +1,56 @@
 # temporary script to calculate function/blocks that have been found with new typings
-from datetime import date
 import itertools
+from datetime import date
 
 
 class TypingStats:
     # typing videos with new definitions
     celebrity_typings = [
         # From Celebrity Typing videos
-        'EFVL', # Chappell Roan
-        'VLEF', # Grimes
-        'FLVE', # Jenna Ortega
-        'VELF', # Rihanna
-        'FVLE', # Matthew Bellamy
-        'VLFE', # Philip DeFranco
-        'LVFE', # Sandra Bullock
-        'FELV', # Aaron Paul
-        'VFLE', # Gillian Anderson (? TBD)
-        'VELF', # Madonna
-        'EVFL', # Mr. Rogers
-        'VLEF', # Neil DeGrasse Tyson
-        'FVLE', # Adriana Lima
-        'FEVL', # Kate Moss
-        'FLVE', # Bailey Sarian
-        'VLFE', # Azealia Banks
-        'FVEL', # Sofia Isella
-        'FVEL', # Adrianne Lenker
-        'VLFE', # Owen Cook
-        'LVFE', # Nick LS De Cesare
-        'VEFL', # Kobe Bryant
-        'FVEL', # Bjork
-        'EFVL', # HRH Collection
-        'VLFE', # Bo Burnham
-        'VELF', # Seal
-        'FLEV', # Kurt Cobain
-        'VELF', # Paris Hilton
-        'VEFL', # Vic DiCara
-        'FEVL', # David Lynch
-        'VLFE', # Courtney Love
-        'EFLV', # Trisha Paytas
-        'FELV', # JMSN
-        'LFVE', # Carl Jung
-        'VELF', # Hayley Williams
-        'VFEL', # Chino Moreno
-        'EVLF', # Yorgos Lanthimos
-        'EVLF', # Taylor Swift
-        'FEVL', # Addison Rae
-        'VELF', # PinkPantheress
-        'EVFL', # Chester Bennington
-        'FEVL', # Michelle Pfeiffer
-        'VELF', # Brit Marling
-        'EFVL', # Nicki Minaj
-        'FVLE', # Lucy Lawless
+        'EFVL',  # Chappell Roan
+        'VLEF',  # Grimes
+        'FLVE',  # Jenna Ortega
+        'VELF',  # Rihanna
+        'FVLE',  # Matthew Bellamy
+        'VLFE',  # Philip DeFranco
+        'LVFE',  # Sandra Bullock
+        'FELV',  # Aaron Paul
+        'VFLE',  # Gillian Anderson (? TBD)
+        'VELF',  # Madonna
+        'EVFL',  # Mr. Rogers
+        'VLEF',  # Neil DeGrasse Tyson
+        'FVLE',  # Adriana Lima
+        'FEVL',  # Kate Moss
+        'FLVE',  # Bailey Sarian
+        'VLFE',  # Azealia Banks
+        'FVEL',  # Sofia Isella
+        'FVEL',  # Adrianne Lenker
+        'VLFE',  # Owen Cook
+        'LVFE',  # Nick LS De Cesare
+        'VEFL',  # Kobe Bryant
+        'FVEL',  # Bjork
+        'EFVL',  # HRH Collection
+        'VLFE',  # Bo Burnham
+        'VELF',  # Seal
+        'FLEV',  # Kurt Cobain
+        'VELF',  # Paris Hilton
+        'VEFL',  # Vic DiCara
+        'FEVL',  # David Lynch
+        'VLFE',  # Courtney Love
+        'EFLV',  # Trisha Paytas
+        'FELV',  # JMSN
+        'LFVE',  # Carl Jung
+        'VELF',  # Hayley Williams
+        'VFEL',  # Chino Moreno
+        'EVLF',  # Yorgos Lanthimos
+        'EVLF',  # Taylor Swift
+        'FEVL',  # Addison Rae
+        'VELF',  # PinkPantheress
+        'EVFL',  # Chester Bennington
+        'FEVL',  # Michelle Pfeiffer
+        'VELF',  # Brit Marling
+        'EFVL',  # Nicki Minaj
+        'FVLE',  # Lucy Lawless
 
         # From Theory videos
         'ELVF',  # Asmongold (4F: Refusing To Process the Aspect)
@@ -82,7 +82,7 @@ class TypingStats:
         'FVEL': 11,
         'FEVL': 6,
     }
-    valid_types = sorted('FELV')
+    sorted_aspects = sorted('FELV')
 
     function_names = {
         '1+2': 'Lifeblood',
@@ -252,7 +252,7 @@ class TypingStats:
     def calculate_attitude_counts(self):
         attitude_counts = {}
         for pos in range(1, 5):
-            for aspect in ['V', 'L', 'F', 'E']:
+            for aspect in self.sorted_aspects:
                 attitude = f'{pos}{aspect}'
                 attitude_counts[attitude] = 0
         for ap_type in self.all_typings:
@@ -311,7 +311,7 @@ class TypingStats:
         self.functions_by_block.append(functions)
 
     def validate_ap_type(self, ap_type: str):
-        if sorted(ap_type) != self.valid_types:
+        if sorted(ap_type) != self.sorted_aspects:
             raise ValueError(f'Invalid AP type: {ap_type}')
 
 
