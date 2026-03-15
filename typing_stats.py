@@ -82,7 +82,7 @@ class TypingStats:
         'FVEL': 11,
         'FEVL': 6,
     }
-    sorted_aspects = sorted('FELV')
+    sorted_aspects = sorted('FVLE')
 
     function_names = {
         '1+2': 'Lifeblood',
