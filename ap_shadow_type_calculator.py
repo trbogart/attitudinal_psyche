@@ -226,7 +226,7 @@ class ShadowTypes:
             self.shadow_types[shadow_type_str] = f'{self.shadow_types[shadow_type_str]} and {subtype}'
         else:
             self.last_shadow_type[pos1 - 1], self.last_shadow_type[pos2 - 1] = self.last_shadow_type[pos2 - 1], \
-            self.last_shadow_type[pos1 - 1]
+                self.last_shadow_type[pos1 - 1]
             shadow_type_str = ''.join(self.last_shadow_type)
             self.debug(f'Swapped {subtype} -> {shadow_type_str}')
             if obscured_subtype:

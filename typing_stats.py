@@ -54,47 +54,56 @@ class TypingStats:
         # From Theory videos
         'ELVF',  # Asmongold (4F: Refusing To Process the Aspect)
     ]
-    paid_typings = {
-        # as of 12/16/2025
-        'FVLE': 5,
-        'FLVE': 9,
-        'EVLF': 2,
-        'ELVF': 4,
-        'LVFE': 2,
-        'LFVE': 1,
-        'EVFL': 1,
-        'EFVL': 1,
-        'VLFE': 7,
-        'VFLE': 3,
-        'ELFV': 0,
-        'EFLV': 0,
-        'VFEL': 3,
-        'VEFL': 4,
-        'LFEV': 0,
+    community_typings = {
+        # as of 3/14/2026
+        'FVLE': 15,
+        'FLVE': 13,
+        'EVLF': 5,
+        'ELVF': 5,
+        'LVFE': 5,
+        'LFVE': 2,
+        'EVFL': 6,
+        'EFVL': 6,
+        'VLFE': 10,
+        'VFLE': 11,
+        'ELFV': 1,
+        'EFLV': 2,
+        'VFEL': 5,
+        'VEFL': 6,
+        'LFEV': 1,
         'LEFV': 0,
-        'VLEF': 4,
-        'VELF': 3,
-        'FLEV': 4,
-        'FELV': 3,
-        'LVEF': 4,
-        'LEVF': 1,
-        'FVEL': 7,
+        'VLEF': 7,
+        'VELF': 11,
+        'FLEV': 5,
+        'FELV': 5,
+        'LVEF': 7,
+        'LEVF': 2,
+        'FVEL': 11,
         'FEVL': 6,
     }
     valid_types = sorted('FELV')
 
-    def __init__(self, include_celebrities: bool = True, include_paid: bool = False):
+    function_names = {
+        '1+2': 'Lifeblood',
+        '1+3': 'Security',
+        '1+4': 'Launch',
+        '2+3': 'Spin-out',
+        '2+4': 'Haphazard',
+        '3+4': 'Burnout'
+    }
+
+    def __init__(self, include_celebrities: bool = True, include_community: bool = False):
         for ap_type in self.celebrity_typings:
             self.validate_ap_type(ap_type)
-        for ap_type in self.paid_typings.keys():
+        for ap_type in self.community_typings.keys():
             self.validate_ap_type(ap_type)
 
         if include_celebrities:
             self.all_typings = self.celebrity_typings
         else:
             self.all_typings = []
-        if include_paid:
-            for ap_type, count in self.paid_typings.items():
+        if include_community:
+            for ap_type, count in self.community_typings.items():
                 self.all_typings.extend(itertools.repeat(ap_type, count))
 
         unique_type_count = len(set(self.all_typings))
@@ -108,17 +117,18 @@ class TypingStats:
         # init variables calculated by calculate_functions_by_block
         self.missing_pairs = []
         self.missing_pairs_dir = []
+        self.block_counts = []
         self.functions_by_block = []
 
         # blocks
-        self.calculate_functions_by_block('Strategist', 'V', 'L')
-        self.calculate_functions_by_block('Reactivist', 'F', 'E')
+        self.calculate_blocks('Experiencer', 'V', 'F')
+        self.calculate_blocks('Evaluator', 'L', 'E')
 
-        self.calculate_functions_by_block('Experiencer', 'V', 'F')
-        self.calculate_functions_by_block('Evaluator', 'L', 'E')
+        self.calculate_blocks('Strategist', 'V', 'L')
+        self.calculate_blocks('Reactivist', 'F', 'E')
 
-        self.calculate_functions_by_block('Conceptualist', 'V', 'E')
-        self.calculate_functions_by_block('Realist', 'L', 'F')
+        self.calculate_blocks('Conceptualist', 'V', 'E')
+        self.calculate_blocks('Realist', 'L', 'F')
 
         print('Summary:')
         print(f'- {len(self.all_typings)} total typings ({len(self.all_typings) - unique_type_count} duplicate types)')
@@ -150,6 +160,11 @@ class TypingStats:
         for key, count in sexta_1pos_counts.items():
             print(f'- {key}: {count} ({self.get_percentage(count)})')
 
+        for i, block in enumerate(self.block_counts):
+            if i % 2 == 0:
+                print()
+            print(block)
+
         for functions in self.functions_by_block:
             print()
             for function in functions:
@@ -169,8 +184,8 @@ class TypingStats:
     def calculate_type_counts(self):
         type_counts = {}
 
-        # iterate over paid_typings, which includes all types in standard order
-        for ap_type in self.paid_typings:
+        # iterate over community_typings, which includes all types in standard order
+        for ap_type in self.community_typings:
             type_counts[ap_type] = 0
 
         for ap_type in self.all_typings:
@@ -241,16 +256,22 @@ class TypingStats:
                 attitude_counts[attitude] += 1
         return dict(sorted(attitude_counts.items(), key=lambda item: item[1], reverse=True))
 
-    def calculate_functions_by_block(self, block: str, aspect1: str, aspect2: str):
-        functions = [f'Functions with {block} block ({aspect1}+{aspect2})']
+    def calculate_blocks(self, block: str, aspect1: str, aspect2: str):
+        functions = ['']  # placeholder
+        first_aspect_count = 0
         for i in range(4):
             for j in range(i + 1, 4):
                 count1 = sum(
-                    1 for _ in filter(lambda type: type[i] == aspect1 and type[j] == aspect2, self.all_typings))
+                    1 for _ in filter(lambda t: t[i] == aspect1 and t[j] == aspect2, self.all_typings))
                 count2 = sum(
-                    1 for _ in filter(lambda type: type[i] == aspect2 and type[j] == aspect1, self.all_typings))
+                    1 for _ in filter(lambda t: t[i] == aspect2 and t[j] == aspect1, self.all_typings))
 
-                aspect_string = f'{i + 1}+{j + 1}|{aspect1}+{aspect2}'
+                if i == 0:
+                    first_aspect_count += count1 + count2
+
+                aspects = f'{i + 1}+{j + 1}'
+
+                aspect_string = f'{aspects}|{aspect1}+{aspect2}'
                 aspect1_string = f'{i + 1}{aspect1}+{j + 1}{aspect2}'
                 aspect2_string = f'{i + 1}{aspect2}+{j + 1}{aspect1}'
 
@@ -278,7 +299,9 @@ class TypingStats:
                     total_string = f'{(count1 + count2)} ({self.get_percentage(count1 + count2)}) total'
                     aspects_string = f'{total_string} - {' and '.join(count_strings)}'
 
-                functions.append(f'- {i + 1}+{j + 1}: {aspects_string}')
+                functions.append(f'- {aspects} ({self.function_names[aspects]}): {aspects_string}')
+        functions[0] = f'Functions with {block} block ({aspect1}+{aspect2})'
+        self.block_counts.append(f'{first_aspect_count} {block}s ({self.get_percentage(first_aspect_count)})')
         self.functions_by_block.append(functions)
 
     def validate_ap_type(self, ap_type: str):
@@ -287,4 +310,4 @@ class TypingStats:
 
 
 if __name__ == '__main__':
-    TypingStats(include_celebrities=True, include_paid=False)
+    TypingStats(include_celebrities=True, include_community=False)
