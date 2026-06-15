@@ -139,7 +139,7 @@ class TypingStats:
         else:
             self.all_typings = []
         if include_community:
-            typing_types.append('Paid')
+            typing_types.append('Community')
             for ap_type, count in self.community_typings.items():
                 self.all_typings.extend(itertools.repeat(ap_type, count))
 
