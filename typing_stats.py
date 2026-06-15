@@ -8,86 +8,86 @@ class TypingStats:
     # typing videos with new definitions
     celebrity_typings = [
         # From Celebrity Typing videos
-        'EFVL', # Chappell Roan
-        'VLEF', # Grimes
-        'FLVE', # Jenna Ortega
-        'VELF', # Rihanna
-        'FVLE', # Matthew Bellamy
-        'VLFE', # Philip DeFranco
-        'LVFE', # Sandra Bullock
-        'FELV', # Aaron Paul
-        'VFLE', # Gillian Anderson
-        'VELF', # Madonna
-        'EVFL', # Mr. Rogers
-        'VLEF', # Neil DeGrasse Tyson
-        'FVLE', # Adriana Lima
-        'FEVL', # Kate Moss
-        'FLVE', # Bailey Sarian
-        'VLFE', # Azealia Banks
-        'FVEL', # Sofia Isella
-        'FVEL', # Adrianne Lenker
-        'VLFE', # Owen Cook
-        'LVFE', # Nick LS De Cesare
-        'VEFL', # Kobe Bryant
-        'FVEL', # Bjork
-        'EFVL', # HRH Collection
-        'VLFE', # Bo Burnham
-        'VELF', # Seal
-        'ELVF', # Asmongold
-        'FLEV', # Kurt Cobain
-        'VELF', # Paris Hilton
-        'VEFL', # Vic DiCara
-        'FEVL', # David Lynch
-        'VLFE', # Courtney Love
-        'VEFL', # Jim Carrey
-        'VELF', # David Goggins
-        'EVLF', # Bruce Lee
-        'EVFL', # Anthony Hopkins
-        'LFEV', # Billy Corgan
-        'FLEV', # Joaquin Phoenix
-        'EFLV', # Trisha Paytas
-        'FELV', # JMSN
-        'LFVE', # Carl Jung
-        'VELF', # Hayley Williams
-        'VFEL', # Chino Moreno
-        'EVLF', # Yorgos Lanthimos
-        'EVLF', # Taylor Swift
-        'FEVL', # Addison Rae
-        'VELF', # PinkPantheress
-        'EVFL', # Chester Bennington
-        'FEVL', # Michelle Pfeiffer
-        'VELF', # Brit Marling
-        'EFVL', # Nicki Minaj
-        'FVLE', # Lucy Lawless
-        'EVFL', # Lady Gaga
-        'EVFL', # Evy Poumpouras
-        'LVFE', # Vaush
-        'VLEF', # Jordan OPeterson
-        'LEVF', # Russell Brand
-        'VLFE', # Caroline Calloway
-        'FVEL', # Dua Lipa
-        'FVEL', # Eminem
-        'LFVE', # Jodie Foster
-        'FVLE', # Megan Thee Stallion
-        'LVFE', # Tyra Banks
-        'FEVL', # Pink
-        'FLEV', # Emmymade
-        'FLEV', # Jessica Pratt
-        'VFEL', # Min Yoongi
-        'LVEF', # Contrapoints
-        'EVFL', # Michelle Obama
-        'VFLE', # David Bowie
-        'VFLE', # Quentin Tarantino
-        'FVEL', # Susumu Hirasawa
-        'LVEF', # Barack Obama
-        'FVLE', # Rainbolt
-        'FVLE', # Yngwie Malmsteen
-        'VELF', # Mads Mikkelsen
-        'VFLE', # Zara Larsson
-        'LEVF', # Stephen Fry
-        'VELF', # Cristiano Ronaldo
-        'VFLE', # James Spader
-        'VFLE', # Nelly Furtado
+        'EFVL',  # Chappell Roan
+        'VLEF',  # Grimes
+        'FLVE',  # Jenna Ortega
+        'VELF',  # Rihanna
+        'FVLE',  # Matthew Bellamy
+        'VLFE',  # Philip DeFranco
+        'LVFE',  # Sandra Bullock
+        'FELV',  # Aaron Paul
+        'VFLE',  # Gillian Anderson
+        'VELF',  # Madonna
+        'EVFL',  # Mr. Rogers
+        'VLEF',  # Neil DeGrasse Tyson
+        'FVLE',  # Adriana Lima
+        'FEVL',  # Kate Moss
+        'FLVE',  # Bailey Sarian
+        'VLFE',  # Azealia Banks
+        'FVEL',  # Sofia Isella
+        'FVEL',  # Adrianne Lenker
+        'VLFE',  # Owen Cook
+        'LVFE',  # Nick LS De Cesare
+        'VEFL',  # Kobe Bryant
+        'FVEL',  # Bjork
+        'EFVL',  # HRH Collection
+        'VLFE',  # Bo Burnham
+        'VELF',  # Seal
+        'ELVF',  # Asmongold
+        'FLEV',  # Kurt Cobain
+        'VELF',  # Paris Hilton
+        'VEFL',  # Vic DiCara
+        'FEVL',  # David Lynch
+        'VLFE',  # Courtney Love
+        'VEFL',  # Jim Carrey
+        'VELF',  # David Goggins
+        'EVLF',  # Bruce Lee
+        'EVFL',  # Anthony Hopkins
+        'LFEV',  # Billy Corgan
+        'FLEV',  # Joaquin Phoenix
+        'EFLV',  # Trisha Paytas
+        'FELV',  # JMSN
+        'LFVE',  # Carl Jung
+        'VELF',  # Hayley Williams
+        'VFEL',  # Chino Moreno
+        'EVLF',  # Yorgos Lanthimos
+        'EVLF',  # Taylor Swift
+        'FEVL',  # Addison Rae
+        'VELF',  # PinkPantheress
+        'EVFL',  # Chester Bennington
+        'FEVL',  # Michelle Pfeiffer
+        'VELF',  # Brit Marling
+        'EFVL',  # Nicki Minaj
+        'FVLE',  # Lucy Lawless
+        'EVFL',  # Lady Gaga
+        'EVFL',  # Evy Poumpouras
+        'LVFE',  # Vaush
+        'VLEF',  # Jordan OPeterson
+        'LEVF',  # Russell Brand
+        'VLFE',  # Caroline Calloway
+        'FVEL',  # Dua Lipa
+        'FVEL',  # Eminem
+        'LFVE',  # Jodie Foster
+        'FVLE',  # Megan Thee Stallion
+        'LVFE',  # Tyra Banks
+        'FEVL',  # Pink
+        'FLEV',  # Emmymade
+        'FLEV',  # Jessica Pratt
+        'VFEL',  # Min Yoongi
+        'LVEF',  # Contrapoints
+        'EVFL',  # Michelle Obama
+        'VFLE',  # David Bowie
+        'VFLE',  # Quentin Tarantino
+        'FVEL',  # Susumu Hirasawa
+        'LVEF',  # Barack Obama
+        'FVLE',  # Rainbolt
+        'FVLE',  # Yngwie Malmsteen
+        'VELF',  # Mads Mikkelsen
+        'VFLE',  # Zara Larsson
+        'LEVF',  # Stephen Fry
+        'VELF',  # Cristiano Ronaldo
+        'VFLE',  # James Spader
+        'VFLE',  # Nelly Furtado
     ]
     community_typings = {
         # as of 3/14/2026
@@ -127,7 +127,9 @@ class TypingStats:
         '3+4': 'Burnout'
     }
 
-    def __init__(self, include_celebrities: bool = True, include_community: bool = False):
+    def __init__(self, include_celebrities: bool = True, include_community: bool = False,
+                 output_file: str | None = None):
+        self.out_file = open(output_file, 'w') if output_file is not None else None
         typing_types = []
         for ap_type in self.celebrity_typings:
             self.validate_ap_type(ap_type)
@@ -168,47 +170,53 @@ class TypingStats:
         self.calculate_blocks('Conceptualist', 'V', 'E')
         self.calculate_blocks('Realist', 'L', 'F')
 
-        print(f'{' & '.join(typing_types)} Typing Stats {date.today()}')
+        self._print(f'{' & '.join(typing_types)} Typing Stats {date.today()}')
 
-        print('Summary:')
-        print(f'- {len(self.all_typings)} total typings')
+        self._print('Summary:')
+        self._print(f'- {len(self.all_typings)} total typings')
         missing_types_suffix = self.get_missing_suffix(missing_types)
-        print(f'- {unique_type_count} of 24 types{missing_types_suffix}')
+        self._print(f'- {unique_type_count} of 24 types{missing_types_suffix}')
         missing_pairs_suffix = self.get_missing_suffix(self.missing_pairs)
-        print(f'- {36 - len(self.missing_pairs)} of 36 function/block pairs{missing_pairs_suffix}')
+        self._print(f'- {36 - len(self.missing_pairs)} of 36 function/block pairs{missing_pairs_suffix}')
         missing_pairs_dir_suffix = self.get_missing_suffix(self.missing_pairs_dir)
-        print(
+        self._print(
             f'- {72 - len(self.missing_pairs_dir)} of 72 function/block pairs (directional){missing_pairs_dir_suffix}')
 
-        print()
-        print(f'Type counts{self.get_missing_suffix(missing_types)}')
+        self._print()
+        self._print(f'Type counts{self.get_missing_suffix(missing_types)}')
         for ap_type, count in type_counts.items():
-            print(f'- {ap_type}: {count} ({self.get_percentage(count)})')
+            self._print(f'- {ap_type}: {count} ({self.get_percentage(count)})')
 
-        print()
-        print(f'Attitude counts{self.get_missing_suffix(attitude_counts)}')
+        self._print()
+        self._print(f'Attitude counts{self.get_missing_suffix(attitude_counts)}')
         for key, count in attitude_counts.items():
-            print(f'- {key}: {count} ({self.get_percentage(count)})')
+            self._print(f'- {key}: {count} ({self.get_percentage(count)})')
 
-        print()
-        print(f'Sexta counts{self.get_missing_suffix(sexta_counts)}')
+        self._print()
+        self._print(f'Sexta counts{self.get_missing_suffix(sexta_counts)}')
         for key, count in sexta_counts.items():
-            print(f'- {key}: {count} ({self.get_percentage(count)})')
+            self._print(f'- {key}: {count} ({self.get_percentage(count)})')
 
-        print()
-        print(f'Sexta counts with 1st attitude{self.get_missing_suffix(sexta_1pos_counts)}')
+        self._print()
+        self._print(f'Sexta counts with 1st attitude{self.get_missing_suffix(sexta_1pos_counts)}')
         for key, count in sexta_1pos_counts.items():
-            print(f'- {key}: {count} ({self.get_percentage(count)})')
+            self._print(f'- {key}: {count} ({self.get_percentage(count)})')
 
         for i, block in enumerate(self.block_counts):
             if i % 2 == 0:
-                print()
-            print(block)
+                self._print()
+            self._print(block)
 
         for functions in self.functions_by_block:
-            print()
+            self._print()
             for function in functions:
-                print(function)
+                self._print(function)
+
+    def _print(self, *values):
+        s = ''.join(values)
+        print(s)
+        if self.out_file is not None:
+            print(s, file=self.out_file)
 
     @staticmethod
     def get_missing_suffix(missing_list_or_counts) -> str:
@@ -356,11 +364,13 @@ class TypingStats:
 if __name__ == '__main__':
     parser = ArgumentParser()
     parser.add_argument('-c', '--community', action='store_true',
-                      help='Use community typing data instead of celebrity data')
+                        help='Use community typing data instead of celebrity data')
     parser.add_argument('-b', '--both', action='store_true',
-                      help='Use both celebrity and community data')
+                        help='Use both celebrity and community data')
+    parser.add_argument('-o', '--output', help='Optional output file')
     args = parser.parse_args()
     TypingStats(
         include_celebrities=args.both or not args.community,
-        include_community=args.both or args.community
+        include_community=args.both or args.community,
+        output_file=args.output
     )

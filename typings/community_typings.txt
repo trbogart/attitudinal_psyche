@@ -1,4 +1,4 @@
-Paid Typing Stats 2026-03-15
+Community Typing Stats 2026-06-15
 Summary:
 - 147 total typings
 - 23 of 24 types - missing 1: LEFV
@@ -127,4 +127,3 @@ Functions with Realist block (L+F)
 - 2+3 (Spin-out): 24 (16%) total - 13 2F+3L (9%) and 11 2L+3F (7%)
 - 2+4 (Haphazard): 23 (16%) total - 12 2L+4F (8%) and 11 2F+4L (7%)
 - 3+4 (Burnout): 28 (19%) total - 16 3L+4F (11%) and 12 3F+4L (8%)
-
