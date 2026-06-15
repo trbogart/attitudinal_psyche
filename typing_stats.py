@@ -1,5 +1,6 @@
 # temporary script to calculate function/blocks that have been found with new typings
 import itertools
+from argparse import ArgumentParser
 from datetime import date
 
 
@@ -353,4 +354,13 @@ class TypingStats:
 
 
 if __name__ == '__main__':
-    TypingStats(include_celebrities=True, include_community=False)
+    parser = ArgumentParser()
+    parser.add_argument('-c', '--community', action='store_true',
+                      help='Use community typing data instead of celebrity data')
+    parser.add_argument('-b', '--both', action='store_true',
+                      help='Use both celebrity and community data')
+    args = parser.parse_args()
+    TypingStats(
+        include_celebrities=args.both or not args.community,
+        include_community=args.both or args.community
+    )
