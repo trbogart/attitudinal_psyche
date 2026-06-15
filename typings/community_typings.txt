@@ -128,16 +128,28 @@ Functions with Realist block (L+F)
 - 2+4 (Haphazard): 23 (15.6%) total - 12 2L+4F (8.2%) and 11 2F+4L (7.5%)
 - 3+4 (Burnout): 28 (19.0%) total - 16 3L+4F (10.9%) and 12 3F+4L (8.2%)
 
-Dual Ratios
-- Ratio of LEFV to dual VFEL: 0.0%
-- Ratio of ELFV to dual VFLE: 9.1%
-- Ratio of LFEV to dual VEFL: 16.7%
-- Ratio of LEVF to dual FVEL: 18.2%
-- Ratio of EFLV to dual VLFE: 20.0%
-- Ratio of ELVF to dual FVLE: 33.3%
-- Ratio of LFVE to dual EVFL: 33.3%
-- Ratio of EVLF to dual FLVE: 38.5%
-- Ratio of FLEV to dual VELF: 45.5%
-- Ratio of FELV to dual VLEF: 71.4%
-- Ratio of LVFE to dual EFVL: 83.3%
-- Ratio of FEVL to dual LVEF: 85.7%
+Dual Frequency
+- Frequency of VFEL's dual LEFV: 0.0%
+- Frequency of VFLE's dual ELFV: 0.7%
+- Frequency of VEFL's dual LFEV: 0.7%
+- Frequency of FVEL's dual LEVF: 1.4%
+- Frequency of VLFE's dual EFLV: 1.4%
+- Frequency of EVFL's dual LFVE: 1.4%
+- Frequency of FVLE's dual ELVF: 3.4%
+- Frequency of FLVE's dual EVLF: 3.4%
+- Frequency of VELF's dual FLEV: 3.4%
+- Frequency of VLEF's dual FELV: 3.4%
+- Frequency of EFVL's dual LVFE: 3.4%
+- Frequency of LEFV's dual VFEL: 3.4%
+- Frequency of LVEF's dual FEVL: 4.1%
+- Frequency of LVFE's dual EFVL: 4.1%
+- Frequency of LFVE's dual EVFL: 4.1%
+- Frequency of LFEV's dual VEFL: 4.1%
+- Frequency of FEVL's dual LVEF: 4.8%
+- Frequency of FELV's dual VLEF: 4.8%
+- Frequency of EFLV's dual VLFE: 6.8%
+- Frequency of FLEV's dual VELF: 7.5%
+- Frequency of LEVF's dual FVEL: 7.5%
+- Frequency of ELFV's dual VFLE: 7.5%
+- Frequency of EVLF's dual FLVE: 8.8%
+- Frequency of ELVF's dual FVLE: 10.2%

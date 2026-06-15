@@ -212,22 +212,17 @@ class TypingStats:
             for function in functions:
                 self._print(function)
 
-        dual_ratios = []
+        dual_freq = []
         for ap_type, count in type_counts.items():
             dual_type = ''.join(reversed(ap_type))
-            dual_count = type_counts[dual_type]
-            if dual_count:
-                dual_ratio = count / dual_count
-            else:
-                dual_ratio = float('inf')
-            dual_ratios.append((ap_type, dual_type, dual_ratio))
-        dual_ratios.sort(key=lambda x: x[2])
+            dual_frequency = type_counts[dual_type] / len(self.all_typings)
+            dual_freq.append((ap_type, dual_type, dual_frequency))
+        dual_freq.sort(key=lambda x: x[2])
 
         self._print()
-        self._print('Dual Ratios')
-        for ap_type, dual_type, ratio in dual_ratios[:12]:
-            self._print(f'- Ratio of {ap_type} to dual {dual_type}: {100*ratio:.1f}%')
-
+        self._print('Dual Frequency')
+        for ap_type, dual_type, ratio in dual_freq:
+            self._print(f"- Frequency of {ap_type}'s dual {dual_type}: {100 * ratio:.1f}%")
 
     def _print(self, *values):
         s = ''.join(values)
