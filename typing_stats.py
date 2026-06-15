@@ -7,53 +7,86 @@ class TypingStats:
     # typing videos with new definitions
     celebrity_typings = [
         # From Celebrity Typing videos
-        'EFVL',  # Chappell Roan
-        'VLEF',  # Grimes
-        'FLVE',  # Jenna Ortega
-        'VELF',  # Rihanna
-        'FVLE',  # Matthew Bellamy
-        'VLFE',  # Philip DeFranco
-        'LVFE',  # Sandra Bullock
-        'FELV',  # Aaron Paul
-        'VFLE',  # Gillian Anderson (? TBD)
-        'VELF',  # Madonna
-        'EVFL',  # Mr. Rogers
-        'VLEF',  # Neil DeGrasse Tyson
-        'FVLE',  # Adriana Lima
-        'FEVL',  # Kate Moss
-        'FLVE',  # Bailey Sarian
-        'VLFE',  # Azealia Banks
-        'FVEL',  # Sofia Isella
-        'FVEL',  # Adrianne Lenker
-        'VLFE',  # Owen Cook
-        'LVFE',  # Nick LS De Cesare
-        'VEFL',  # Kobe Bryant
-        'FVEL',  # Bjork
-        'EFVL',  # HRH Collection
-        'VLFE',  # Bo Burnham
-        'VELF',  # Seal
-        'FLEV',  # Kurt Cobain
-        'VELF',  # Paris Hilton
-        'VEFL',  # Vic DiCara
-        'FEVL',  # David Lynch
-        'VLFE',  # Courtney Love
-        'EFLV',  # Trisha Paytas
-        'FELV',  # JMSN
-        'LFVE',  # Carl Jung
-        'VELF',  # Hayley Williams
-        'VFEL',  # Chino Moreno
-        'EVLF',  # Yorgos Lanthimos
-        'EVLF',  # Taylor Swift
-        'FEVL',  # Addison Rae
-        'VELF',  # PinkPantheress
-        'EVFL',  # Chester Bennington
-        'FEVL',  # Michelle Pfeiffer
-        'VELF',  # Brit Marling
-        'EFVL',  # Nicki Minaj
-        'FVLE',  # Lucy Lawless
-
-        # From Theory videos
-        'ELVF',  # Asmongold (4F: Refusing To Process the Aspect)
+        'EFVL', # Chappell Roan
+        'VLEF', # Grimes
+        'FLVE', # Jenna Ortega
+        'VELF', # Rihanna
+        'FVLE', # Matthew Bellamy
+        'VLFE', # Philip DeFranco
+        'LVFE', # Sandra Bullock
+        'FELV', # Aaron Paul
+        'VFLE', # Gillian Anderson
+        'VELF', # Madonna
+        'EVFL', # Mr. Rogers
+        'VLEF', # Neil DeGrasse Tyson
+        'FVLE', # Adriana Lima
+        'FEVL', # Kate Moss
+        'FLVE', # Bailey Sarian
+        'VLFE', # Azealia Banks
+        'FVEL', # Sofia Isella
+        'FVEL', # Adrianne Lenker
+        'VLFE', # Owen Cook
+        'LVFE', # Nick LS De Cesare
+        'VEFL', # Kobe Bryant
+        'FVEL', # Bjork
+        'EFVL', # HRH Collection
+        'VLFE', # Bo Burnham
+        'VELF', # Seal
+        'ELVF', # Asmongold
+        'FLEV', # Kurt Cobain
+        'VELF', # Paris Hilton
+        'VEFL', # Vic DiCara
+        'FEVL', # David Lynch
+        'VLFE', # Courtney Love
+        'VEFL', # Jim Carrey
+        'VELF', # David Goggins
+        'EVLF', # Bruce Lee
+        'EVFL', # Anthony Hopkins
+        'LFEV', # Billy Corgan
+        'FLEV', # Joaquin Phoenix
+        'EFLV', # Trisha Paytas
+        'FELV', # JMSN
+        'LFVE', # Carl Jung
+        'VELF', # Hayley Williams
+        'VFEL', # Chino Moreno
+        'EVLF', # Yorgos Lanthimos
+        'EVLF', # Taylor Swift
+        'FEVL', # Addison Rae
+        'VELF', # PinkPantheress
+        'EVFL', # Chester Bennington
+        'FEVL', # Michelle Pfeiffer
+        'VELF', # Brit Marling
+        'EFVL', # Nicki Minaj
+        'FVLE', # Lucy Lawless
+        'EVFL', # Lady Gaga
+        'EVFL', # Evy Poumpouras
+        'LVFE', # Vaush
+        'VLEF', # Jordan OPeterson
+        'LEVF', # Russell Brand
+        'VLFE', # Caroline Calloway
+        'FVEL', # Dua Lipa
+        'FVEL', # Eminem
+        'LFVE', # Jodie Foster
+        'FVLE', # Megan Thee Stallion
+        'LVFE', # Tyra Banks
+        'FEVL', # Pink
+        'FLEV', # Emmymade
+        'FLEV', # Jessica Pratt
+        'VFEL', # Min Yoongi
+        'LVEF', # Contrapoints
+        'EVFL', # Michelle Obama
+        'VFLE', # David Bowie
+        'VFLE', # Quentin Tarantino
+        'FVEL', # Susumu Hirasawa
+        'LVEF', # Barack Obama
+        'FVLE', # Rainbolt
+        'FVLE', # Yngwie Malmsteen
+        'VELF', # Mads Mikkelsen
+        'VFLE', # Zara Larsson
+        'LEVF', # Stephen Fry
+        'VELF', # Cristiano Ronaldo
+        'VFLE', # James Spader
+        'VFLE', # Nelly Furtado
     ]
     community_typings = {
         # as of 3/14/2026
